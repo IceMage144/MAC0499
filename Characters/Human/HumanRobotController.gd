@@ -1,7 +1,5 @@
 extends "res://Bases/Controller/BaseRobotController.gd"
 
-# enum Movement { IDLE, WALK, ATTACK, DEATH }
-
 # Movements
 const WALK = "walk"
 const ATTACK = "attack"
@@ -59,6 +57,7 @@ func get_features_after_action(state, action):
 	if movement == WALK:
 		var dir_vec = DIR_TO_VEC[direction]
 		var transform = Transform2D(0.0, state["self_pos"])
+		# COMMENT: Make this test at get_legal_actions?
 		if not self.parent.test_move(transform, dir_vec):
 			out[ENEMY_DIST] = state["enemy_pos"].distance_to(state["self_pos"] + dir_vec)
 	elif movement == ATTACK:

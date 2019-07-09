@@ -6,7 +6,7 @@
 
 script = ExtResource( 1 )
 first_screen = 1
-character_debug = true
+character_debug = false
 arena_debug = false
 
 

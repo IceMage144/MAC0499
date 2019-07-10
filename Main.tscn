@@ -5,7 +5,7 @@
 [node name="Main" type="Node" index="0"]
 
 script = ExtResource( 1 )
-first_screen = 1
+first_screen = 2
 character_debug = true
 arena_debug = false
 

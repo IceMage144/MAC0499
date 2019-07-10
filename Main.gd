@@ -2,15 +2,15 @@ extends Node
 
 const PauseMenu = preload("res://Menus/PauseMenu.tscn")
 
-enum Screen { DEFAULT, ROBOT_ROBOT, PLAYER_ROBOT }
+enum Screen { MAIN_MENU, ROBOT_ROBOT, PLAYER_ROBOT }
 
 const screen_path = {
-	Screen.DEFAULT: "res://Arenas/Arena.tscn",
-	Screen.ROBOT_ROBOT: "res://Arenas/GeneticArena/GeneticArena.tscn",
-	Screen.PLAYER_ROBOT: "res://Arenas/GeneticArena/GeneticArenaPlayer.tscn"
+	Screen.MAIN_MENU: "res://Menus/MainMenu.tscn",
+	Screen.ROBOT_ROBOT: "res://Maps/Tests/RobotRobotArena.tscn",
+	Screen.PLAYER_ROBOT: "res://Maps/Tests/PlayerRobotArena.tscn"
 }
 
-export(int, "Default", "Robot vs Robot test", "Player vs Robot test") var first_screen = Screen.DEFAULT
+export(int, "Main menu", "Robot vs Robot test", "Player vs Robot test") var first_screen = Screen.MAIN_MENU
 export(bool) var character_debug = false
 export(bool) var arena_debug = false
 
@@ -21,10 +21,11 @@ func _ready():
 	var global = get_node("/root/global")
 	ScreenClass = load(screen_path[first_screen])
 	reset_arena()
-	assert(global.has_entity("team1"))
-	assert(global.has_entity("team2"))
-	for timer in get_tree().get_nodes_in_group("debug_timer"):
-		assert(timer is Timer)
+	if first_screen != Screen.MAIN_MENU:
+		assert(global.has_entity("team1"))
+		assert(global.has_entity("team2"))
+		for timer in get_tree().get_nodes_in_group("debug_timer"):
+			assert(timer is Timer)
 	if self.character_debug:
 		for timer in get_tree().get_nodes_in_group("debug_timer"):
 			timer.start()

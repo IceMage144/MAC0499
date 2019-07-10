@@ -2,28 +2,11 @@ extends KinematicBody2D
 
 const PlayerController = preload("res://Characters/Player/PlayerController.gd")
 const ControllerNode = preload("res://Bases/Controller/Controller.tscn")
+const ActionClass = preload("res://ActionBase.gd")
 
 signal character_death
 
 enum Controller { PLAYER, AI }
-
-const Direction = {
-	"LEFT": "left",
-	"RIGHT": "right",
-	"UP": "up",
-	"DOWN": "down"
-}
-
-# Movements
-const DEATH = "death"
-const IDLE = "idle"
-
-const DIR_TO_VEC = {
-	Direction.UP: Vector2(0, -1),
-	Direction.RIGHT: Vector2(1, 0),
-	Direction.DOWN: Vector2(0, 1),
-	Direction.LEFT: Vector2(-1, 0)
-}
 
 const ai_name = ["Berkeley", "Torch", "Memo", "Class"]
 
@@ -42,14 +25,14 @@ export(float, 0.0, 1.0, 0.01) var reuse_last_action_chance = 0.0
 export(bool) var experience_replay = false
 export(float) var think_time = 0.1
 
-var movement = IDLE
-var direction = Direction.DOWN
 var velocity = Vector2()
+var action = ActionClass.compose(ActionClass.IDLE, ActionClass.DOWN)
 var life = max_life
 var controller
 var controller_name
 
 onready var anim_node = $Sprite/AnimationPlayer
+onready var Action = ActionClass.new()
 
 func _init_ai_controller():
 	var AIControllerScript = self._get_ai_controller_script()
@@ -100,16 +83,20 @@ func set_life(new_life):
 	$Life.text = str(int(self.life))
 
 func set_movement(new_movement, force=false):
-	if self.movement != DEATH or force:
-		self.movement = new_movement
+	if self.action != Action.DEATH or force:
+		self.action = Action.compose(new_movement, self.action)
+
+func set_action(new_action, force=false):
+	if self.action != Action.DEATH or force:
+		self.action = new_action
 
 func take_damage(damage):
 	self.set_life(self.life - damage)
 	if self.life <= 0:
-		self.set_movement(DEATH)
+		self.set_action(Action.DEATH)
 
-func is_process_movement(a):
-	return a == IDLE
+func is_process_action(a):
+	return Action.get_movement(a) == Action.IDLE
 
 func die():
 	self.emit_signal("character_death")
@@ -119,12 +106,13 @@ func before_reset(timeout):
 	
 func reset(timeout):
 	self.set_life(self.max_life)
-	self.set_movement(IDLE, true)
+	self.set_action(Action.compose(Action.IDLE, Action.DOWN), true)
 	self.controller.reset(timeout)
 	
 func after_reset(timeout):
 	self.controller.after_reset(timeout)
 
 func _on_AnimationPlayer_animation_finished(anim_name):
-	if anim_name.begins_with(DEATH):
+	var death = Action.to_string(Action.DEATH)
+	if anim_name.begins_with(death):
 		self.die()

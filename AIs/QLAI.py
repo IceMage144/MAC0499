@@ -41,11 +41,8 @@ class QLAI(Node):
 	def reset(self, timeout):
 		self.last_state = self.parent.get_state()
 
-	def get_movement(self):
-		return self.last_action[0]
-	
-	def get_direction(self):
-		return self.last_action[1]
+	def get_action(self):
+		return self.last_action
 	
 	def get_loss(self):
 		return util.py2gdArray(self.logger.get_stored("loss"))
@@ -54,7 +51,6 @@ class QLAI(Node):
 		return self.parent.name
 
 	def get_features_after_action(self, state, action):
-		action = Array(action)
 		par_out = self.parent.get_features_after_action(state, action)
 		return torch.tensor(par_out)
 

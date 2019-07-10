@@ -1,29 +1,12 @@
 extends Node
 
 const AINode = preload("res://AIs/AI.tscn")
+const ActionClass = preload("res://ActionBase.gd")
 
 enum Feature { ENEMY_DIST, SELF_LIFE, ENEMY_LIFE, ENEMY_ATTACKING, ENEMY_DIR_X, ENEMY_DIR_Y, BIAS }
 enum AiType { BERKELEY, TORCH, MEMO, CLASSIFIER }
 
-const Direction = {
-	"LEFT": "left",
-	"RIGHT": "right",
-	"UP": "up",
-	"DOWN": "down"
-}
-
-# Movements
-const DEATH = "death"
-const IDLE = "idle"
-
 const FEATURES_SIZE = Feature.BIAS + 1
-
-const DIR_TO_VEC = {
-	Direction.UP: Vector2(0, -1),
-	Direction.RIGHT: Vector2(1, 0),
-	Direction.DOWN: Vector2(0, 1),
-	Direction.LEFT: Vector2(-1, 0)
-}
 
 const ai_path = {
 	AiType.BERKELEY: "res://AIs/BerkeleyQLAI.py",
@@ -46,15 +29,18 @@ var color
 var parent
 var velocity = Vector2()
 
-func _is_aligned(dir, vec):
-	# TODO: Receive vector of dir (change "==" to "in" ?)
+onready var Action = ActionClass.new()
+
+func _is_aligned(act, vec):
+	# TODO: Move this function to another place
+	var dir = Action.get_direction(act)
 	if vec.x < vec.y:
 		if -vec.x < vec.y:
-			return dir == Direction.DOWN
-		return dir == Direction.LEFT
+			return dir == Action.DOWN
+		return dir == Action.LEFT
 	if -vec.x > vec.y:
-		return dir == Direction.UP
-	return dir == Direction.RIGHT
+		return dir == Action.UP
+	return dir == Action.RIGHT
 
 func _ready():
 	var glob = self.get_node("/root/global")
@@ -81,7 +67,7 @@ func init(params):
 		"think_time": params["think_time"],
 		"features_size": FEATURES_SIZE,
 		"initial_state": self.get_state(),
-		"initial_action": [IDLE, null]
+		"initial_action": Action.IDLE
 	})
 	$DebugTimer.connect("timeout", self.ai, "_on_DebugTimer_timeout")
 	$ThinkTimer.start()
@@ -96,14 +82,12 @@ func get_state():
 		"self_life": self.parent.life,
 		"self_maxlife": self.parent.max_life,
 		"self_damage": self.parent.damage,
-		"self_mov": self.parent.movement,
-		"self_dir": self.parent.direction,
+		"self_act": self.parent.action,
 		"enemy_pos": self.enemy.position,
 		"enemy_life": self.enemy.life,
 		"enemy_maxlife": self.enemy.max_life,
 		"enemy_damage": self.enemy.damage,
-		"enemy_mov": self.enemy.movement,
-		"enemy_dir": self.enemy.direction
+		"enemy_act": self.enemy.action
 	}
 
 # Abstract
@@ -120,7 +104,7 @@ func get_features_after_action(state, action):
 
 func can_think():
 	# TODO: Is this the right way to do it?
-	return self.parent.is_process_movement(self.parent.movement)
+	return self.parent.is_process_action(self.parent.action)
 
 func before_reset(timeout):
 	self.ai.update_state(true, timeout)

@@ -3,6 +3,8 @@
 [ext_resource path="res://Arenas/Arena.gd" type="Script" id=1]
 [ext_resource path="res://Arenas/BasicTileset.tres" type="TileSet" id=2]
 
+
+
 [node name="Arena" type="YSort" groups=[
 "arena",
 ]]

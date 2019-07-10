@@ -4,6 +4,8 @@
 [ext_resource path="res://Arenas/BasicTileset.tres" type="TileSet" id=2]
 [ext_resource path="res://Characters/Human/Human.tscn" type="PackedScene" id=3]
 
+
+
 [node name="GeneticArena" type="YSort" groups=[
 "arena",
 ]]

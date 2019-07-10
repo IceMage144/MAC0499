@@ -5,6 +5,8 @@
 [ext_resource path="res://Characters/Player/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Characters/Human/Human.tscn" type="PackedScene" id=4]
 
+
+
 [node name="GeneticArena" type="YSort" index="0" groups=[
 "arena",
 ]]

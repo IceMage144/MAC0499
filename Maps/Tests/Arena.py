@@ -7,7 +7,7 @@ from godot.bindings import *
 from godot.globals import *
 
 @exposed
-class GeneticArena(YSort):
+class Arena(Node2D):
 	def _ready(self):
 		self.debug_mode = False
 		self.initial_positions = {}
@@ -46,7 +46,7 @@ class GeneticArena(YSort):
 	def reset(self, timeout):
 		if self.debug_mode:
 			self.print_info()
-		# self.get_parent().reset_arena()
+		# self.get_parent().reset_game()
 		for character in self.get_tree().get_nodes_in_group("character"):
 			character.before_reset(timeout)
 		for character in self.get_tree().get_nodes_in_group("character"):

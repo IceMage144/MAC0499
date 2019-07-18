@@ -2,26 +2,25 @@ extends Node
 
 const PauseMenu = preload("res://Menus/PauseMenu.tscn")
 
-enum Screen { MAIN_MENU, ROBOT_ROBOT, PLAYER_ROBOT }
+enum Scene { MAIN_MENU, ROBOT_ROBOT, PLAYER_ROBOT }
 
-const screen_path = {
-	Screen.MAIN_MENU: "res://Menus/MainMenu.tscn",
-	Screen.ROBOT_ROBOT: "res://Maps/Tests/RobotRobotArena.tscn",
-	Screen.PLAYER_ROBOT: "res://Maps/Tests/PlayerRobotArena.tscn"
+const scene_path = {
+	Scene.MAIN_MENU: "res://Menus/MainMenu.tscn",
+	Scene.ROBOT_ROBOT: "res://Maps/Tests/RobotRobotArena.tscn",
+	Scene.PLAYER_ROBOT: "res://Maps/Tests/PlayerRobotArena.tscn"
 }
 
-export(int, "Main menu", "Robot vs Robot test", "Player vs Robot test") var first_screen = Screen.MAIN_MENU
+export(int, "Main menu", "Robot vs Robot test", "Player vs Robot test") var first_scene = Scene.MAIN_MENU
 export(bool) var character_debug = false
-export(bool) var arena_debug = false
+export(bool) var environment_debug = false
 
-var ScreenClass
-var arena
+var FirstSceneClass
+var current_scene
 
 func _ready():
-	var global = get_node("/root/global")
-	ScreenClass = load(screen_path[first_screen])
-	reset_arena()
-	if first_screen != Screen.MAIN_MENU:
+	self.FirstSceneClass = load(scene_path[first_scene])
+	self.reset_game()
+	if first_scene != Scene.MAIN_MENU:
 		assert(global.has_entity("team1"))
 		assert(global.has_entity("team2"))
 		for timer in get_tree().get_nodes_in_group("debug_timer"):
@@ -32,15 +31,17 @@ func _ready():
 
 func _process(_delta):
 	if Input.is_action_just_pressed("pause"):
-		add_child(PauseMenu.instance())
+		self.add_child(PauseMenu.instance())
 	if Input.is_action_just_pressed("rewind"):
-		reset_arena()
+		self.reset_game()
 
-func reset_arena():
-	if self.arena:
-		self.arena.queue_free()
-		yield(self.arena, "tree_exited")
-	self.arena = ScreenClass.instance()
-	add_child(self.arena)
-	self.arena.debug_mode = self.arena_debug
-	
+func reset_game():
+	self.change_map(self.FirstSceneClass)
+
+func change_map(scene):
+	if self.current_scene:
+		self.current_scene.queue_free()
+		yield(self.current_scene, "tree_exited")
+	self.current_scene = scene.instance()
+	self.add_child(self.current_scene)
+	self.current_scene.debug_mode = self.environment_debug

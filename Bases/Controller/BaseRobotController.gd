@@ -43,11 +43,9 @@ func _is_aligned(act, vec):
 	return dir == Action.RIGHT
 
 func _ready():
-	var glob = self.get_node("/root/global")
-
 	self.parent = self.get_parent()
-	self.enemy = glob.get_enemy(self.parent)
-	self.tm = glob.find_entity("tile_map")
+	self.enemy = global.get_enemy(self.parent)
+	self.tm = global.find_entity("floor")
 	$ThinkTimer.wait_time = self.parent.think_time
 
 func init(params):

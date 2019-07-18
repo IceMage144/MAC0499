@@ -1,13 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://Maps/RoomBase.gd" type="Script" id=1]
-[ext_resource path="res://Characters/Player/Player.tscn" type="PackedScene" id=2]
 
-[node name="AdventureRoom" type="Node2D"]
+[node name="RoomBase" type="Node2D" index="0" groups=[
+"room",
+]]
 
 script = ExtResource( 1 )
 
-[node name="Floor" type="TileMap" parent="." index="0"]
+[node name="Floor" type="TileMap" parent="." index="0" groups=[
+"floor",
+]]
 
 mode = 0
 tile_set = null
@@ -27,7 +30,9 @@ occluder_light_mask = 1
 format = 1
 tile_data = PoolIntArray(  )
 
-[node name="Wall" type="TileMap" parent="." index="1"]
+[node name="Wall" type="TileMap" parent="." index="1" groups=[
+"wall",
+]]
 
 mode = 0
 tile_set = null
@@ -46,10 +51,6 @@ collision_mask = 1
 occluder_light_mask = 1
 format = 1
 tile_data = PoolIntArray(  )
-
-[node name="Player" parent="Wall" index="0" instance=ExtResource( 2 )]
-
-position = Vector2( 113.805, 242.99 )
 
 [node name="CameraLimits" type="Node" parent="." index="2"]
 

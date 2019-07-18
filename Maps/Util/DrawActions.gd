@@ -12,7 +12,6 @@ var robot
 var botAI
 
 func _ready():
-	var global = get_node("/root/global")
 	player = global.find_entity("team1")
 	robot = global.find_entity("team2")
 	botAI = robot.get_node("AI")

@@ -1,5 +1,8 @@
 extends Control
 
+const CityScene = preload("res://Maps/City/City.tscn")
+const CreditsScene = preload("res://Menus/Credits.tscn")
+
 var debug_mode = false
 var focused_button_id = 0
 
@@ -27,3 +30,17 @@ func _on_button_mouse_entered(button_id):
 	if not self.buttons[button_id].disabled:
 		self.buttons[self.focused_button_id].release_focus()
 		self.focused_button_id = button_id
+
+
+func _on_NewGame_pressed():
+	var main = global.find_entity("main")
+	main.change_map(CityScene)
+
+
+func _on_Credits_pressed():
+	var main = global.find_entity("main")
+	main.change_map(CreditsScene)
+
+
+func _on_Quit_pressed():
+	get_tree().quit()

@@ -1,7 +1,7 @@
 extends Node
 
 const AINode = preload("res://AIs/AI.tscn")
-const ActionClass = preload("res://ActionBase.gd")
+const ActionClass = preload("res://Bases/ActionBase.gd")
 
 enum Feature { ENEMY_DIST, SELF_LIFE, ENEMY_LIFE, ENEMY_ATTACKING, ENEMY_DIR_X, ENEMY_DIR_Y, BIAS }
 enum AiType { BERKELEY, TORCH, MEMO, CLASSIFIER }

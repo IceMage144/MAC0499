@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 const PlayerController = preload("res://Characters/Player/PlayerController.gd")
 const ControllerNode = preload("res://Bases/Controller/Controller.tscn")
-const ActionClass = preload("res://ActionBase.gd")
+const ActionClass = preload("res://Bases/ActionBase.gd")
 
 signal character_death
 

@@ -1,9 +1,9 @@
-extends Control
+extends "res://Bases/Map/MenuBase.gd"
 
 const CityScene = preload("res://Maps/City/City.tscn")
 const CreditsScene = preload("res://Menus/Credits.tscn")
 
-var debug_mode = false
+var name_to_id = {}
 var focused_button_id = 0
 
 onready var buttons = $MarginContainer/VBoxContainer.get_children()
@@ -11,6 +11,11 @@ onready var buttons = $MarginContainer/VBoxContainer.get_children()
 func _ready():
 	for i in range(len(self.buttons)):
 		self.buttons[i].connect("mouse_entered", self, "_on_button_mouse_entered", [i])
+		self.name_to_id[self.buttons[i].name] = i
+
+func init(params):
+	if params != null:
+		self.focused_button_id = self.name_to_id[params["from"]]
 
 func _process(delta):
 	var focused_button = self.buttons[self.focused_button_id]

@@ -1,6 +1,4 @@
-extends Node2D
-
-var debug_mode = false
+extends "res://Bases/Map/MapBase.gd"
 
 func _ready():
 	if global.has_entity("camera"):

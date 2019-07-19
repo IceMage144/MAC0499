@@ -38,10 +38,11 @@ func _process(_delta):
 func reset_game():
 	self.change_map(self.FirstSceneClass)
 
-func change_map(scene):
+func change_map(scene, params=null):
 	if self.current_scene:
 		self.current_scene.queue_free()
 		yield(self.current_scene, "tree_exited")
 	self.current_scene = scene.instance()
 	self.add_child(self.current_scene)
+	self.current_scene.init(params)
 	self.current_scene.debug_mode = self.environment_debug

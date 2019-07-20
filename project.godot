@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 global="*res://global.gd"
+ItemDatabase="*res://Items/ItemDatabase.tscn"
 
 [gdnative]
 

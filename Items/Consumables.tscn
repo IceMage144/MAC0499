@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Items/ConsumableData.gd" type="Script" id=1]
+[ext_resource path="res://assets/items/item-sheet.png" type="Texture" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+
+flags = 0
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 32, 32 )
+margin = Rect2( 0, 0, 0, 0 )
+filter_clip = false
+
+[sub_resource type="AtlasTexture" id=2]
+
+flags = 0
+atlas = ExtResource( 2 )
+region = Rect2( 32, 0, 32, 32 )
+margin = Rect2( 0, 0, 0, 0 )
+filter_clip = false
+
+[sub_resource type="AtlasTexture" id=3]
+
+flags = 0
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 32, 32 )
+margin = Rect2( 0, 0, 0, 0 )
+filter_clip = false
+
+[node name="Consumables" type="Node" index="0"]
+
+[node name="Small Potion" type="Node" parent="." index="0"]
+
+script = ExtResource( 1 )
+icon = SubResource( 1 )
+description = null
+price = null
+life_heal = 1
+
+[node name="Medium Potion" type="Node" parent="." index="1"]
+
+script = ExtResource( 1 )
+icon = SubResource( 2 )
+description = null
+price = null
+life_heal = 2
+
+[node name="Large Potion" type="Node" parent="." index="2"]
+
+script = ExtResource( 1 )
+icon = SubResource( 3 )
+description = null
+price = null
+life_heal = 3
+
+

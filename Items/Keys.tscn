@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Items/KeyData.gd" type="Script" id=1]
+[ext_resource path="res://assets/items/item-sheet.png" type="Texture" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+
+flags = 0
+atlas = ExtResource( 2 )
+region = Rect2( 160, 0, 32, 32 )
+margin = Rect2( 0, 0, 0, 0 )
+filter_clip = false
+
+[sub_resource type="AtlasTexture" id=2]
+
+flags = 0
+atlas = ExtResource( 2 )
+region = Rect2( 192, 0, 32, 32 )
+margin = Rect2( 0, 0, 0, 0 )
+filter_clip = false
+
+[sub_resource type="AtlasTexture" id=3]
+
+flags = 0
+atlas = ExtResource( 2 )
+region = Rect2( 224, 0, 32, 32 )
+margin = Rect2( 0, 0, 0, 0 )
+filter_clip = false
+
+[node name="Keys" type="Node" index="0"]
+
+[node name="Round Key" type="Node" parent="." index="0"]
+
+script = ExtResource( 1 )
+icon = SubResource( 1 )
+description = null
+price = null
+shape = null
+
+[node name="Square Key" type="Node" parent="." index="1"]
+
+script = ExtResource( 1 )
+icon = SubResource( 2 )
+description = null
+price = null
+shape = 1
+
+[node name="Triangular Key" type="Node" parent="." index="2"]
+
+script = ExtResource( 1 )
+icon = SubResource( 3 )
+description = null
+price = null
+shape = 2
+
+

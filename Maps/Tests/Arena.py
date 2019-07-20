@@ -18,6 +18,9 @@ class Arena(Node2D):
 			self.initial_positions[character.name] = character.position
 			character.connect("character_death", self, "_on_character_death")
 
+	def init(self, params):
+		pass
+
 	def print_info(self):
 		glob = self.get_node("/root/global")
 		loss_info = {}

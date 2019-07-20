@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Items/EquipData.gd" type="Script" id=1]
+[ext_resource path="res://assets/items/item-sheet.png" type="Texture" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+
+flags = 0
+atlas = ExtResource( 2 )
+region = Rect2( 96, 0, 32, 32 )
+margin = Rect2( 0, 0, 0, 0 )
+filter_clip = false
+
+[sub_resource type="AtlasTexture" id=2]
+
+flags = 0
+atlas = ExtResource( 2 )
+region = Rect2( 128, 0, 32, 32 )
+margin = Rect2( 0, 0, 0, 0 )
+filter_clip = false
+
+[node name="Equips" type="Node" index="0"]
+
+[node name="Basic Sword" type="Node" parent="." index="0"]
+
+script = ExtResource( 1 )
+icon = SubResource( 1 )
+description = null
+damage = 1
+
+[node name="Iron Sword" type="Node" parent="." index="1"]
+
+script = ExtResource( 1 )
+icon = SubResource( 2 )
+description = null
+damage = 2
+
+

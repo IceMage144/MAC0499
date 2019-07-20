@@ -5,7 +5,7 @@
 [ext_resource path="res://Maps/Tests/BasicTileset.tres" type="TileSet" id=3]
 [ext_resource path="res://Characters/Human/Human.tscn" type="PackedScene" id=4]
 
-[node name="RobotRobotTest" instance=ExtResource( 1 )]
+[node name="RobotRobotTest" index="0" instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )
 
@@ -19,7 +19,6 @@ tile_data = PoolIntArray( 0, 1, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0, 5, 1, 0, 
 ] instance=ExtResource( 4 )]
 
 position = Vector2( 755.802, 302.955 )
-ai_type = 1
 learning_rate = 0.0005
 discount = 0.999
 min_exploration_rate = 0.1

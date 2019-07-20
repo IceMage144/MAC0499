@@ -56,21 +56,6 @@ class BerkeleyQLAI(QLAI):
 		self.logger.push("max_q_val", next_state_action_value)
 		self.logger.push("reward", reward)
 
-	def choose_an_action(self, state):
-		legal_actions = self.parent.get_legal_actions(state)
-		if state["self_mov"] != Movement.DEATH:
-			actual_action = Action._get_action(state["self_mov"], state["self_dir"])
-			if random() < self.reuse_last_action_chance \
-			and actual_action in legal_actions:
-				return actual_action
-		return choice(legal_actions)
-
-	def compute_action_from_q_values(self, state):
-		# FIXME: Checking epsilon twice
-		if random() < self.epsilon:
-			return self.choose_an_action(state)
-		return QLAI.compute_action_from_q_values(self, state)
-
 	# Print some variables for debug here
 	def _on_DebugTimer_timeout(self):
 		super(BerkeleyQLAI, self)._on_DebugTimer_timeout()

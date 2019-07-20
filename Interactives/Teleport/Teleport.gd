@@ -2,14 +2,6 @@ extends Node2D
 
 enum Direction { RIGHT, UP, LEFT, DOWN }
 
-const DIR_TO_FLIP = [
-	# HFlip, VFlip, Rotation
-	[false, false, 0],
-	[false, false, PI/2],
-	[true, false, 0],
-	[false, true, PI/2]
-]
-
 export(int, "Right", "Up", "Left", "Down") var direction = Direction.RIGHT
 export(PackedScene) var destination
 

@@ -10,5 +10,6 @@ script = ExtResource( 1 )
 first_scene = 0
 character_debug = false
 environment_debug = false
+popup_debug = false
 
 

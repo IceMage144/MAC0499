@@ -13,9 +13,11 @@ const scene_path = {
 export(int, "Main menu", "Robot vs Robot test", "Player vs Robot test") var first_scene = Scene.MAIN_MENU
 export(bool) var character_debug = false
 export(bool) var environment_debug = false
+export(bool) var popup_debug = false
 
 var FirstSceneClass
-var current_scene
+var current_scene = null
+var current_popup = null
 
 func _ready():
 	self.FirstSceneClass = load(scene_path[first_scene])
@@ -31,9 +33,18 @@ func _ready():
 
 func _process(_delta):
 	if Input.is_action_just_pressed("pause"):
-		self.add_child(PauseMenu.instance())
+		if self.current_popup != null:
+			self.current_popup.queue_free()
+			self.current_popup = null
+		else:
+			var pause_menu = PauseMenu.instance()
+			self.add_child(pause_menu)
+			pause_menu.debug_mode = self.popup_debug
 	if Input.is_action_just_pressed("rewind"):
 		self.reset_game()
+	if Input.is_action_just_pressed("test"):
+		var shop = load("res://Popups/ShopPopup.tscn")
+		self.show_popup(shop, "equip")
 
 func reset_game():
 	self.change_map(self.FirstSceneClass)
@@ -46,3 +57,12 @@ func change_map(scene, params=null):
 	self.add_child(self.current_scene)
 	self.current_scene.init(params)
 	self.current_scene.debug_mode = self.environment_debug
+
+func show_popup(popup, params=null):
+	if self.current_popup:
+		self.current_popup.queue_free()
+		yield(self.current_popup, "tree_exited")
+	self.current_popup = popup.instance()
+	self.add_child(self.current_popup)
+	self.current_popup.init(params)
+	self.current_popup.debug_mode = self.popup_debug

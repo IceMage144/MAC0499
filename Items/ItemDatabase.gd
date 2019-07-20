@@ -9,6 +9,13 @@ func _ready():
 func _get_from_tab(tab, item_name):
 	return self.get_node(tab).get_child(item_name)
 
+func get_all_items():
+	var item_list = []
+	for child in self.get_children():
+		for grand_child in child.get_children():
+			item_list.append(grand_child)
+	return item_list
+
 func get_item(item_name):
 	for child in self.get_children():
 		if child.has_node(item_name):

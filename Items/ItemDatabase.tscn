@@ -6,21 +6,13 @@
 [ext_resource path="res://Items/Keys.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Items/Drops.tscn" type="PackedScene" id=5]
 
-[node name="ItemDatabase" type="Node" index="0"]
+[node name="ItemDatabase" type="Node"]
 
 script = ExtResource( 1 )
 
 [node name="Equips" parent="." index="0" instance=ExtResource( 2 )]
 
 editor/display_folded = true
-
-[node name="Basic Sword" parent="Equips" index="0"]
-
-price = null
-
-[node name="Iron Sword" parent="Equips" index="1"]
-
-price = null
 
 [node name="Consumables" parent="." index="1" instance=ExtResource( 3 )]
 
@@ -29,6 +21,21 @@ editor/display_folded = true
 [node name="Keys" parent="." index="2" instance=ExtResource( 4 )]
 
 editor/display_folded = true
+
+[node name="Round Key" parent="Keys" index="0"]
+
+description = ""
+price = 1
+
+[node name="Square Key" parent="Keys" index="1"]
+
+description = ""
+price = 1
+
+[node name="Triangular Key" parent="Keys" index="2"]
+
+description = ""
+price = 1
 
 [node name="Drops" parent="." index="3" instance=ExtResource( 5 )]
 

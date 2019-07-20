@@ -27,30 +27,30 @@ region = Rect2( 64, 0, 32, 32 )
 margin = Rect2( 0, 0, 0, 0 )
 filter_clip = false
 
-[node name="Consumables" type="Node" index="0"]
+[node name="Consumables" type="Node"]
 
 [node name="Small Potion" type="Node" parent="." index="0"]
 
 script = ExtResource( 1 )
 icon = SubResource( 1 )
-description = null
-price = null
+description = "A small-sized potion that heals a bit your wounds."
+price = 1
 life_heal = 1
 
 [node name="Medium Potion" type="Node" parent="." index="1"]
 
 script = ExtResource( 1 )
 icon = SubResource( 2 )
-description = null
-price = null
+description = "A medium-sized potion that heals some of your wounds."
+price = 1
 life_heal = 2
 
-[node name="Large Potion" type="Node" parent="." index="2"]
+[node name="Large potion" type="Node" parent="." index="2"]
 
 script = ExtResource( 1 )
 icon = SubResource( 3 )
-description = null
-price = null
+description = "A large-sized potion that heals most of your injuries."
+price = 1
 life_heal = 3
 
 

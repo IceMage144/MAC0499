@@ -1,4 +1,7 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Popups/Addons/ItemDisplay.gd" type="Script" id=1]
+
 
 [node name="ItemDisplay" type="Button"]
 
@@ -8,6 +11,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 44.0
 margin_bottom = 44.0
+rect_min_size = Vector2( 44, 44 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -21,5 +25,7 @@ shortcut = null
 group = null
 flat = false
 align = 1
+script = ExtResource( 1 )
+default_background = null
 
 

@@ -34,8 +34,7 @@ func _ready():
 func _process(_delta):
 	if Input.is_action_just_pressed("pause"):
 		if self.current_popup != null:
-			self.current_popup.queue_free()
-			self.current_popup = null
+			self.close_popup()
 		else:
 			var pause_menu = PauseMenu.instance()
 			self.add_child(pause_menu)
@@ -66,3 +65,7 @@ func show_popup(popup, params=null):
 	self.add_child(self.current_popup)
 	self.current_popup.init(params)
 	self.current_popup.debug_mode = self.popup_debug
+
+func close_popup():
+	self.current_popup.queue_free()
+	self.current_popup = null

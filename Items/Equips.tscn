@@ -19,9 +19,11 @@ region = Rect2( 128, 0, 32, 32 )
 margin = Rect2( 0, 0, 0, 0 )
 filter_clip = false
 
-[node name="Equips" type="Node"]
+[node name="Equips" type="Node" index="0"]
 
-[node name="Basic Sword" type="Node" parent="." index="0"]
+[node name="Basic Sword" type="Node" parent="." index="0" groups=[
+"sword",
+]]
 
 script = ExtResource( 1 )
 icon = SubResource( 1 )
@@ -29,7 +31,9 @@ description = "A simple sword made of bronze. It deals a small damage to monster
 price = 1
 damage = 1
 
-[node name="Iron Sword" type="Node" parent="." index="1"]
+[node name="Iron Sword" type="Node" parent="." index="1" groups=[
+"sword",
+]]
 
 script = ExtResource( 1 )
 icon = SubResource( 2 )

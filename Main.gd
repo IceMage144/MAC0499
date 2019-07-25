@@ -42,7 +42,7 @@ func _process(_delta):
 	if Input.is_action_just_pressed("rewind"):
 		self.reset_game()
 	if Input.is_action_just_pressed("test"):
-		var shop = load("res://Popups/ShopPopup.tscn")
+		var shop = load("res://Popups/InventoryPopup.tscn")
 		self.show_popup(shop, "equip")
 
 func reset_game():

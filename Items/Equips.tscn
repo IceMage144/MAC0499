@@ -21,24 +21,22 @@ filter_clip = false
 
 [node name="Equips" type="Node" index="0"]
 
-[node name="Basic Sword" type="Node" parent="." index="0" groups=[
-"sword",
-]]
+[node name="Basic Sword" type="Node" parent="." index="0"]
 
 script = ExtResource( 1 )
 icon = SubResource( 1 )
 description = "A simple sword made of bronze. It deals a small damage to monsters."
 price = 1
 damage = 1
+type = "sword"
 
-[node name="Iron Sword" type="Node" parent="." index="1" groups=[
-"sword",
-]]
+[node name="Iron Sword" type="Node" parent="." index="1"]
 
 script = ExtResource( 1 )
 icon = SubResource( 2 )
 description = "A sword made of a strong metal called iron. It deals moderate damage to monsters."
 price = 1
 damage = 2
+type = "sword"
 
 

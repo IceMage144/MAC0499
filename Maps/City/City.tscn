@@ -20,6 +20,6 @@ destination = ExtResource( 4 )
 
 [node name="Player" parent="Wall" index="1" instance=ExtResource( 5 )]
 
-position = Vector2( 708.405, 283.607 )
+position = Vector2( 670.345, 273.786 )
 
 

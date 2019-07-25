@@ -3,11 +3,10 @@ extends "res://Bases/Map/PopupBase.gd"
 onready var Inventory = $Content/CenterContainer/PanelContainer/HBoxContainer/Inventory
 onready var PlayerInfo = $Content/CenterContainer/PanelContainer/HBoxContainer/PlayerInfo
 onready var ItemInfo = $Content/CenterContainer/PanelContainer/HBoxContainer/ItemInfo
+onready var player = global.find_entity("player")
 
 func _ready():
-#	Get player items
-#	Inventory.display_items(item_list)
-	pass
+	self.update_view()
 
 func _on_nothing_selected():
 	ItemInfo.remove_item()
@@ -25,6 +24,7 @@ func _on_item_activated(item):
 		self._on_item_used(item)
 
 func _on_equip_selected(item):
+	print("Equip selected " + item.name)
 	ItemInfo.display_item(item, ItemInfo.UNEQUIP)
 
 func _on_item_used(item):
@@ -32,15 +32,17 @@ func _on_item_used(item):
 	pass
 
 func _on_item_equiped(item):
-	var old_item = PlayerInfo.equip_item(item)
 	print("Equiped: " + item.name)
-	# Update persisted player bag (change items)
-	# Update Inventory (change items)
+	self.player.equip_item(item)
+	self.update_view()
 
 func _on_item_unequiped(item):
-	if Inventory.is_full():
-		return
-	PlayerInfo.unequip_item(item)
 	print("Unequiped: " + item.name)
-	# Update persisted player bag (add unequiped item)
-	# Update Inventory (add unequiped item)
+	self.player.unequip_item(item)
+	self.update_view()
+
+func update_view():
+	Inventory.display_items(self.player.get_bag())
+	PlayerInfo.display_equips(self.player.get_equips())
+	PlayerInfo.display_money(self.player.get_money())
+	ItemInfo.remove_item()

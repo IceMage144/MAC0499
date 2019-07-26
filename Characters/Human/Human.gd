@@ -10,20 +10,20 @@ func _process(delta):
 	if mov == Action.ATTACK or mov == Action.DEATH:
 		self.velocity = Vector2()
 	else:
-		self.velocity = self.controller.velocity
+		self.velocity = Vector2() if not self.can_act else self.controller.velocity
 		if not self.velocity:
-			self.action = Action.compose(Action.IDLE, self.action)
+			self.set_movement(Action.IDLE, true)
 		else:
 			if self.velocity.x < self.velocity.y:
 				if -self.velocity.x < self.velocity.y:
-					self.action = Action.compose(Action.WALK, Action.DOWN)
+					self.set_action(Action.compose(Action.WALK, Action.DOWN))
 				else:
-					self.action = Action.compose(Action.WALK, Action.LEFT)
+					self.set_action(Action.compose(Action.WALK, Action.LEFT))
 			else:
 				if -self.velocity.x > self.velocity.y:
-					self.action = Action.compose(Action.WALK, Action.UP)
+					self.set_action(Action.compose(Action.WALK, Action.UP))
 				else:
-					self.action = Action.compose(Action.WALK, Action.RIGHT)
+					self.set_action(Action.compose(Action.WALK, Action.RIGHT))
 	
 	var current_anim = self.anim_node.current_animation
 	if not Action.bits_are_equal_string(self.action, current_anim):
@@ -38,7 +38,7 @@ func is_process_action(a):
 func _on_AnimationPlayer_animation_finished(anim_name):
 	var attack = Action.to_string(Action.ATTACK)
 	if anim_name.begins_with(attack):
-		self.set_movement(Action.IDLE)
+		self.set_movement(Action.IDLE, true)
 		self.already_hit = []
 	else:
 		._on_AnimationPlayer_animation_finished(anim_name)

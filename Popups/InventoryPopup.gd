@@ -1,8 +1,9 @@
 extends "res://Bases/Map/PopupBase.gd"
 
-onready var Inventory = $Content/CenterContainer/PanelContainer/HBoxContainer/Inventory
-onready var PlayerInfo = $Content/CenterContainer/PanelContainer/HBoxContainer/PlayerInfo
-onready var ItemInfo = $Content/CenterContainer/PanelContainer/HBoxContainer/ItemInfo
+onready var Inventory = $Content/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer/Inventory
+onready var EquipDisplay = $Content/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer/EquipDisplay
+onready var ItemInfo = $Content/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer/ItemInfo
+onready var MoneyDisplay = $Content/CenterContainer/PanelContainer/VBoxContainer/MoneyDisplay
 onready var player = global.find_entity("player")
 
 func _ready():
@@ -33,16 +34,23 @@ func _on_item_used(item):
 
 func _on_item_equiped(item):
 	print("Equiped: " + item.name)
+	var item_pos = Inventory.ItemList.get_selected_items()[0]
 	self.player.equip_item(item)
-	self.update_view()
+	if item_pos == Inventory.ItemList.get_item_count():
+		item_pos -= 1
+	self.update_view(item_pos)
 
 func _on_item_unequiped(item):
 	print("Unequiped: " + item.name)
 	self.player.unequip_item(item)
 	self.update_view()
 
-func update_view():
-	Inventory.display_items(self.player.get_bag())
-	PlayerInfo.display_equips(self.player.get_equips())
-	PlayerInfo.display_money(self.player.get_money())
+func update_view(focus_index=-1):
+	var bag = self.player.get_bag()
+	Inventory.display_items(bag)
+	EquipDisplay.display_equips(self.player.get_equips())
+	MoneyDisplay.display_money(self.player.get_money())
 	ItemInfo.remove_item()
+	if focus_index >= 0 and focus_index < len(bag):
+		Inventory.ItemList.select(focus_index)
+		self._on_item_selected(bag[focus_index])

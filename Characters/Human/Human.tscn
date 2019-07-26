@@ -309,6 +309,7 @@ controller_type = 1
 texture = ExtResource( 3 )
 vframes = 9
 hframes = 9
+frame = 18
 
 [node name="AnimationPlayer" parent="Sprite" index="0"]
 
@@ -329,5 +330,10 @@ anims/walk_up = SubResource( 13 )
 [node name="CollisionPolygon2D" parent="HitBox" index="0"]
 
 polygon = PoolVector2Array( -12, -29, 12, -29, 12, -5, -12, -5 )
+
+[node name="LifeBar" parent="." index="5"]
+
+margin_top = -60.0
+margin_bottom = -55.0
 
 

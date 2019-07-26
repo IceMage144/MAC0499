@@ -8,12 +8,14 @@ const MAX_ITEMS = 36
 
 var current_item_list = []
 
+onready var ItemList = $MarginContainer/ItemList
+
 func display_items(item_list):
 	assert(len(item_list) <= MAX_ITEMS)
 	self.current_item_list = item_list
-	$MarginContainer/ItemList.clear()
+	self.ItemList.clear()
 	for item in item_list:
-		$MarginContainer/ItemList.add_icon_item(item.icon)
+		self.ItemList.add_icon_item(item.icon)
 
 func is_full():
 	return len(self.current_item_list) >= MAX_ITEMS

@@ -44,4 +44,6 @@ wait_time = 20.0
 one_shot = false
 autostart = true
 
+[connection signal="timeout" from="TimeoutTimer" to="." method="_on_TimeoutTimer_timeout"]
+
 

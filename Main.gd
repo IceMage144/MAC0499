@@ -1,6 +1,7 @@
 extends Node
 
 const PauseMenu = preload("res://Menus/PauseMenu.tscn")
+const InventoryPopup = preload("res://Popups/InventoryPopup.tscn")
 
 enum Scene { MAIN_MENU, ROBOT_ROBOT, PLAYER_ROBOT }
 
@@ -30,6 +31,7 @@ func _ready():
 	if self.character_debug:
 		for timer in get_tree().get_nodes_in_group("debug_timer"):
 			timer.start()
+	self._check_persistence_tags()
 
 func _process(_delta):
 	if Input.is_action_just_pressed("pause"):
@@ -41,9 +43,19 @@ func _process(_delta):
 			pause_menu.debug_mode = self.popup_debug
 	if Input.is_action_just_pressed("rewind"):
 		self.reset_game()
+	if Input.is_action_just_pressed("bag"):
+		if global.has_entity("player"):
+			self.show_popup(InventoryPopup)
 	if Input.is_action_just_pressed("test"):
-		var shop = load("res://Popups/InventoryPopup.tscn")
+		var shop = load("res://Popups/ShopPopup.tscn")
 		self.show_popup(shop, "equip")
+
+func _check_persistence_tags():
+	var tag_memo = {}
+	for node in get_tree().get_nodes_in_group("persistence"):
+		# Assert that no two persistence tags are the same
+		assert(not tag_memo.has(node.tag))
+		tag_memo[node.tag] = true
 
 func reset_game():
 	self.change_map(self.FirstSceneClass)
@@ -65,7 +77,13 @@ func show_popup(popup, params=null):
 	self.add_child(self.current_popup)
 	self.current_popup.init(params)
 	self.current_popup.debug_mode = self.popup_debug
+	if global.has_entity("player"):
+		var player = global.find_entity("player")
+		player.block_action()
 
 func close_popup():
 	self.current_popup.queue_free()
 	self.current_popup = null
+	if global.has_entity("player"):
+		var player = global.find_entity("player")
+		player.unblock_action()

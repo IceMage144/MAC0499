@@ -28,6 +28,7 @@ export(float) var think_time = 0.1
 var velocity = Vector2()
 var action = ActionClass.compose(ActionClass.IDLE, ActionClass.DOWN)
 var life = max_life
+var can_act = true
 var controller
 var controller_name
 
@@ -80,14 +81,14 @@ func get_pretty_name():
 func set_life(new_life):
 	if new_life >= 0:
 		self.life = new_life
-	$Life.text = str(int(self.life))
+	$LifeBar.value = self.life
 
 func set_movement(new_movement, force=false):
-	if self.action != Action.DEATH or force:
+	if (self.action != Action.DEATH and self.can_act) or force:
 		self.action = Action.compose(new_movement, self.action)
 
 func set_action(new_action, force=false):
-	if self.action != Action.DEATH or force:
+	if (self.action != Action.DEATH and self.can_act) or force:
 		self.action = new_action
 
 func take_damage(damage):
@@ -100,6 +101,12 @@ func is_process_action(a):
 
 func die():
 	self.emit_signal("character_death")
+
+func block_action():
+	self.can_act = false
+
+func unblock_action():
+	self.can_act = true
 
 func before_reset(timeout):
 	self.controller.before_reset(timeout)

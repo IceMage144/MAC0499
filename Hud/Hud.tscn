@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Hud/QuickUseBar.tscn" type="PackedScene" id=1]
+
+[node name="Hud" type="CanvasLayer" index="0" groups=[
+"hud",
+]]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="QuickUseBar" parent="." index="0" instance=ExtResource( 1 )]
+
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -92.0
+margin_top = -46.0
+margin_right = 92.0
+margin_bottom = 0.0
+
+

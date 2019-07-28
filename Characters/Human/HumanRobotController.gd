@@ -1,4 +1,4 @@
-extends "res://Bases/Controller/BaseRobotController.gd"
+extends "res://Characters/BaseRobotController.gd"
 
 const ATTACK_RANGE = 35
 

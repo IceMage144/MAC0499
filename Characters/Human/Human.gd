@@ -1,4 +1,4 @@
-extends "res://Bases/Character/CharacterBase.gd"
+extends "res://Characters/CharacterBase.gd"
 
 var already_hit = []
 

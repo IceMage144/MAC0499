@@ -1,12 +1,12 @@
 extends Node
 
-const PauseMenu = preload("res://Menus/PauseMenu.tscn")
-const InventoryPopup = preload("res://Popups/InventoryPopup.tscn")
+const PauseMenu = preload("res://UI/Menus/PauseMenu.tscn")
+const InventoryPopup = preload("res://UI/Popups/InventoryPopup.tscn")
 
 enum Scene { MAIN_MENU, ROBOT_ROBOT, PLAYER_ROBOT }
 
 const scene_path = {
-	Scene.MAIN_MENU: "res://Menus/MainMenu.tscn",
+	Scene.MAIN_MENU: "res://UI/Menus/MainMenu.tscn",
 	Scene.ROBOT_ROBOT: "res://Maps/Tests/RobotRobotArena.tscn",
 	Scene.PLAYER_ROBOT: "res://Maps/Tests/PlayerRobotArena.tscn"
 }
@@ -47,7 +47,7 @@ func _process(_delta):
 		if global.has_entity("player"):
 			self.show_popup(InventoryPopup)
 	if Input.is_action_just_pressed("test"):
-		var shop = load("res://Popups/ShopPopup.tscn")
+		var shop = load("res://UI/Popups/ShopPopup.tscn")
 		self.show_popup(shop, "equip")
 
 func _check_persistence_tags():

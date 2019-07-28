@@ -1,4 +1,8 @@
-extends "res://Bases/Map/MapBase.gd"
+extends Node2D
+
+const Hud = preload("res://UI/HUD/Hud.tscn")
+
+var debug_mode = false
 
 func _ready():
 	if global.has_entity("camera"):
@@ -7,3 +11,8 @@ func _ready():
 		camera.limit_top = $CameraLimits/TopLeftCorner.position.y
 		camera.limit_right = $CameraLimits/BottomRightCorner.position.x
 		camera.limit_bottom = $CameraLimits/BottomRightCorner.position.y
+	if global.has_entity("player"):
+		self.add_child_below_node($Wall, Hud.instance())
+
+func init(params):
+	pass

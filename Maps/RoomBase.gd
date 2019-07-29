@@ -12,7 +12,7 @@ func _ready():
 		camera.limit_right = $CameraLimits/BottomRightCorner.position.x
 		camera.limit_bottom = $CameraLimits/BottomRightCorner.position.y
 	if global.has_entity("player"):
-		self.add_child_below_node($Wall, Hud.instance())
+		self.add_child_below_node($Ceil, Hud.instance())
 
 func init(params):
 	pass

@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tiles.png-966c8ece025205d20160f5115f9ecf8a.stex"
+path="res://.import/building.png-c4b0df50fe4ceb259256e82e0f76fe4a.stex"
 
 [deps]
 
-source_file="res://assets/images/tiles/tiles.png"
-dest_files=[ "res://.import/tiles.png-966c8ece025205d20160f5115f9ecf8a.stex" ]
+source_file="res://assets/images/tiles/building.png"
+dest_files=[ "res://.import/building.png-c4b0df50fe4ceb259256e82e0f76fe4a.stex" ]
 
 [params]
 
@@ -25,5 +25,5 @@ process/premult_alpha=false
 process/HDR_as_SRGB=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

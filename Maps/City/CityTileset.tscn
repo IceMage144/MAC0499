@@ -1,7 +1,10 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/images/tiles/grass-terrain.png" type="Texture" id=1]
-
+[ext_resource path="res://assets/images/tiles/tree.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/tiles/building.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/tiles/door.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/tiles/decoration.png" type="Texture" id=5]
 
 [node name="Node2D" type="Node"]
 
@@ -9,15 +12,126 @@
 
 texture = ExtResource( 1 )
 centered = false
+region_enabled = true
+region_rect = Rect2( 192, 0, 96, 224 )
+_sections_unfolded = [ "Region" ]
 
 [node name="River" type="Sprite" parent="." index="1"]
 
 texture = ExtResource( 1 )
 centered = false
+region_enabled = true
+region_rect = Rect2( 96, 0, 96, 224 )
 
 [node name="Dirt" type="Sprite" parent="." index="2"]
 
 texture = ExtResource( 1 )
 centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 96, 224 )
+
+[node name="Tree" type="Sprite" parent="." index="3"]
+
+editor/display_folded = true
+texture = ExtResource( 2 )
+offset = Vector2( -32, -112 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Tree" index="0"]
+
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Tree/StaticBody2D" index="0"]
+
+build_mode = 0
+polygon = PoolVector2Array( -64, -80, -64, -48, 0, -48, 0, -80 )
+
+[node name="Wall" type="Sprite" parent="." index="4"]
+
+texture = ExtResource( 3 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 96, 96 )
+
+[node name="Ceil" type="Sprite" parent="." index="5"]
+
+texture = ExtResource( 3 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 160, 0, 128, 128 )
+
+[node name="ShadowWall" type="Sprite" parent="." index="6"]
+
+texture = ExtResource( 3 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 160, 96 )
+
+[node name="Door" type="Sprite" parent="." index="7"]
+
+visible = false
+texture = ExtResource( 4 )
+centered = false
+offset = Vector2( 0, -53 )
+
+[node name="WindowSmall" type="Sprite" parent="." index="8"]
+
+visible = false
+texture = ExtResource( 5 )
+centered = false
+offset = Vector2( 0, -53 )
+region_enabled = true
+region_rect = Rect2( 32, 0, 31, 64 )
+
+[node name="WindowPlant" type="Sprite" parent="." index="9"]
+
+visible = false
+texture = ExtResource( 5 )
+centered = false
+offset = Vector2( 3, -53 )
+region_enabled = true
+region_rect = Rect2( 98, 0, 27, 64 )
+_sections_unfolded = [ "Offset" ]
+
+[node name="WindowDoubleBorder" type="Sprite" parent="." index="10"]
+
+visible = false
+texture = ExtResource( 5 )
+centered = false
+offset = Vector2( -1, -53 )
+region_enabled = true
+region_rect = Rect2( 63, 0, 35, 64 )
+
+[node name="WindowDouble" type="Sprite" parent="." index="11"]
+
+visible = false
+texture = ExtResource( 5 )
+centered = false
+offset = Vector2( -2, -53 )
+region_enabled = true
+region_rect = Rect2( 126, 0, 36, 64 )
+
+[node name="WindowBig" type="Sprite" parent="." index="12"]
+
+visible = false
+texture = ExtResource( 5 )
+centered = false
+offset = Vector2( 2, -53 )
+region_enabled = true
+region_rect = Rect2( 162, 0, 28, 64 )
+
+[node name="Chimney" type="Sprite" parent="." index="13"]
+
+texture = ExtResource( 5 )
+centered = false
+offset = Vector2( 0, -36 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 32, 64 )
+_sections_unfolded = [ "Offset" ]
 
 

@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Interactives/Teleport/Teleport.gd" type="Script" id=1]
-[ext_resource path="res://assets/images/arrow.png" type="Texture" id=2]
-
+[ext_resource path="res://Interactives/InteractiveBase.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Interactives/Teleport/Teleport.gd" type="Script" id=2]
+[ext_resource path="res://assets/images/arrow.png" type="Texture" id=3]
 
 [sub_resource type="Animation" id=1]
 
@@ -11,7 +11,7 @@ length = 0.8
 loop = true
 step = 0.1
 tracks/0/type = "value"
-tracks/0/path = NodePath(":offset")
+tracks/0/path = NodePath(".:offset")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -28,17 +28,18 @@ tracks/0/keys = {
 custom_solver_bias = 0.0
 extents = Vector2( 20, 30 )
 
-[node name="Teleport" type="Node2D"]
+[node name="Teleport" index="0" instance=ExtResource( 1 )]
 
-script = ExtResource( 1 )
+script = ExtResource( 2 )
+type = 1
 direction = null
 destination = null
+player_position = null
 
-[node name="Sprite" type="Sprite" parent="." index="0"]
+[node name="Sprite" parent="." index="0"]
 
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 offset = Vector2( -2, 0 )
-_sections_unfolded = [ "Offset" ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite" index="0"]
 
@@ -50,20 +51,8 @@ playback_speed = 1.0
 anims/idle = SubResource( 1 )
 blend_times = [  ]
 
-[node name="Area2D" type="Area2D" parent="." index="1"]
-
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+[node name="CollisionShape2D" parent="." index="1"]
 
 shape = SubResource( 2 )
-
-[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 
 

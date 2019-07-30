@@ -1,22 +1,25 @@
-extends "res://Bases/ModelBase.gd"
+extends "res://Persistence/ModelBase.gd"
 
-enum Field { MONEY, BAG, QUICK, SWORD }
+const MONEY = "money"
+const BAG = "bag"
+const QUICK = "quick"
+const SWORD = "sword"
 
 const tag = "player"
 const model = {
-	Field.MONEY: {
+	MONEY: {
 		"type": TYPE_INT,
 		"default": 0
 	},
-	Field.BAG: {
+	BAG: {
+		"type": TYPE_ARRAY,
+		"default": ["Iron Sword"]
+	},
+	QUICK: {
 		"type": TYPE_ARRAY,
 		"default": []
 	},
-	Field.QUICK: {
-		"type": TYPE_ARRAY,
-		"default": []
-	},
-	Field.SWORD: {
+	SWORD: {
 		"type": TYPE_STRING,
 		"default": ""
 	}

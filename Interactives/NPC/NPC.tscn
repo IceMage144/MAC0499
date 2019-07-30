@@ -1,0 +1,59 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Interactives/InteractiveBase.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Interactives/NPC/NPC.gd" type="Script" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 40.0
+
+[node name="NPC" instance=ExtResource( 1 )]
+
+script = ExtResource( 2 )
+type = 0
+character = null
+shop_type = 0
+item_group = "item"
+
+[node name="Shadow" type="Polygon2D" parent="." index="0"]
+
+polygon = PoolVector2Array( -8, -5, -4, -6, 4, -6, 8, -5, 10, -4, 12, -2, 13, 0, 12, 2, 10, 4, 8, 5, 4, 6, -4, 6, -8, 5, -10, 4, -12, 2, -13, 0, -12, -2, -10, -4 )
+uv = PoolVector2Array(  )
+color = Color( 0, 0, 0, 0.3 )
+vertex_colors = PoolColorArray(  )
+offset = Vector2( 0, 0 )
+antialiased = false
+texture = null
+texture_offset = Vector2( 0, 0 )
+texture_scale = Vector2( 1, 1 )
+texture_rotation_degrees = 0.0
+invert_enable = false
+invert_border = 100.0
+
+[node name="Sprite" parent="." index="1"]
+
+position = Vector2( 0, -22 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape2D" parent="." index="2"]
+
+scale = Vector2( 1, 0.5 )
+shape = SubResource( 1 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." index="3"]
+
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D" index="0"]
+
+build_mode = 0
+polygon = PoolVector2Array( 13, 0, 12, -2, 10, -4, 8, -5, 4, -6, -4, -6, -8, -5, -10, -4, -12, -2, -13, 0, -12, 2, -10, 4, -8, 5, -4, 6, 4, 6, 8, 5, 10, 4, 12, 2 )
+
+

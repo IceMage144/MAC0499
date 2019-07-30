@@ -4,7 +4,6 @@
 [ext_resource path="res://Characters/Human/Human.gd" type="Script" id=2]
 [ext_resource path="res://assets/images/LPCCharacters/female_gold_armor.png" type="Texture" id=3]
 
-
 [sub_resource type="Animation" id=1]
 
 resource_name = "attack_down"

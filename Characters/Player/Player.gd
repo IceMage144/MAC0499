@@ -3,7 +3,7 @@ extends "res://Characters/Human/Human.gd"
 const SELL_MULTIPLIER = 0.7
 const BAG_SIZE = 36
 const QUICK_SIZE = 4
-const EQUIP_SLOTS = [ "sword" ]
+const EQUIP_SLOTS = ["sword"]
 
 var bag = []
 var equipments = {}

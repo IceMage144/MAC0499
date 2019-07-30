@@ -4,8 +4,8 @@
 
 [node name="AdventureRoomBase" instance=ExtResource( 1 )]
 
-[node name="ResourceSpawners" type="Node" parent="." index="2"]
+[node name="ResourceSpawners" type="Node" parent="." index="5"]
 
-[node name="MonsterSpawners" type="Node" parent="." index="3"]
+[node name="MonsterSpawners" type="Node" parent="." index="6"]
 
 

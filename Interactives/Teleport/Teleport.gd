@@ -1,9 +1,10 @@
-extends Node2D
+extends "res://Interactives/InteractiveBase.gd"
 
 enum Direction { RIGHT, UP, LEFT, DOWN }
 
 export(int, "Right", "Up", "Left", "Down") var direction = Direction.RIGHT
 export(PackedScene) var destination
+export(String) var player_position
 
 func _ready():
 	match self.direction:
@@ -16,7 +17,6 @@ func _ready():
 			self.rotation = PI / 2
 			$Sprite.flip_v = true
 
-func _on_Area2D_body_entered(body):
-	if body.is_in_group("player"):
-		var main = global.find_entity("main")
-		main.change_map(self.destination)
+func interact(body):
+	var main = global.find_entity("main")
+	main.change_map(self.destination, {"player_pos": self.player_position})

@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Maps/RoomBase.gd" type="Script" id=1]
 
-[node name="RoomBase" type="Node2D" index="0" groups=[
+[node name="RoomBase" type="Node2D" groups=[
 "room",
 ]]
 
@@ -82,5 +82,7 @@ tile_data = PoolIntArray(  )
 
 position = Vector2( 1024, 600 )
 _sections_unfolded = [ "Transform" ]
+
+[node name="PlayerSpawners" type="Node" parent="." index="4"]
 
 

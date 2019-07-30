@@ -3,11 +3,7 @@
 [ext_resource path="res://UI/Menus/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://UI/Elements/BigBorderlessButton.tscn" type="PackedScene" id=2]
 
-
-
-
-
-[node name="MainMenu" type="Control" index="0"]
+[node name="MainMenu" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -22,6 +18,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
+LoadGamePath = NodePath("MarginContainer/VBoxContainer/LoadGame")
 
 [node name="MarginContainer" type="MarginContainer" parent="." index="0"]
 
@@ -49,7 +46,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.0
 margin_right = 200.0
-margin_bottom = 228.0
+margin_bottom = 188.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -62,28 +59,31 @@ _sections_unfolded = [ "custom_constants" ]
 
 [node name="NewGame" parent="MarginContainer/VBoxContainer" index="0" instance=ExtResource( 2 )]
 
+margin_bottom = 32.0
 text = "New Game"
 
 [node name="LoadGame" parent="MarginContainer/VBoxContainer" index="1" instance=ExtResource( 2 )]
 
-margin_top = 62.0
-margin_bottom = 104.0
+margin_top = 52.0
+margin_bottom = 84.0
 disabled = true
 text = "Load Game"
 
 [node name="Credits" parent="MarginContainer/VBoxContainer" index="2" instance=ExtResource( 2 )]
 
-margin_top = 124.0
-margin_bottom = 166.0
+margin_top = 104.0
+margin_bottom = 136.0
 text = "Credits"
 
 [node name="Quit" parent="MarginContainer/VBoxContainer" index="3" instance=ExtResource( 2 )]
 
-margin_top = 186.0
-margin_bottom = 228.0
+margin_top = 156.0
+margin_bottom = 188.0
 text = "Quit"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/NewGame" to="." method="_on_NewGame_pressed"]
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/LoadGame" to="." method="_on_LoadGame_pressed"]
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Credits" to="." method="_on_Credits_pressed"]
 

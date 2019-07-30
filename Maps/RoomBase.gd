@@ -15,4 +15,11 @@ func _ready():
 		self.add_child_below_node($Ceil, Hud.instance())
 
 func init(params):
-	pass
+	if global.has_entity("player"):
+		var player = global.find_entity("player")
+		if $PlayerSpawners.has_node(params.player_pos):
+			var node = $PlayerSpawners.get_node(params.player_pos)
+			player.position = node.position
+		else:
+			# Player spawn position does not exists
+			assert(false)

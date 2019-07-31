@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/female_gold_armor.png-41821c118e0c45220d8393982416f721.stex"
+path="res://.import/NPCs.png-96887af0aa9002ee1b63b4c8806c858b.stex"
 
 [deps]
 
-source_file="res://assets/images/LPCCharacters/female_gold_armor.png"
-dest_files=[ "res://.import/female_gold_armor.png-41821c118e0c45220d8393982416f721.stex" ]
+source_file="res://assets/images/characters/NPCs.png"
+dest_files=[ "res://.import/NPCs.png-96887af0aa9002ee1b63b4c8806c858b.stex" ]
 
 [params]
 
@@ -25,5 +25,5 @@ process/premult_alpha=false
 process/HDR_as_SRGB=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

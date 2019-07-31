@@ -1,18 +1,18 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Interactives/InteractiveBase.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Interactives/NPC/NPC.gd" type="Script" id=2]
+[ext_resource path="res://assets/images/characters/NPCs.png" type="Texture" id=3]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id=2]
 
 custom_solver_bias = 0.0
-radius = 40.0
+radius = 60.0
 
 [node name="NPC" instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )
-type = 0
-character = null
+character_name = 0
 shop_type = 0
 item_group = "item"
 
@@ -33,13 +33,15 @@ invert_border = 100.0
 
 [node name="Sprite" parent="." index="1"]
 
-position = Vector2( 0, -22 )
-_sections_unfolded = [ "Transform" ]
+position = Vector2( 0, -28 )
+texture = ExtResource( 3 )
+vframes = 4
+hframes = 4
 
 [node name="CollisionShape2D" parent="." index="2"]
 
 scale = Vector2( 1, 0.5 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." index="3"]
 

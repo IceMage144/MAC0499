@@ -12,4 +12,5 @@ func _ready():
 	QuickUseBar.connect("triggered_slot", Player, "use_item")
 
 func _on_BagButton_pressed():
-	self.show_popup(InventoryPopup)
+	var main = global.find_entity("main")
+	main.show_popup(InventoryPopup)

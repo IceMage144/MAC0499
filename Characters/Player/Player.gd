@@ -1,6 +1,5 @@
 extends "res://Characters/Human/Human.gd"
 
-const SELL_MULTIPLIER = 0.7
 const BAG_SIZE = 36
 const QUICK_SIZE = 4
 const EQUIP_SLOTS = ["sword"]
@@ -110,14 +109,22 @@ func buy_item(item):
 	return true
 
 func sell_item(item):
-	$Model.set_data($Model.MONEY, self.get_money() + ceil(SELL_MULTIPLIER * item.price))
+	$Model.set_data($Model.MONEY, self.get_money() + item.sell_price)
 	self.bag.erase(item)
-
 	self._save_bag()
 	print("Sold: " + item.name)
 
 func use_item(item):
-	print("Used: " + item.name)
 	self.bag.erase(item)
 	self.add_life(item.life_heal)
 	self._save_bag()
+	print("Used: " + item.name)
+
+func collect_item(item):
+	if self.bag_is_full():
+		print("Cannot collect item, bag is full")
+		return false
+	self.bag.append(item)
+	self._save_bag()
+	print("Collected: " + item.name)
+	return true

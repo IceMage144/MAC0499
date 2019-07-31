@@ -11,24 +11,36 @@ enum DisplayMode { NONE, BUY, SELL, USE, EQUIP, UNEQUIP }
 const MODE_TO_STR = ["", "Buy", "Sell", "Use", "Equip", "Unequip"]
 const MODE_TO_PAST = ["", "bought", "sold", "used", "equiped", "unequiped"]
 
+export(NodePath) var NamePath
+export(NodePath) var IconPath
+export(NodePath) var DescriptionPath
+export(NodePath) var ActionButtonPath
+export(NodePath) var PricePath
+
 var current_display_mode = DisplayMode.NONE
 var current_item = null
 
+onready var Name = get_node(NamePath)
+onready var Icon = get_node(IconPath)
+onready var Description = get_node(DescriptionPath)
+onready var ActionButton = get_node(ActionButtonPath)
+onready var Price = get_node(PricePath)
+
 func display_item(item, display_mode=DisplayMode.NONE):
 	$MarginContainer.visible = true
-	$MarginContainer/VBoxContainer/Name.text = item.name
-	$MarginContainer/VBoxContainer/Icon.texture = item.icon
-	$MarginContainer/VBoxContainer/Description.text = item.description
-	$MarginContainer/VBoxContainer/ActionButton.visible = (display_mode != DisplayMode.NONE)
-	$MarginContainer/VBoxContainer/ActionButton.text = MODE_TO_STR[display_mode]
+	Name.text = item.name
+	Icon.texture = item.icon
+	Description.text = item.description
+	ActionButton.visible = (display_mode != DisplayMode.NONE)
+	ActionButton.text = MODE_TO_STR[display_mode]
 	if display_mode == DisplayMode.BUY:
-		$MarginContainer/VBoxContainer/Price/PriceLabel.text = str(item.price)
-		$MarginContainer/VBoxContainer/Price.visible = true
+		Price.get_node("PriceLabel").text = str(item.price)
+		Price.visible = true
 	elif display_mode == DisplayMode.SELL:
-		$MarginContainer/VBoxContainer/Price/PriceLabel.text = str(item.price)
-		$MarginContainer/VBoxContainer/Price.visible = true
+		Price.get_node("PriceLabel").text = str(item.sell_price)
+		Price.visible = true
 	else:
-		$MarginContainer/VBoxContainer/Price.visible = false
+		Price.visible = false
 	self.current_display_mode = display_mode
 	self.current_item = item
 

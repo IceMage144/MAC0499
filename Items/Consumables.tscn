@@ -3,7 +3,6 @@
 [ext_resource path="res://Items/ConsumableData.gd" type="Script" id=1]
 [ext_resource path="res://assets/images/items/item-sheet.png" type="Texture" id=2]
 
-
 [sub_resource type="AtlasTexture" id=1]
 
 flags = 0
@@ -28,9 +27,11 @@ region = Rect2( 64, 0, 32, 32 )
 margin = Rect2( 0, 0, 0, 0 )
 filter_clip = false
 
-[node name="Consumables" type="Node"]
+[node name="Consumables" type="Node" index="0"]
 
-[node name="Small Potion" type="Node" parent="." index="0"]
+[node name="Small Potion" type="Node" parent="." index="0" groups=[
+"potion",
+]]
 
 script = ExtResource( 1 )
 icon = SubResource( 1 )
@@ -38,7 +39,9 @@ description = "A small-sized potion that heals a bit your wounds."
 price = 1
 life_heal = 1
 
-[node name="Medium Potion" type="Node" parent="." index="1"]
+[node name="Medium Potion" type="Node" parent="." index="1" groups=[
+"potion",
+]]
 
 script = ExtResource( 1 )
 icon = SubResource( 2 )
@@ -46,7 +49,9 @@ description = "A medium-sized potion that heals some of your wounds."
 price = 1
 life_heal = 2
 
-[node name="Large potion" type="Node" parent="." index="2"]
+[node name="Large potion" type="Node" parent="." index="2" groups=[
+"potion",
+]]
 
 script = ExtResource( 1 )
 icon = SubResource( 3 )

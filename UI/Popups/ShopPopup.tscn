@@ -7,8 +7,6 @@
 [ext_resource path="res://UI/Popups/Addons/ItemListDisplay.tscn" type="PackedScene" id=5]
 [ext_resource path="res://UI/Popups/Addons/ItemInfo.tscn" type="PackedScene" id=6]
 
-
-
 [sub_resource type="StyleBoxTexture" id=1]
 
 content_margin_left = -1.0
@@ -93,8 +91,8 @@ _sections_unfolded = [ "custom_constants" ]
 
 [node name="MoneyDisplay" parent="Content/CenterContainer/PanelContainer/VBoxContainer" index="0" instance=ExtResource( 4 )]
 
-margin_left = 218.0
-margin_right = 270.0
+margin_left = 215.0
+margin_right = 272.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 _sections_unfolded = [ "Size Flags", "custom_constants" ]
@@ -125,12 +123,14 @@ margin_bottom = 296.0
 margin_left = 300.0
 margin_right = 488.0
 
-[connection signal="item_activated" from="Content/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer/Shelves" to="." method="_on_item_bought"]
+[connection signal="item_activated" from="Content/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer/Shelves" to="." method="_on_item_activated"]
 
 [connection signal="item_selected" from="Content/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer/Shelves" to="." method="_on_item_selected"]
 
 [connection signal="nothing_selected" from="Content/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer/Shelves" to="." method="_on_nothing_selected"]
 
 [connection signal="item_bought" from="Content/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer/ItemInfo" to="." method="_on_item_bought"]
+
+[connection signal="item_sold" from="Content/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer/ItemInfo" to="." method="_on_item_sold"]
 
 

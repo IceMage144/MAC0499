@@ -13,7 +13,7 @@ const model = {
 	},
 	BAG: {
 		"type": TYPE_ARRAY,
-		"default": ["Iron Sword"]
+		"default": ["Iron Sword", "Iron Sword"]
 	},
 	QUICK: {
 		"type": TYPE_ARRAY,

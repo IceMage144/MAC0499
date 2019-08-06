@@ -29,6 +29,9 @@ collision_mask = 1
 occluder_light_mask = 1
 format = 1
 tile_data = PoolIntArray(  )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Wall" type="TileMap" parent="." index="1" groups=[
 "wall",
@@ -51,6 +54,9 @@ collision_mask = 1
 occluder_light_mask = 1
 format = 1
 tile_data = PoolIntArray(  )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Ceil" type="TileMap" parent="." index="2" groups=[
 "ceil",
@@ -73,6 +79,9 @@ collision_mask = 1
 occluder_light_mask = 1
 format = 1
 tile_data = PoolIntArray(  )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CameraLimits" type="Node" parent="." index="3"]
 

@@ -128,3 +128,8 @@ func collect_item(item):
 	self._save_bag()
 	print("Collected: " + item.name)
 	return true
+
+func collect_money(ammount):
+	var current_money = self.get_money()
+	$Model.set_data($Model.MONEY, int(current_money + ammount))
+	print("Collected: ", ammount, " gold")

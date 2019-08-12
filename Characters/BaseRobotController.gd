@@ -62,6 +62,7 @@ func init(params):
 		"momentum": params["momentum"],
 		"reuse_last_action_chance": params["reuse_last_action_chance"],
 		"experience_replay": params["experience_replay"],
+		"experience_pool_size": params["experience_pool_size"],
 		"think_time": params["think_time"],
 		"features_size": FEATURES_SIZE,
 		"initial_state": self.get_state(),

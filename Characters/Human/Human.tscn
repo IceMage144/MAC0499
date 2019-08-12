@@ -299,6 +299,7 @@ tracks/0/keys = {
 
 script = ExtResource( 2 )
 controller_type = 1
+experience_pool_size = 40
 
 [node name="Sprite" parent="." index="1"]
 

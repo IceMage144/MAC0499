@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Characters/CharacterBase.tscn" type="PackedScene" id=1]
-[ext_resource path="res://assets/images/goblin/goblin.png" type="Texture" id=2]
+[ext_resource path="res://Characters/Goblin/Goblin.gd" type="Script" id=2]
+[ext_resource path="res://assets/images/goblin/goblin.png" type="Texture" id=3]
 
 [sub_resource type="Animation" id=1]
 
@@ -226,7 +227,7 @@ tracks/0/keys = {
 
 resource_name = "walk_down"
 length = 0.7
-loop = false
+loop = true
 step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -245,7 +246,7 @@ tracks/0/keys = {
 
 resource_name = "walk_left"
 length = 0.7
-loop = false
+loop = true
 step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -264,7 +265,7 @@ tracks/0/keys = {
 
 resource_name = "walk_right"
 length = 0.7
-loop = false
+loop = true
 step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -283,7 +284,7 @@ tracks/0/keys = {
 
 resource_name = "walk_up"
 length = 0.7
-loop = false
+loop = true
 step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -300,10 +301,20 @@ tracks/0/keys = {
 
 [node name="Goblin" index="0" instance=ExtResource( 1 )]
 
+script = ExtResource( 2 )
+controller_type = 1
+ai_type = 1
+learning_rate = 0.0005
+discount = 0.999
+min_exploration_rate = 0.1
+exploration_rate_decay_time = 40.0
+experience_replay = true
+experience_pool_size = 40
+
 [node name="Sprite" parent="." index="1"]
 
 position = Vector2( 0, -20 )
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 vframes = 9
 hframes = 7
 

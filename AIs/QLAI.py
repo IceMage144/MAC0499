@@ -20,7 +20,6 @@ class QLAI(Node):
 		self.parent = self.get_parent()
 
 		self.logger = util.Logger()
-		self.ep = structs.ExperiencePool(40)
 		self.time = 0.0
 
 	def init(self, params):
@@ -32,6 +31,7 @@ class QLAI(Node):
 		self.alpha = params["learning_rate"]
 		self.momentum = params["momentum"]
 		self.use_experience_replay = params["experience_replay"]
+		self.ep = structs.ExperiencePool(params["experience_pool_size"])
 		self.reuse_last_action_chance = params["reuse_last_action_chance"]		
 		self.think_time = params["think_time"]
 		self.features_size = params["features_size"]

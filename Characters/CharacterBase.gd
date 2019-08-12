@@ -23,6 +23,7 @@ export(float) var exploration_rate_decay_time = 0.0
 export(float, 0.0, 1.0, 0.001) var momentum = 0.0
 export(float, 0.0, 1.0, 0.01) var reuse_last_action_chance = 0.0
 export(bool) var experience_replay = false
+export(int) var experience_pool_size = 40
 export(float) var think_time = 0.1
 
 var velocity = Vector2()
@@ -49,6 +50,7 @@ func _init_ai_controller():
 		"momentum": self.momentum,
 		"reuse_last_action_chance": self.reuse_last_action_chance,
 		"experience_replay": self.experience_replay,
+		"experience_pool_size": self.experience_pool_size,
 		"think_time": self.think_time
 	})
 	$Sprite.modulate = self.controller.color
@@ -87,12 +89,14 @@ func add_life(ammount):
 	self.set_life(self.life + ammount)
 
 func set_movement(new_movement, force=false):
-	if (self.action != Action.DEATH and self.can_act) or force:
+	if (self.action != Action.DEATH and self.can_act or force) and new_movement != Action.get_movement(self.action):
 		self.action = Action.compose(new_movement, self.action)
+		self.anim_node.play(Action.to_string(self.action))
 
 func set_action(new_action, force=false):
-	if (self.action != Action.DEATH and self.can_act) or force:
+	if (self.action != Action.DEATH and self.can_act or force) and new_action != self.action:
 		self.action = new_action
+		self.anim_node.play(Action.to_string(self.action))
 
 func take_damage(damage):
 	self.set_life(self.life - damage)

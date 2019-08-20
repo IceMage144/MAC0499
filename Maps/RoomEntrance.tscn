@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Maps/RoomEntrance.gd" type="Script" id=1]
+
+[node name="RoomEntrance" type="Position2D" index="0"]
+
+script = ExtResource( 1 )
+fill_tile_id = 0
+
+

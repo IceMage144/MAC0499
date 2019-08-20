@@ -15,6 +15,10 @@ func _ready():
 		self.add_child_below_node($Ceil, Hud.instance())
 
 func init(params):
+	# Room has player and does not received player starting position
+	assert(not global.has_entity("player") or params.has("player_pos"))
+	if not params.has("available_entrances"):
+		params["available_entrances"] = []
 	if global.has_entity("player"):
 		var player = global.find_entity("player")
 		if $PlayerSpawners.has_node(params.player_pos):
@@ -23,3 +27,7 @@ func init(params):
 		else:
 			# Player spawn position does not exists
 			assert(false)
+	for spawner in $PlayerSpawners.get_children():
+		if not (spawner.name in params.available_entrances):
+			if spawner.has_method("remove"):
+				spawner.remove(spawner.position)

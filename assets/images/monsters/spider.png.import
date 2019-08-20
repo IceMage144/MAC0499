@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/goblin.png-e13ff51cf2ffc51d0550e47dc1cb9e55.stex"
+path="res://.import/spider.png-d43981d21416afee9939a558906ec906.stex"
 
 [deps]
 
-source_file="res://assets/images/goblin/goblin.png"
-dest_files=[ "res://.import/goblin.png-e13ff51cf2ffc51d0550e47dc1cb9e55.stex" ]
+source_file="res://assets/images/monsters/spider.png"
+dest_files=[ "res://.import/spider.png-d43981d21416afee9939a558906ec906.stex" ]
 
 [params]
 

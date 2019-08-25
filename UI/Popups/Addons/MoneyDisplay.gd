@@ -1,4 +1,4 @@
 extends HBoxContainer
 
-func display_money(ammount):
-	$Money.text = str(ammount)
+func display_money(amount):
+	$Money.text = str(amount)

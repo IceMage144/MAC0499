@@ -21,6 +21,7 @@ var current_scene = null
 var current_popup = null
 
 func _ready():
+	randomize()
 	self.FirstSceneClass = load(scene_path[first_scene])
 	self.reset_game()
 	if first_scene != Scene.MAIN_MENU:

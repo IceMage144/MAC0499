@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 const PlayerController = preload("res://Characters/Player/PlayerController.gd")
 const ControllerNode = preload("res://Characters/Controller.tscn")
-const ActionClass = preload("res://Bases/ActionBase.gd")
+const ActionClass = preload("res://Characters/ActionBase.gd")
 
 signal character_death
 
@@ -85,8 +85,8 @@ func set_life(new_life):
 		self.life = new_life
 	$LifeBar.value = self.life
 
-func add_life(ammount):
-	self.set_life(self.life + ammount)
+func add_life(amount):
+	self.set_life(self.life + amount)
 
 func set_movement(new_movement, force=false):
 	if (self.action != Action.DEATH and self.can_act or force) and new_movement != Action.get_movement(self.action):

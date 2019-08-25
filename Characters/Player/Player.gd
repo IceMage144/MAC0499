@@ -129,7 +129,7 @@ func collect_item(item):
 	print("Collected: " + item.name)
 	return true
 
-func collect_money(ammount):
+func collect_money(amount):
 	var current_money = self.get_money()
-	$Model.set_data($Model.MONEY, int(current_money + ammount))
-	print("Collected: ", ammount, " gold")
+	$Model.set_data($Model.MONEY, int(current_money + amount))
+	print("Collected: ", amount, " gold")

@@ -12,11 +12,12 @@ onready var LoadGame = self.get_node(LoadGamePath)
 onready var buttons = $MarginContainer/VBoxContainer.get_children()
 
 func _ready():
-	if SaveManager.has_save():
-		LoadGame.disabled = false
 	for i in range(len(self.buttons)):
 		self.buttons[i].connect("mouse_entered", self, "_on_button_mouse_entered", [i])
 		self.name_to_id[self.buttons[i].name] = i
+	if SaveManager.has_save():
+		LoadGame.disabled = false
+		self.focused_button_id = name_to_id[LoadGame.name]
 
 func init(params):
 	if params != null:

@@ -26,6 +26,9 @@ func get_enemy(entity):
 		return self.find_entity("team1")
 	return null
 
+func randi_range(start, end):
+	return int(start + floor(randf() * (end - start + 1)))
+
 func save_info(nodes):
 	var saveFile = File.new()
 	var saveInfo = []

@@ -67,8 +67,8 @@ func change_map(scene, params=null):
 		yield(self.current_scene, "tree_exited")
 	self.current_scene = scene.instance()
 	self.add_child(self.current_scene)
-	self.current_scene.init(params)
 	self.current_scene.debug_mode = self.environment_debug
+	self.current_scene.init(params)
 
 func show_popup(popup, params=null):
 	if self.current_popup:
@@ -76,8 +76,8 @@ func show_popup(popup, params=null):
 		yield(self.current_popup, "tree_exited")
 	self.current_popup = popup.instance()
 	self.add_child(self.current_popup)
-	self.current_popup.init(params)
 	self.current_popup.debug_mode = self.popup_debug
+	self.current_popup.init(params)
 	if global.has_entity("player"):
 		var player = global.find_entity("player")
 		player.block_action()

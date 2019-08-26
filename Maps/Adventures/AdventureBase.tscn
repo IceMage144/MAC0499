@@ -5,6 +5,7 @@
 [node name="AdventureBase" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
-algorithm = null
+generator_class = 0
+max_rooms = 1
 
 

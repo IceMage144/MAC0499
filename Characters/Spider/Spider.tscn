@@ -302,6 +302,13 @@ tracks/0/keys = {
 [node name="Spider" index="0" instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )
+controller_type = 1
+ai_type = 1
+learning_rate = 0.0005
+discount = 0.999
+min_exploration_rate = 0.1
+exploration_rate_decay_time = 40.0
+experience_replay = true
 
 [node name="Shadow" parent="." index="0"]
 

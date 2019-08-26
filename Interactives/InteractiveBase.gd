@@ -1,5 +1,7 @@
 extends Area2D
 
+signal interacted
+
 enum Type { KEY, AREA }
 
 export(Type) var type = Type.KEY
@@ -9,11 +11,15 @@ func _process(delta):
 	if self.type == Type.KEY and Input.is_action_just_pressed("interact"):
 		for body in self.get_overlapping_bodies():
 			if body.is_in_group(self.influence_group):
-				self.interact(body)
+				self._interact(body)
+
+func _interact(body):
+	self.emit_signal("interacted")
+	self.interact(body)
 
 func interact(body):
 	pass
 
 func _on_body_entered(body):
 	if self.type == Type.AREA and body.is_in_group(self.influence_group):
-		self.interact(body)
+		self._interact(body)

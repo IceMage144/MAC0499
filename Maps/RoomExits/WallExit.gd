@@ -10,19 +10,17 @@ var cells = []
 func _ready():
 	self._find_cells()
 	var marker_map = global.find_entity("marker")
-	var cell_size = marker_map.cell_size
+	var hf_cell_size = marker_map.cell_size / 2
 	var top = -INF
 	var bottom = INF
 	var right = -INF
 	var left = INF
 	for cell in self.cells:
-		print(cell)
 		var cell_pos = marker_map.map_to_world(cell)
-		print(cell_pos)
-		left = min(left, cell_pos.x)
-		right = max(right, cell_pos.x + cell_size.x)
-		bottom = min(bottom, cell_pos.y)
-		top = max(top, cell_pos.y + cell_size.y)
+		left = min(left, cell_pos.x + hf_cell_size.x)
+		right = max(right, cell_pos.x + hf_cell_size.x)
+		bottom = min(bottom, cell_pos.y + hf_cell_size.y)
+		top = max(top, cell_pos.y + hf_cell_size.y)
 	var pos = self.position
 	var polygon = PoolVector2Array([
 		Vector2(left, top) - pos, Vector2(right, top) - pos,

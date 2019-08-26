@@ -9,7 +9,7 @@
 [ext_resource path="res://Interactives/NPC/NPC.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Interactives/Chest/Chest.tscn" type="PackedScene" id=8]
 
-[node name="City" instance=ExtResource( 1 )]
+[node name="City" index="0" instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )
 

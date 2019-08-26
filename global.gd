@@ -29,6 +29,52 @@ func get_enemy(entity):
 func randi_range(start, end):
 	return int(start + floor(randf() * (end - start + 1)))
 
+func choose_one(array, include_null=false):
+	var size = len(array) - int(not include_null)
+	var rand_num = global.randi_range(0, size)
+	if include_null and rand_num == len(array):
+		return null
+	return array[rand_num]
+
+func sample(array, num, include_null=false):
+	var ret = []
+	for i in range(num):
+		ret.append(self.choose_one(array, include_null))
+	return ret
+
+func choose(array, num):
+	if num == len(array):
+		return array.copy()
+	var ret = []
+	var used = {}
+	while len(ret) != num:
+		var rand_num = self.randi_range(0, len(array) - 1)
+		if not used.has(rand_num):
+			used[rand_num] = true
+			ret.append(array[rand_num])
+	return ret
+
+func dict_get(dict, key, default):
+	if key == null:
+		return null
+	if not dict.has(key):
+		return default
+	return dict[key]
+
+func create_array(size, fill=null):
+	var array = []
+	for i in range(size):
+		array.append(fill)
+	return array
+
+func create_matrix(height, width, fill=null):
+	var matrix = []
+	for i in range(height):
+		matrix.append([])
+		for j in range(width):
+			matrix[i].append(fill)
+	return matrix
+
 func save_info(nodes):
 	var saveFile = File.new()
 	var saveInfo = []

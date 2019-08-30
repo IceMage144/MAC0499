@@ -13,7 +13,7 @@ import util
 
 
 class DQN(nn.Module):
-	def __init__(self, arch, learning_rate, weight_decay):
+	def __init__(self, arch, learning_rate, weight_decay, model_params=None):
 		super(DQN, self).__init__()
 		self.layers = len(arch) - 1
 		modules = []
@@ -24,6 +24,8 @@ class DQN(nn.Module):
 		self.criterion = nn.MSELoss()
 		self.optimizer = torch.optim.Adam(self.parameters(), lr=learning_rate,
 										  weight_decay=weight_decay)
+		if not (model_params is None):
+			self.model.load_state_dict(model_params)
     
 	def forward(self, features):
 		output = features
@@ -62,8 +64,23 @@ class TorchQLAI(QLAI):
 	"""
 	def _ready(self):
 		super(TorchQLAI, self)._ready()
-		self.learning_model = DQN([self.features_size, 16, 1], self.alpha, 0.01)
 	
+	def init(self, params):
+		super(TorchQLAI, self).init(params)
+		self.network_key = None
+		model_params = None
+		if not (params["network_id"] is None):
+			self.character_id = params["character_id"]
+			self.network_id = params["network_id"]
+			self.network_key = f"{self.character_id}_TorchQLAI_{self.network_id}"
+			model_params = NNSaveManager.get_params(self.network_key)
+		self.learning_model = DQN([self.features_size, 16, 1], self.alpha,
+								  0.01, model_params=model_params)
+	
+	def end(self):
+		if not (self.network_key is None):
+			NNSaveManager.set_params(self.network_key, self.learning_model.state_dict())
+
 	def get_info(self):
 		# TODO: Use state_dict method
 		return util.py2gdArray([param.tolist() for param in self.learning_model.parameters()])

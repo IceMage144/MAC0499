@@ -4,7 +4,7 @@
 [ext_resource path="res://Characters/Player/Player.gd" type="Script" id=2]
 [ext_resource path="res://Characters/Player/PlayerModel.gd" type="Script" id=3]
 
-[node name="Player" groups=[
+[node name="Player" index="0" groups=[
 "team1",
 ] instance=ExtResource( 1 )]
 

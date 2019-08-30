@@ -7,7 +7,8 @@ func _create_monsters(num, config):
 		monsters.append({
 			"type": monster_type,
 			"attributes": {
-				"life": -1
+				"life": -1,
+				"network_id": global.randi_range(0, 4)
 			}
 		})
 	return monsters

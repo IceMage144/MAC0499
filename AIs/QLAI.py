@@ -32,7 +32,7 @@ class QLAI(Node):
 		self.momentum = params["momentum"]
 		self.use_experience_replay = params["experience_replay"]
 		self.ep = structs.ExperiencePool(params["experience_pool_size"])
-		self.reuse_last_action_chance = params["reuse_last_action_chance"]		
+		self.reuse_last_action_chance = params["reuse_last_action_chance"]
 		self.think_time = params["think_time"]
 		self.features_size = params["features_size"]
 		self.last_state = params["initial_state"]
@@ -40,6 +40,10 @@ class QLAI(Node):
 
 	def reset(self, timeout):
 		self.last_state = self.parent.get_state()
+
+	# Abstract
+	def end(self):
+		pass
 
 	def get_action(self):
 		return self.last_action

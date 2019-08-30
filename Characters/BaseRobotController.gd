@@ -66,11 +66,16 @@ func init(params):
 		"think_time": params["think_time"],
 		"features_size": FEATURES_SIZE,
 		"initial_state": self.get_state(),
-		"initial_action": Action.IDLE
+		"initial_action": Action.IDLE,
+		"character_id": params["character_id"],
+		"network_id": params["network_id"]
 	})
 	$DebugTimer.connect("timeout", self.ai, "_on_DebugTimer_timeout")
 	$ThinkTimer.start()
 	self.add_child(self.ai)
+
+func end():
+	self.ai.end()
 
 func get_loss():
 	return self.ai.get_loss()

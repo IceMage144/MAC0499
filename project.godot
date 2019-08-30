@@ -19,6 +19,7 @@ config/icon="res://icon.png"
 global="*res://global.gd"
 ItemDB="*res://Items/ItemDatabase.tscn"
 SaveManager="*res://Persistence/SaveManager.gd"
+NNSaveManager="*res://Persistence/NNParamsSaveManager.py"
 
 [gdnative]
 

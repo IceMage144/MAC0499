@@ -13,6 +13,7 @@ const ai_name = ["Berkeley", "Torch", "Memo", "Class"]
 export(int) var speed = 120
 export(int) var max_life = 3
 export(int) var damage = 1
+export(int) var defense = 0
 export(int, "Player", "AI") var controller_type = Controller.PLAYER
 export(int, "Berkeley", "Torch", "Memo", "Class") var ai_type = 0
 export(float, 0.0, 1.0, 0.0001) var learning_rate = 0.0
@@ -26,13 +27,16 @@ export(bool) var experience_replay = false
 export(int) var experience_pool_size = 40
 export(float) var think_time = 0.1
 
+var already_hit = []
 var velocity = Vector2()
 var action = ActionClass.compose(ActionClass.IDLE, ActionClass.DOWN)
 var life = max_life
 var can_act = true
 var controller
 var controller_name
+var network_id = null
 
+onready var character_type = self.get_script().get_path().get_file().get_basename()
 onready var anim_node = $Sprite/AnimationPlayer
 onready var Action = ActionClass.new()
 
@@ -51,7 +55,9 @@ func _init_ai_controller():
 		"reuse_last_action_chance": self.reuse_last_action_chance,
 		"experience_replay": self.experience_replay,
 		"experience_pool_size": self.experience_pool_size,
-		"think_time": self.think_time
+		"think_time": self.think_time,
+		"character_id": self.character_type,
+		"network_id": self.network_id
 	})
 	$Sprite.modulate = self.controller.color
 
@@ -61,8 +67,8 @@ func _get_ai_controller_script():
 
 func _ready():
 	self.set_life(max_life)
+	self.anim_node.play(Action.to_string(self.action))
 	self.controller = ControllerNode.instance()
-
 	match self.controller_type:
 		Controller.PLAYER:
 			self.controller.set_script(PlayerController)
@@ -70,15 +76,27 @@ func _ready():
 			self.controller_name = "Player"
 			self.add_to_group("player")
 		Controller.AI:
-			self._init_ai_controller()
 			self.controller_name = ai_name[self.ai_type]
 			self.add_to_group("robot")
+
+func init(params):
+	self.network_id = global.dict_get(params, "network_id", null)
+	if params.has("life") and params.life >= 0:
+		self.set_life(params.life)
+	if self.controller_type == Controller.AI:
+		self._init_ai_controller()
 
 func _physics_process(delta):
 	self.move_and_slide(self.speed * self.velocity)
 
 func get_pretty_name():
 	return self.name + " (" + self.controller_name + ")"
+
+func get_damage():
+	return self.damage
+
+func get_defense():
+	return self.defense
 
 func set_life(new_life):
 	if new_life >= 0:
@@ -87,6 +105,11 @@ func set_life(new_life):
 
 func add_life(amount):
 	self.set_life(self.life + amount)
+
+func take_damage(damage):
+	self.set_life(self.life - max(0.0, damage + self.get_defense()))
+	if self.life <= 0:
+		self.set_action(Action.DEATH)
 
 func set_movement(new_movement, force=false):
 	if (self.action != Action.DEATH and self.can_act or force) and new_movement != Action.get_movement(self.action):
@@ -98,15 +121,15 @@ func set_action(new_action, force=false):
 		self.action = new_action
 		self.anim_node.play(Action.to_string(self.action))
 
-func take_damage(damage):
-	self.set_life(self.life - damage)
-	if self.life <= 0:
-		self.set_action(Action.DEATH)
+func attack():
+	self.set_movement(Action.ATTACK)
 
 func is_process_action(a):
-	return Action.get_movement(a) == Action.IDLE
+	return Action.get_movement(a) == Action.IDLE or \
+			Action.get_movement(a) == Action.WALK
 
 func die():
+	self.controller.end()
 	self.emit_signal("character_death")
 
 func block_action():
@@ -130,3 +153,11 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	var death = Action.to_string(Action.DEATH)
 	if anim_name.begins_with(death):
 		self.die()
+
+func _on_AttackArea_area_entered(area):
+	var entity = area.get_parent()
+	if entity.is_in_group("damageble") and entity != self and \
+		not (entity in self.already_hit) and Action.get_movement(self.action) == Action.ATTACK and \
+		(entity.position - self.position).dot(Action.to_vec(self.action)) >= 0:
+		entity.take_damage(self.get_damage())
+		self.already_hit.append(entity)

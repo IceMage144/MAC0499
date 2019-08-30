@@ -156,7 +156,9 @@ func create_room(room_id, player_pos):
 
 	var player = global.find_entity("player")
 	player.connect("character_death", self, "_on_player_death")
-	self._apply_attributes(player, self.player_attributes)
+	player.init(self.player_attributes)
+	if self.player_attributes.life == -1:
+		self.player_attributes.life = player.max_life
 
 	if typeof(room_info.monsters) == TYPE_ARRAY:
 		var mapped_monsters = {}
@@ -188,7 +190,9 @@ func create_room(room_id, player_pos):
 		monster.add_to_group("team2")
 		monster.connect("character_death", self, "_on_monster_death", [monster, spawner])
 		wall.add_child(monster)
-		self._apply_attributes(monster, monster_info.attributes)
+		monster.init(monster_info.attributes)
+		if monster_info.attributes.life == -1:
+			monster_info.attributes.life = monster.max_life
 	
 	for spawner in resource_spawners:
 		if not room_info.resources.has(spawner.name):

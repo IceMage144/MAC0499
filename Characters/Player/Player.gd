@@ -39,6 +39,12 @@ func _save_quick_items():
 		item_names.append(item.name)
 	$Model.set_data($Model.QUICK, item_names)
 
+func get_damage():
+	var damage = .get_damage()
+	if self.equipments["sword"] != null:
+		damage += self.equipments.sword.damage
+	return damage
+
 func get_bag():
 	return self.bag
 

@@ -298,6 +298,7 @@ tracks/0/keys = {
 [node name="Human" index="0" instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )
+defense = 0
 controller_type = 1
 
 [node name="Sprite" parent="." index="1"]

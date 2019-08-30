@@ -20,6 +20,9 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_accept"):
 		self.parent.attack()
 
+func end():
+	pass
+
 func before_reset(timeout):
 	pass
 

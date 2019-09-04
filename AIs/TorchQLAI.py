@@ -67,19 +67,20 @@ class TorchQLAI(QLAI):
 	
 	def init(self, params):
 		super(TorchQLAI, self).init(params)
-		self.network_key = None
+		persisted_params = self.load_params()
 		model_params = None
-		if not (params["network_id"] is None):
-			self.character_id = params["character_id"]
-			self.network_id = params["network_id"]
-			self.network_key = f"{self.character_id}_TorchQLAI_{self.network_id}"
-			model_params = NNSaveManager.get_params(self.network_key)
+		if not (persisted_params is None):
+			model_params = persisted_params.get("model_params")
+			self.time = persisted_params.get("time")
 		self.learning_model = DQN([self.features_size, 16, 1], self.alpha,
 								  0.01, model_params=model_params)
 	
 	def end(self):
-		if not (self.network_key is None):
-			NNSaveManager.set_params(self.network_key, self.learning_model.state_dict())
+		persistence_dict = {
+			"time": self.time,
+			"model_params": self.learning_model.model.state_dict()
+		}
+		self.save_params(persistence_dict)
 
 	def get_info(self):
 		# TODO: Use state_dict method

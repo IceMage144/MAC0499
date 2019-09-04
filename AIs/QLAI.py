@@ -1,7 +1,9 @@
 from random import choice, random
 import math
 import time
+import base64
 
+import pickle
 import torch
 
 from godot import exposed, export
@@ -37,13 +39,34 @@ class QLAI(Node):
 		self.features_size = params["features_size"]
 		self.last_state = params["initial_state"]
 		self.last_action = params["initial_action"]
-
+		self.network_key = None
+		if not (params["network_id"] is None):
+			character_type = params["character_type"]
+			network_id = params["network_id"]
+			self.network_key = f"{character_type}_TorchQLAI_{network_id}"
+	
 	def reset(self, timeout):
 		self.last_state = self.parent.get_state()
 
 	# Abstract
 	def end(self):
 		pass
+	
+	def load_params(self):
+		if self.network_key is None:
+			return None
+		ascii_data = NNParamsManager.get_params(self.network_key)
+		if ascii_data is None:
+			return None
+		bytes_data = base64.decodebytes(ascii_data.encode())
+		return pickle.loads(bytes_data)
+	
+	def save_params(self, params):
+		if self.network_key is None:
+			return
+		bytes_data = pickle.dumps(params)
+		ascii_data = base64.encodebytes(bytes_data).decode()
+		NNParamsManager.set_params(self.network_key, ascii_data)
 
 	def get_action(self):
 		return self.last_action

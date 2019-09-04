@@ -67,7 +67,7 @@ func init(params):
 		"features_size": FEATURES_SIZE,
 		"initial_state": self.get_state(),
 		"initial_action": Action.IDLE,
-		"character_id": params["character_id"],
+		"character_type": params["character_type"],
 		"network_id": params["network_id"]
 	})
 	$DebugTimer.connect("timeout", self.ai, "_on_DebugTimer_timeout")

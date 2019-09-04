@@ -60,6 +60,9 @@ func get_quick_items():
 func bag_is_full():
 	return len(self.bag) >= BAG_SIZE
 
+func bag_has_item(item):
+	return self.bag.find(item) != -1
+
 func equip_item(item):
 	print("Equiped: " + item.name)
 	var item_index = self.bag.find(item)
@@ -115,12 +118,16 @@ func buy_item(item):
 	return true
 
 func sell_item(item):
+	if not self.bag_has_item(item):
+		return
 	$Model.set_data($Model.MONEY, self.get_money() + item.sell_price)
 	self.bag.erase(item)
 	self._save_bag()
 	print("Sold: " + item.name)
 
 func use_item(item):
+	if not self.bag_has_item(item):
+		return
 	self.bag.erase(item)
 	self.add_life(item.life_heal)
 	self._save_bag()

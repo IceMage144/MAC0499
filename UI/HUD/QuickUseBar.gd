@@ -13,7 +13,7 @@ onready var ItemList = $MarginContainer/ItemList
 func _process(delta):
 	if not self.edit_mode:
 		for i in range(SLOT_NUMBER):
-			if Input.is_action_just_pressed("quick_slot" + str(i + 1)):
+			if Input.is_action_just_pressed("quick_slot" + str(i + 1)) and i < len(self.current_items):
 				self.emit_signal("triggered_slot", self.current_items[i])
 
 func display_items(item_list):

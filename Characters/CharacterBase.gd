@@ -40,11 +40,11 @@ onready var character_type = self.get_script().get_path().get_file().get_basenam
 onready var anim_node = $Sprite/AnimationPlayer
 onready var Action = ActionClass.new()
 
-func _init_ai_controller():
+func _init_ai_controller(params):
 	var AIControllerScript = self._get_ai_controller_script()
 	self.controller.set_script(AIControllerScript)
 	self.add_child(self.controller)
-	self.controller.init({
+	var init_params = {
 		"ai_type": self.ai_type,
 		"learning_rate": self.learning_rate,
 		"discount": self.discount,
@@ -56,9 +56,13 @@ func _init_ai_controller():
 		"experience_replay": self.experience_replay,
 		"experience_pool_size": self.experience_pool_size,
 		"think_time": self.think_time,
-		"character_id": self.character_type,
+		"character_type": self.character_type,
 		"network_id": self.network_id
-	})
+	}
+	for key in init_params.keys():
+		if params.has(key):
+			init_params[key] = params[key]
+	self.controller.init(init_params)
 	$Sprite.modulate = self.controller.color
 
 func _get_ai_controller_script():
@@ -84,7 +88,10 @@ func init(params):
 	if params.has("life") and params.life >= 0:
 		self.set_life(params.life)
 	if self.controller_type == Controller.AI:
-		self._init_ai_controller()
+		self._init_ai_controller(params)
+
+func end():
+	self.controller.end()
 
 func _physics_process(delta):
 	self.move_and_slide(self.speed * self.velocity)
@@ -129,7 +136,7 @@ func is_process_action(a):
 			Action.get_movement(a) == Action.WALK
 
 func die():
-	self.controller.end()
+	self.end()
 	self.emit_signal("character_death")
 
 func block_action():

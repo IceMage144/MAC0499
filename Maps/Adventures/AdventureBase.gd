@@ -7,9 +7,12 @@ const GENERATOR_PATH = {
 	GeneratorAgorithm.ELO_RATING: "res://Maps/Adventures/GenerationAlgorithms/EloRatingGenerator.tscn"
 }
 
+# Abstract
 const room_config = []
 const monster_config = []
 const resource_config = []
+
+const NUM_PERSISTED_NN = 4
 
 export(GeneratorAgorithm) var generator_class = GeneratorAgorithm.RANDOM
 export(int, 1, 50) var max_rooms = 1
@@ -118,7 +121,11 @@ func init(params):
 		"max_rooms": self.max_rooms
 	})
 	self.rooms_info = generator.generate_dungeon(room_config, monster_config, resource_config)
-	self.create_room(0, "left")
+	for room in self.rooms_info:
+		print(room.monsters)
+		for monster in room.monsters:
+			monster.attributes.network_id = global.randi_range(0, NUM_PERSISTED_NN)
+	self._create_room(0, "left")
 	var player = global.find_entity("player")
 	self._save_attributes(player, self.player_attributes)
 
@@ -127,22 +134,19 @@ func back_to_city():
 	var main = global.find_entity("main")
 	main.change_map(CityScene, {"player_pos": "dungeon"})
 
-func _apply_attributes(scene, attribute_table):
-	for attribute in attribute_table.keys():
-		var value = attribute_table[attribute]
-		if attribute == "life":
-			if value == -1:
-				attribute_table[attribute] = scene.max_life
-			else:
-				scene.set_life(value)
-		else:
-			scene[attribute] = value
+func change_room(exit_id):
+	self._save_room()
+	var current_room_exits = self.rooms_info[self.current_room_id].exits
+	var next_room_id = current_room_exits[exit_id].room
+	if next_room_id == -1:
+		self.back_to_city()
+		return
+	var entrance = current_room_exits[exit_id].entrance
+	self.current_room_node.queue_free()
+	yield(self.current_room_node, "tree_exited")
+	self._create_room(next_room_id, entrance)
 
-func _save_attributes(scene, attribute_table):
-	for attribute in attribute_table.keys():
-		attribute_table[attribute] = scene[attribute]
-
-func create_room(room_id, player_pos):
+func _create_room(room_id, player_pos):
 	var room_info = self.rooms_info[room_id]
 	self.current_room_node = room_info.type.instance()
 	self.add_child(self.current_room_node)
@@ -154,28 +158,48 @@ func create_room(room_id, player_pos):
 	self.current_room_node.init(node_params)
 	self.current_room_id = room_id
 
+	if typeof(room_info.monsters) == TYPE_ARRAY:
+		self._init_spawners(room_info)
+
+	self._load_room()
+
+func _init_spawners(room_info):
+	var mapped_monsters = {}
+	var spawners = self.current_room_node.get_node("MonsterSpawners").get_children()
+	for i in range(len(spawners)):
+		var spawner = spawners[i]
+		mapped_monsters[spawner.name] = room_info.monsters[i]
+	room_info.monsters = mapped_monsters
+
+	var mapped_resources = {}
+	spawners = self.current_room_node.get_node("ResourceSpawners").get_children()
+	for i in range(len(spawners)):
+		if room_info.resources[i] == null:
+			continue
+		var spawner = spawners[i]
+		mapped_resources[spawner.name] = room_info.resources[i]
+	room_info.resources = mapped_resources
+
+func _save_room():
+	var room_info = self.rooms_info[self.current_room_id]
+	for monster_info in room_info.monsters.values():
+		self._save_attributes(monster_info.instance, monster_info.attributes)
+		monster_info.instance.end()
+		monster_info.erase("instance")
+	for resource_info in room_info.resources.values():
+		self._save_attributes(resource_info.instance, resource_info.attributes)
+		resource_info.erase("instance")
+	var player = global.find_entity("player")
+	self._save_attributes(player, self.player_attributes)
+
+func _load_room():
+	var room_info = self.rooms_info[self.current_room_id]
+
 	var player = global.find_entity("player")
 	player.connect("character_death", self, "_on_player_death")
 	player.init(self.player_attributes)
 	if self.player_attributes.life == -1:
 		self.player_attributes.life = player.max_life
-
-	if typeof(room_info.monsters) == TYPE_ARRAY:
-		var mapped_monsters = {}
-		var spawners = self.current_room_node.get_node("MonsterSpawners").get_children()
-		for i in range(len(spawners)):
-			var spawner = spawners[i]
-			mapped_monsters[spawner.name] = room_info.monsters[i]
-		room_info.monsters = mapped_monsters
-
-		var mapped_resources = {}
-		spawners = self.current_room_node.get_node("ResourceSpawners").get_children()
-		for i in range(len(spawners)):
-			if room_info.resources[i] == null:
-				continue
-			var spawner = spawners[i]
-			mapped_resources[spawner.name] = room_info.resources[i]
-		room_info.resources = mapped_resources
 
 	var monster_spawners = self.current_room_node.get_node("MonsterSpawners").get_children()
 	var resource_spawners = self.current_room_node.get_node("ResourceSpawners").get_children()
@@ -205,26 +229,9 @@ func create_room(room_id, player_pos):
 		wall.add_child(resource)
 		resource.init(resource_info.attributes)
 
-func change_room(exit_id):
-	var room_info = self.rooms_info[self.current_room_id]
-	for monster_info in room_info.monsters.values():
-		self._save_attributes(monster_info.instance, monster_info.attributes)
-		monster_info.erase("instance")
-	for resource_info in room_info.resources.values():
-		self._save_attributes(resource_info.instance, resource_info.attributes)
-		resource_info.erase("instance")
-	var player = global.find_entity("player")
-	self._save_attributes(player, self.player_attributes)
-
-	var current_room_exits = self.rooms_info[self.current_room_id].exits
-	var next_room_id = current_room_exits[exit_id].room
-	if next_room_id == -1:
-		self.back_to_city()
-		return
-	var entrance = current_room_exits[exit_id].entrance
-	self.current_room_node.queue_free()
-	yield(self.current_room_node, "tree_exited")
-	self.create_room(next_room_id, entrance)
+func _save_attributes(scene, attribute_table):
+	for attribute in attribute_table.keys():
+		attribute_table[attribute] = scene[attribute]
 
 func _on_monster_death(monster, spawner):
 	# self.generator.monster_died(...)
@@ -235,4 +242,5 @@ func _on_resource_collected(resource, spawner):
 	self.rooms_info[self.current_room_id].resources.erase(spawner.name)
 
 func _on_player_death():
+	self._save_room()
 	self.back_to_city()

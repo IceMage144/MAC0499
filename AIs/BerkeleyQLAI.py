@@ -22,18 +22,35 @@ class BerkeleyQLAI(QLAI):
 	This implementation has 5 hyperparams:
 		- Discount: Discounts past states' values
 		- Exploring rate: Chance that the agent executes a random action
-		- Learning rate: The rate that the agent learns
 		- Exploring rate decay: Decays the exploring rate each cycle
+		- Learning rate: The rate that the agent learns
 		- Reuse last action chance: If the agent executes a random action
 			this is the chance that the result action is the same as the
 			last action performed (for smoothness)
 	"""
 	def _ready(self):
 		super(BerkeleyQLAI, self)._ready()
-		self.learning_weights = 2.0 * torch.rand(self.features_size) + 1.0
 	
+	def init(self, params):
+		super(BerkeleyQLAI, self).init(params)
+		if not (params["network_id"] is None):
+			character_type = params["character_type"]
+			network_id = params["network_id"]
+			self.network_key = f"{character_type}_BerkeleyQLAI_{network_id}"
+		persisted_params = self.load_params()
+		self.learning_weights = 2.0 * torch.rand(self.features_size) + 1.0
+		if not (persisted_params is None):
+			self.learning_weights = persisted_params.get("model_params")
+			self.time = persisted_params.get("time")
+
+	def end(self):
+		persistence_dict = {
+			"time": self.time,
+			"model_params": self.learning_weights
+		}
+		self.save_params(persistence_dict)
+
 	def get_info(self):
-		# TODO: Use state_dict method
 		return util.py2gdArray(self.learning_weights.tolist())
 
 	def get_q_value(self, state, action):

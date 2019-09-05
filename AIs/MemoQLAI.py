@@ -13,7 +13,7 @@ import util
 
 
 class DQSN(nn.Module):
-	def __init__(self, arch, memo_arch, learning_rate, weight_decay):
+	def __init__(self, arch, memo_arch, learning_rate, weight_decay, model_params=None):
 		super(DQSN, self).__init__()
 		self.layers = len(arch) - 1
 		modules = []
@@ -22,6 +22,10 @@ class DQSN(nn.Module):
 		self.model = nn.ModuleList(modules)
 		self.memo = nn.LSTM(arch[-1], memo_arch[0], num_layers=memo_arch[1], batch_first=True)
 		self.last_layer = nn.Linear(memo_arch[0], memo_arch[2])
+		if not (model_params is None):
+			self.model.load_state_dict(model_params["model"])
+			self.memo.load_state_dict(model_params["memo"])
+			self.last_layer.load_state_dict(model_params["last_layer"])
 		self.relu = nn.Tanh()
 		self.criterion = nn.MSELoss()
 		self.optimizer = torch.optim.Adam(self.parameters(), lr=learning_rate,
@@ -83,8 +87,32 @@ class MemoQLAI(QLAI):
 		super(MemoQLAI, self)._ready()
 		self.seq_size = 4
 		self.seq_exp = Experience([], [], [])
-		self.learning_model = DQSN([self.features_size, 9], [16, 2, 1], self.alpha, 0.01)
 	
+	def init(self, params):
+		super(MemoQLAI, self).init(params)
+		if not (params["network_id"] is None):
+			character_type = params["character_type"]
+			network_id = params["network_id"]
+			self.network_key = f"{character_type}_MemoQLAI_{network_id}"
+		persisted_params = self.load_params()
+		model_params = None
+		if not (persisted_params is None):
+			model_params = persisted_params.get("model_params")
+			self.time = persisted_params.get("time")
+		self.learning_model = DQSN([self.features_size, 9], [16, 2, 1], self.alpha,
+									0.01, model_params=model_params)
+
+	def end(self):
+		persistence_dict = {
+			"time": self.time,
+			"model_params": {
+				"model": self.learning_model.model.state_dict(),
+				"memo": self.learning_model.memo.state_dict(),
+				"last_layer": self.learning_model.last_layer.state_dict()
+			}
+		}
+		self.save_params(persistence_dict)
+
 	def get_info(self):
 		# TODO: Use state_dict method
 		return util.py2gdArray([param.tolist() for param in self.learning_model.parameters()])

@@ -343,10 +343,6 @@ anims/walk_up = SubResource( 13 )
 
 polygon = PoolVector2Array( -22, 0, -21, -4, -17, -8, -11, -10, -4, -11, 4, -11, 11, -10, 17, -8, 21, -4, 22, 0, 21, 4, 17, 8, 11, 10, 4, 11, -4, 11, -11, 10, -17, 8, -21, 4 )
 
-[node name="CollisionPolygon2D" parent="AttackArea" index="0"]
-
-polygon = PoolVector2Array(  )
-
 [node name="CollisionPolygon2D" parent="HitBox" index="0"]
 
 polygon = PoolVector2Array( -20, -20, 20, -20, 20, 7, -20, 7 )

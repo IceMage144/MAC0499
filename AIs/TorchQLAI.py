@@ -20,12 +20,12 @@ class DQN(nn.Module):
 		for i in range(self.layers):
 			modules.append(nn.Linear(arch[i], arch[i+1], bias=False))
 		self.model = nn.ModuleList(modules)
+		if not (model_params is None):
+			self.model.load_state_dict(model_params)
 		self.relu = nn.Tanh()
 		self.criterion = nn.MSELoss()
 		self.optimizer = torch.optim.Adam(self.parameters(), lr=learning_rate,
 										  weight_decay=weight_decay)
-		if not (model_params is None):
-			self.model.load_state_dict(model_params)
     
 	def forward(self, features):
 		output = features
@@ -67,6 +67,10 @@ class TorchQLAI(QLAI):
 	
 	def init(self, params):
 		super(TorchQLAI, self).init(params)
+		if not (params["network_id"] is None):
+			character_type = params["character_type"]
+			network_id = params["network_id"]
+			self.network_key = f"{character_type}_TorchQLAI_{network_id}"
 		persisted_params = self.load_params()
 		model_params = None
 		if not (persisted_params is None):

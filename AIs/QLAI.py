@@ -40,10 +40,6 @@ class QLAI(Node):
 		self.last_state = params["initial_state"]
 		self.last_action = params["initial_action"]
 		self.network_key = None
-		if not (params["network_id"] is None):
-			character_type = params["character_type"]
-			network_id = params["network_id"]
-			self.network_key = f"{character_type}_TorchQLAI_{network_id}"
 	
 	def reset(self, timeout):
 		self.last_state = self.parent.get_state()

@@ -1,14 +1,34 @@
 extends "res://Maps/Adventures/GenerationAlgorithms/GeneratorBase.gd"
 
+func _process_attributes(config, extra={}):
+	var attributes = {}
+	for attribute_name in config.keys():
+		var value
+		var attribute = config[attribute_name]
+		if typeof(attribute) != TYPE_DICTIONARY or not attribute.has("type"):
+			value = attribute
+		elif attribute.type == "integer":
+			value = global.randi_range(attribute.minimum, attribute.maximum)
+		attributes[attribute_name] = value
+	for attribute_name in extra.keys():
+		var value
+		var attribute = extra[attribute_name]
+		if typeof(attribute) != TYPE_DICTIONARY or not attribute.has("type"):
+			value = attribute
+		elif attribute.type == "integer":
+			value = global.randi_range(attribute.minimum, attribute.maximum)
+		attributes[attribute_name] = value
+	return attributes
+
 func _create_monsters(num, config):
 	var monsters = []
 	var sampled_monsters = global.sample(config, num)
-	for monster_type in sampled_monsters:
+	for monster_config in sampled_monsters:
 		monsters.append({
-			"type": monster_type,
-			"attributes": {
-				"life": -1
-			}
+			"type": monster_config.type,
+			"attributes": self._process_attributes(monster_config.attributes, {
+				"character_type": monster_config.name
+			})
 		})
 	return monsters
 
@@ -21,14 +41,8 @@ func _create_resources(num, config):
 			continue
 		var resource = {
 			"type": resource_config.type,
-			"attributes": {}
+			"attributes": self._process_attributes(resource_config.attributes)
 		}
-		for attribute_name in resource_config.attributes.keys():
-			var value
-			var attribute = resource_config.attributes[attribute_name]
-			if attribute.type == "integer":
-				value = global.randi_range(attribute.minimum, attribute.maximum)
-			resource.attributes[attribute_name] = value
 		resources.append(resource)
 	return resources
 

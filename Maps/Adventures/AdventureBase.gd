@@ -21,7 +21,7 @@ var debug_mode = false
 var generator = null
 var current_room_id = 0
 var current_room_node = null
-var player_attributes = {"life": -1}
+var player_attributes = {}
 var rooms_info = {}
 
 #rooms_info = [
@@ -198,7 +198,7 @@ func _load_room():
 	var player = global.find_entity("player")
 	player.connect("character_death", self, "_on_player_death")
 	player.init(self.player_attributes)
-	if self.player_attributes.life == -1:
+	if not self.player_attributes.has("life"):
 		self.player_attributes.life = player.max_life
 
 	var monster_spawners = self.current_room_node.get_node("MonsterSpawners").get_children()
@@ -215,7 +215,7 @@ func _load_room():
 		monster.connect("character_death", self, "_on_monster_death", [monster, spawner])
 		wall.add_child(monster)
 		monster.init(monster_info.attributes)
-		if monster_info.attributes.life == -1:
+		if not monster_info.attributes.has("life"):
 			monster_info.attributes.life = monster.max_life
 	
 	for spawner in resource_spawners:

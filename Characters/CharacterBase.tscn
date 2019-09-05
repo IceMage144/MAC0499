@@ -31,7 +31,7 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[node name="CharacterBase" type="KinematicBody2D" index="0" groups=[
+[node name="CharacterBase" type="KinematicBody2D" groups=[
 "character",
 "damageble",
 ]]
@@ -44,6 +44,7 @@ script = ExtResource( 1 )
 speed = 120
 max_life = 3
 damage = 1
+defense = 0
 controller_type = null
 ai_type = 0
 learning_rate = 0.0
@@ -119,7 +120,7 @@ audio_bus_name = "Master"
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HitBox" index="0"]
 
 build_mode = 0
-polygon = PoolVector2Array(  )
+polygon = PoolVector2Array( 0, 0 )
 
 [node name="LifeBar" type="ProgressBar" parent="." index="5"]
 

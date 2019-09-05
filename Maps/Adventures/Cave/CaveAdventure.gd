@@ -22,8 +22,24 @@ const room_config = [
 ]
 
 const monster_config = [
-	preload("res://Characters/Goblin/Goblin.tscn"),
-	preload("res://Characters/Spider/Spider.tscn")
+	{
+		"name": "Goblin",
+		"type": preload("res://Characters/Goblin/Goblin.tscn"),
+		"attributes": {
+			"max_life": 3,
+			"damage": 1,
+			"defense": 0
+		}
+	},
+	{
+		"name": "Spider",
+		"type": preload("res://Characters/Spider/Spider.tscn"),
+		"attributes": {
+			"max_life": 3,
+			"damage": 1,
+			"defense": 0
+		}
+	}
 ]
 
 const resource_config = [

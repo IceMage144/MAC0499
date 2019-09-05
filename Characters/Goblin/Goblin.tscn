@@ -299,7 +299,7 @@ tracks/0/keys = {
 "values": [ 14, 15, 16, 17, 18, 19, 20 ]
 }
 
-[node name="Goblin" index="0" instance=ExtResource( 1 )]
+[node name="Goblin" instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )
 defense = 0

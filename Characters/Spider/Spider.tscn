@@ -302,7 +302,6 @@ tracks/0/keys = {
 [node name="Spider" index="0" instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )
-defense = 0
 controller_type = 1
 ai_type = 1
 learning_rate = 0.0005

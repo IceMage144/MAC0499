@@ -7,6 +7,7 @@ const ActionClass = preload("res://Characters/ActionBase.gd")
 signal character_death
 
 enum Controller { PLAYER, AI }
+enum AIType {BERKELEY, TORCH, MEMO, CLASSIFIER}
 
 const ai_name = ["Berkeley", "Torch", "Memo", "Class"]
 
@@ -14,8 +15,8 @@ export(int) var speed = 120
 export(int) var max_life = 3
 export(int) var damage = 1
 export(int) var defense = 0
-export(int, "Player", "AI") var controller_type = Controller.PLAYER
-export(int, "Berkeley", "Torch", "Memo", "Class") var ai_type = 0
+export(Controller) var controller_type = Controller.PLAYER
+export(AIType) var ai_type = AIType.BERKELEY
 export(float, 0.0, 1.0, 0.0001) var learning_rate = 0.0
 export(float, 0.0, 1.0, 0.001) var discount = 0.0
 export(float, 0.0, 1.0, 0.001) var max_exploration_rate = 1.0
@@ -70,7 +71,6 @@ func _get_ai_controller_script():
 	return load(filepath + "RobotController.gd")
 
 func _ready():
-	self.set_life(max_life)
 	self.anim_node.play(Action.to_string(self.action))
 	self.controller = ControllerNode.instance()
 	match self.controller_type:
@@ -85,8 +85,30 @@ func _ready():
 
 func init(params):
 	self.network_id = global.dict_get(params, "network_id", null)
+	if params.has("damage"):
+		# Assert damage is positive
+		assert(params.damage >= 0)
+		self.damage = params.damage
+	if params.has("defense"):
+		# Assert defense is positive
+		assert(params.defense >= 0)
+		self.defense = params.defense
+	if params.has("speed"):
+		# Assert speed is positive and non-zero
+		assert(params.speed > 0)
+		self.speed = params.speed
+	if params.has("ai_type"):
+		# Assert AI type exists
+		assert(params.ai_type < AIType.size() and params.ai_type >= 0)
+		self.ai_type = params.ai_type
+	if params.has("max_life"):
+		# Assert that character has life
+		assert(params.max_life > 0)
+		self.max_life = params.max_life
 	if params.has("life") and params.life >= 0:
-		self.set_life(params.life)
+		self.set_life(min(self.max_life, max(0, params.life)))
+	else:
+		self.set_life(self.max_life)
 	if self.controller_type == Controller.AI:
 		self._init_ai_controller(params)
 
@@ -106,17 +128,16 @@ func get_defense():
 	return self.defense
 
 func set_life(new_life):
-	if new_life >= 0:
-		self.life = new_life
+	self.life = min(self.max_life, max(0, new_life))
 	$LifeBar.value = self.life
+	if self.life == 0:
+		self.set_action(Action.DEATH)
 
 func add_life(amount):
 	self.set_life(self.life + amount)
 
 func take_damage(damage):
-	self.set_life(self.life - max(0.0, damage + self.get_defense()))
-	if self.life <= 0:
-		self.set_action(Action.DEATH)
+	self.set_life(self.life - max(0.0, damage - self.get_defense()))
 
 func set_movement(new_movement, force=false):
 	if (self.action != Action.DEATH and self.can_act or force) and new_movement != Action.get_movement(self.action):

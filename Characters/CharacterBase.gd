@@ -118,6 +118,9 @@ func end():
 func _physics_process(delta):
 	self.move_and_slide(self.speed * self.velocity)
 
+func is_ai():
+	return self.controller_type == Controller.AI
+
 func get_pretty_name():
 	return self.name + " (" + self.controller_name + ")"
 
@@ -154,7 +157,7 @@ func attack():
 
 func is_process_action(a):
 	return Action.get_movement(a) == Action.IDLE or \
-			Action.get_movement(a) == Action.WALK
+		   Action.get_movement(a) == Action.WALK
 
 func die():
 	self.end()
@@ -185,7 +188,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 func _on_AttackArea_area_entered(area):
 	var entity = area.get_parent()
 	if entity.is_in_group("damageble") and entity != self and \
-		not (entity in self.already_hit) and Action.get_movement(self.action) == Action.ATTACK and \
-		(entity.position - self.position).dot(Action.to_vec(self.action)) >= 0:
+	   not (entity in self.already_hit) and Action.get_movement(self.action) == Action.ATTACK and \
+	   (entity.position - self.position).dot(Action.to_vec(self.action)) >= 0:
 		entity.take_damage(self.get_damage())
 		self.already_hit.append(entity)

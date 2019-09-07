@@ -17,7 +17,8 @@ config/icon="res://icon.png"
 [autoload]
 
 global="*res://global.gd"
-ItemDB="*res://Items/ItemDatabase.tscn"
+ItemDB="*res://Databases/Items/ItemDatabase.tscn"
+MonsterDB="*res://Databases/Monsters/MonsterDatabase.tscn"
 SaveManager="*res://Persistence/SaveManager.gd"
 NNParamsManager="*res://Persistence/NNParamsManager.gd"
 

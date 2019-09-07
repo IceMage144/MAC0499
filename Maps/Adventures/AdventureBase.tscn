@@ -2,10 +2,19 @@
 
 [ext_resource path="res://Maps/Adventures/AdventureBase.gd" type="Script" id=1]
 
-[node name="AdventureBase" type="Node2D" index="0"]
+[node name="AdventureBase" type="Node2D"]
 
 script = ExtResource( 1 )
 generator_class = 0
 max_rooms = 1
+
+[node name="Timer" type="Timer" parent="." index="0"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
 

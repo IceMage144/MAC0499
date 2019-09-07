@@ -1,21 +1,13 @@
 extends "res://Maps/Adventures/GenerationAlgorithms/GeneratorBase.gd"
 
-func _process_attributes(config, extra={}):
+func _process_attributes(config):
 	var attributes = {}
 	for attribute_name in config.keys():
 		var value
 		var attribute = config[attribute_name]
 		if typeof(attribute) != TYPE_DICTIONARY or not attribute.has("type"):
 			value = attribute
-		elif attribute.type == "integer":
-			value = global.randi_range(attribute.minimum, attribute.maximum)
-		attributes[attribute_name] = value
-	for attribute_name in extra.keys():
-		var value
-		var attribute = extra[attribute_name]
-		if typeof(attribute) != TYPE_DICTIONARY or not attribute.has("type"):
-			value = attribute
-		elif attribute.type == "integer":
+		elif attribute.type == TYPE_INT:
 			value = global.randi_range(attribute.minimum, attribute.maximum)
 		attributes[attribute_name] = value
 	return attributes
@@ -26,9 +18,13 @@ func _create_monsters(num, config):
 	for monster_config in sampled_monsters:
 		monsters.append({
 			"type": monster_config.type,
-			"attributes": self._process_attributes(monster_config.attributes, {
-				"character_type": monster_config.name
-			})
+			"attributes": {
+				"character_type": monster_config.name,
+				"damage": monster_config.attack,
+				"defense": monster_config.defense,
+				"max_life": monster_config.max_life,
+				"ai_type": monster_config.ai_type
+			}
 		})
 	return monsters
 
@@ -46,7 +42,7 @@ func _create_resources(num, config):
 		resources.append(resource)
 	return resources
 
-func generate_dungeon(room_config, monster_config, resource_config):
+func _generate_dungeon(room_config, monster_config, resource_config):
 	var entrance_map = {}
 	for i in range(len(room_config)):
 		var room = room_config[i]

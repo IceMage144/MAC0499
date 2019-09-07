@@ -68,6 +68,12 @@ func print_resources(room_info):
 		for resource in room.resources:
 			print(" " + str(resource))
 
+func generate_dungeon(room_config, monster_name_list, resource_config):
+	var monster_config = []
+	for monster_name in monster_name_list:
+		monster_config.append(MonsterDB.get_monster(monster_name))
+	return self._generate_dungeon(room_config, monster_config, resource_config)
+
 # Abstract
-func generate_dungeon(room_config, monster_config, resource_config):
+func _generate_dungeon(room_config, monster_config, resource_config):
 	pass

@@ -1,4 +1,4 @@
-extends "res://Items/ItemDataBase.gd"
+extends "res://Databases/Items/ItemDataBase.gd"
 
 export(int) var damage = 1
 export(String, "sword") var type = "sword"

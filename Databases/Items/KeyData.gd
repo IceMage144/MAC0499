@@ -1,4 +1,4 @@
-extends "res://Items/ItemDataBase.gd"
+extends "res://Databases/Items/ItemDataBase.gd"
 
 enum KeyShape { Round, Square, Triangular }
 

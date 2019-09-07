@@ -22,24 +22,8 @@ const room_config = [
 ]
 
 const monster_config = [
-	{
-		"name": "Goblin",
-		"type": preload("res://Characters/Goblin/Goblin.tscn"),
-		"attributes": {
-			"max_life": 3,
-			"damage": 1,
-			"defense": 0
-		}
-	},
-	{
-		"name": "Spider",
-		"type": preload("res://Characters/Spider/Spider.tscn"),
-		"attributes": {
-			"max_life": 3,
-			"damage": 1,
-			"defense": 0
-		}
-	}
+	"Goblin",
+	"Spider"
 ]
 
 const resource_config = [
@@ -47,7 +31,7 @@ const resource_config = [
 		"type": preload("res://Interactives/Chest/Chest.tscn"),
 		"attributes": {
 			"amount": {
-				"type": "integer",
+				"type": TYPE_INT,
 				"minimum": 100,
 				"maximum": 300
 			}

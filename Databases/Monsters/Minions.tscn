@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Databases/Monsters/MinionData.gd" type="Script" id=1]
+[ext_resource path="res://Characters/Goblin/Goblin.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Characters/Spider/Spider.tscn" type="PackedScene" id=3]
+
+[node name="Minions" type="Node"]
+
+[node name="Goblin" type="Node" parent="." index="0"]
+
+script = ExtResource( 1 )
+type = ExtResource( 2 )
+description = "An evil goblin"
+max_life = 3
+attack = 1
+defense = 0
+ai_type = 1
+
+[node name="Spider" type="Node" parent="." index="1"]
+
+script = ExtResource( 1 )
+type = ExtResource( 3 )
+description = "A huge spider"
+max_life = 3
+attack = 1
+defense = 0
+ai_type = 1
+
+

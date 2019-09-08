@@ -9,9 +9,14 @@ signal character_death
 enum Controller { PLAYER, AI }
 enum AIType {BERKELEY, TORCH, MEMO, CLASSIFIER}
 
+const KNOCKBACK_INITIAL_SPEED = 800
+const KNOCKBACK_DECAY_RATE = 0.6
+const KNOCKBACK_MIN = Vector2(20, 20)
+
 const ai_name = ["Berkeley", "Torch", "Memo", "Class"]
 
 export(int) var speed = 120
+export(float) var weight = 1
 export(int) var max_life = 3
 export(int) var damage = 1
 export(int) var defense = 0
@@ -36,10 +41,13 @@ var can_act = true
 var controller
 var controller_name
 var network_id = null
+var knockback = Vector2()
+var invulnerable = false
 
 onready var character_type = self.get_script().get_path().get_file().get_basename()
 onready var anim_node = $Sprite/AnimationPlayer
 onready var Action = ActionClass.new()
+onready var debug_mode = global.find_entity("main").character_debug
 
 func _init_ai_controller(params):
 	var AIControllerScript = self._get_ai_controller_script()
@@ -58,13 +66,15 @@ func _init_ai_controller(params):
 		"experience_pool_size": self.experience_pool_size,
 		"think_time": self.think_time,
 		"character_type": self.character_type,
-		"network_id": self.network_id
+		"network_id": self.network_id,
+		"debug_mode": self.debug_mode
 	}
 	for key in init_params.keys():
 		if params.has(key):
 			init_params[key] = params[key]
 	self.controller.init(init_params)
-	$Sprite.modulate = self.controller.color
+	if self.debug_mode:
+		$Sprite.modulate = self.controller.color
 
 func _get_ai_controller_script():
 	var filepath = self.get_script().get_path().get_basename()
@@ -116,7 +126,13 @@ func end():
 	self.controller.end()
 
 func _physics_process(delta):
-	self.move_and_slide(self.speed * self.velocity)
+	if self.knockback:
+		self.move_and_slide(self.knockback)
+		self.knockback *= KNOCKBACK_DECAY_RATE
+		if self.knockback < KNOCKBACK_MIN:
+			self.knockback = Vector2()
+	else:
+		self.move_and_slide(self.speed * self.velocity)
 
 func is_ai():
 	return self.controller_type == Controller.AI
@@ -144,6 +160,9 @@ func add_life(amount):
 
 func take_damage(damage):
 	self.set_life(self.life - max(0.0, damage - self.get_defense()))
+	$Sprite.material.set_shader_param("active", true)
+	$DamageBlinkTimer.start()
+	self.invulnerable = true
 
 func set_movement(new_movement, force=false):
 	if (self.action != Action.DEATH and self.can_act or force) and new_movement != Action.get_movement(self.action):
@@ -165,6 +184,10 @@ func is_process_action(a):
 func die():
 	self.end()
 	self.emit_signal("character_death")
+
+func get_knocked_back(other):
+	var dir = (self.position - other.position).normalized()
+	self.knockback = dir * KNOCKBACK_INITIAL_SPEED / self.weight
 
 func block_action():
 	self.can_act = false
@@ -190,8 +213,13 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 
 func _on_AttackArea_area_entered(area):
 	var entity = area.get_parent()
-	if entity.is_in_group("damageble") and entity != self and \
+	if entity.is_in_group("damageble") and entity != self and not entity.invulnerable and \
 	   not (entity in self.already_hit) and Action.get_movement(self.action) == Action.ATTACK and \
 	   (entity.position - self.position).dot(Action.to_vec(self.action)) >= 0:
 		entity.take_damage(self.get_damage())
+		entity.get_knocked_back(self)
 		self.already_hit.append(entity)
+
+func _on_DamageBlinkTimer_timeout():
+	$Sprite.material.set_shader_param("active", false)
+	self.invulnerable = false

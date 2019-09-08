@@ -25,8 +25,9 @@ const ai_color = {
 var ai
 var enemy
 var tm
-var color
+var color = Color(1.0, 1.0, 1.0, 1.0)
 var parent
+var debug_mode = false
 var velocity = Vector2()
 
 onready var Action = ActionClass.new()
@@ -49,6 +50,8 @@ func _ready():
 	$ThinkTimer.wait_time = self.parent.think_time
 
 func init(params):
+	if params.has("debug_mode"):
+		self.debug_mode = params["debug_mode"]
 	self.color = ai_color[params["ai_type"]]
 
 	self.ai = AINode.instance()
@@ -68,7 +71,8 @@ func init(params):
 		"initial_state": self.get_state(),
 		"initial_action": Action.IDLE,
 		"character_type": params["character_type"],
-		"network_id": params["network_id"]
+		"network_id": params["network_id"],
+		"debug_mode": self.debug_mode
 	})
 	$DebugTimer.connect("timeout", self.ai, "_on_DebugTimer_timeout")
 	$ThinkTimer.start()

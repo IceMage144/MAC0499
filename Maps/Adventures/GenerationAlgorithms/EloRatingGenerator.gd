@@ -41,7 +41,7 @@ func _get_group_elo_id(monsters_info):
 	return group_elo_id
 
 func _calculate_char_elo(max_life, attack, defense):
-	return max_life / 9.0 + defense + attack - 10.0 / 9.0
+	return max_life / 9.0 + defense + attack - 1.0 / 9.0
 
 func _calculate_encounter_initial_elo(encounter):
 	var factor = 0.5 * (len(encounter) + 1)
@@ -53,7 +53,6 @@ func _calculate_encounter_initial_elo(encounter):
 	return factor * sum
 
 func _get_available_encountersR(monster_config, idx, depth, available_encounters, stack=[]):
-	print(idx, " ", depth, " ", stack)
 	if len(stack) > 0:
 		var encounter_id = self._get_group_elo_id(stack)
 		available_encounters[encounter_id] = stack.duplicate()
@@ -66,7 +65,6 @@ func _get_available_encountersR(monster_config, idx, depth, available_encounters
 			stack.pop_back()
 
 func _get_available_encounters(room_config, monster_config):
-	print(monster_config)
 	var max_monsters = -1
 	for room in room_config:
 		if room.monsters > max_monsters:
@@ -164,7 +162,6 @@ func _create_resources(num, config, win_chance):
 
 func _generate_dungeon(room_config, monster_config, resource_config):
 	var available_encounters = self._get_available_encounters(room_config, monster_config)
-	print(available_encounters.keys())
 	self._calculate_dungeon_elos(available_encounters)
 	var entrance_map = {}
 	for i in range(len(room_config)):

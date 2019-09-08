@@ -39,6 +39,7 @@ class QLAI(Node):
 		self.features_size = params["features_size"]
 		self.last_state = params["initial_state"]
 		self.last_action = params["initial_action"]
+		self.debug_mode = params["debug_mode"]
 		self.network_key = None
 	
 	def reset(self, timeout):

@@ -1,10 +1,32 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Characters/CharacterBase.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Characters/Human/Human.gd" type="Script" id=2]
 [ext_resource path="res://assets/images/characters/female_gold_armor.png" type="Texture" id=3]
 
-[sub_resource type="Animation" id=1]
+[sub_resource type="Shader" id=19]
+
+code = "shader_type canvas_item;
+
+uniform bool active = false;
+
+void fragment() {
+	vec4 self_color = texture(TEXTURE, UV);
+	if (active)
+		COLOR = vec4(1.0, 1.0, 1.0, self_color.a);
+	else
+		COLOR = self_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=20]
+
+resource_local_to_scene = true
+render_priority = 0
+shader = SubResource( 19 )
+shader_param/active = false
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="Animation" id=21]
 
 resource_name = "attack_down"
 length = 0.6
@@ -35,7 +57,7 @@ tracks/1/keys = {
 "values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( 10, -12, -9, -1, -15, -1, -19, -7, 6, -14 ), PoolVector2Array( 21, -13, 29, 2, 18, 11, -3, 8, 15, -13 ), PoolVector2Array( 20, -19, 42, -14, 44, -9, 32, 1, 16, -14 ), PoolVector2Array( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=22]
 
 resource_name = "attack_left"
 length = 0.6
@@ -66,7 +88,7 @@ tracks/1/keys = {
 "values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( -21, -18, -5, -18, -5, -11, -21, -11 ), PoolVector2Array( -38, -29, -7, -28, -7, -14, -38, -21 ), PoolVector2Array( -42, -31, -9, -31, -9, -20, -42, -26 ), PoolVector2Array( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=23]
 
 resource_name = "attack_right"
 length = 0.6
@@ -97,9 +119,8 @@ tracks/1/keys = {
 "values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( 21, -18, 5, -18, 5, -11, 21, -11 ), PoolVector2Array( 38, -29, 7, -28, 7, -14, 38, -21 ), PoolVector2Array( 42, -31, 9, -31, 9, -20, 42, -26 ), PoolVector2Array( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=24]
 
-resource_name = "attack_up"
 length = 0.6
 loop = false
 step = 0.1
@@ -128,9 +149,8 @@ tracks/1/keys = {
 "values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( -13, -29, 13, -27, 13, -18, -11, -25 ), PoolVector2Array( -3, -37, 22, -43, 31, -40, 22, -26, 11, -27 ), PoolVector2Array( 11, -26, 38, -37, 48, -29, 42, -22, 11, -18 ), PoolVector2Array( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=25]
 
-resource_name = "death"
 length = 0.8
 loop = false
 step = 0.1
@@ -147,9 +167,8 @@ tracks/0/keys = {
 "values": [ 72, 73, 74, 75, 76, 77 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=26]
 
-resource_name = "idle_down"
 length = 0.1
 loop = false
 step = 0.1
@@ -166,9 +185,8 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=27]
 
-resource_name = "idle_left"
 length = 0.1
 loop = false
 step = 0.1
@@ -185,7 +203,7 @@ tracks/0/keys = {
 "values": [ 27 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=28]
 
 length = 0.1
 loop = false
@@ -203,7 +221,7 @@ tracks/0/keys = {
 "values": [ 9 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=14]
 
 length = 0.1
 loop = false
@@ -221,9 +239,8 @@ tracks/0/keys = {
 "values": [ 18 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=15]
 
-resource_name = "walk_down"
 length = 0.8
 loop = true
 step = 0.1
@@ -240,9 +257,8 @@ tracks/0/keys = {
 "values": [ 1, 2, 3, 4, 5, 6, 7, 8 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=16]
 
-resource_name = "walk_left"
 length = 0.8
 loop = true
 step = 0.1
@@ -259,7 +275,7 @@ tracks/0/keys = {
 "values": [ 28, 29, 30, 31, 32, 33, 34, 35 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=17]
 
 length = 0.8
 loop = true
@@ -277,7 +293,7 @@ tracks/0/keys = {
 "values": [ 10, 11, 12, 13, 14, 15, 16, 17 ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=18]
 
 length = 0.8
 loop = true
@@ -298,30 +314,32 @@ tracks/0/keys = {
 [node name="Human" index="0" instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )
-defense = 0
+_sections_unfolded = [ "Material" ]
 controller_type = 1
 
 [node name="Sprite" parent="." index="1"]
 
+material = SubResource( 20 )
 texture = ExtResource( 3 )
 vframes = 9
 hframes = 9
+_sections_unfolded = [ "Material" ]
 
 [node name="AnimationPlayer" parent="Sprite" index="0"]
 
-anims/attack_down = SubResource( 1 )
-anims/attack_left = SubResource( 2 )
-anims/attack_right = SubResource( 3 )
-anims/attack_up = SubResource( 4 )
-anims/death = SubResource( 5 )
-anims/idle_down = SubResource( 6 )
-anims/idle_left = SubResource( 7 )
-anims/idle_right = SubResource( 8 )
-anims/idle_up = SubResource( 9 )
-anims/walk_down = SubResource( 10 )
-anims/walk_left = SubResource( 11 )
-anims/walk_right = SubResource( 12 )
-anims/walk_up = SubResource( 13 )
+anims/attack_down = SubResource( 21 )
+anims/attack_left = SubResource( 22 )
+anims/attack_right = SubResource( 23 )
+anims/attack_up = SubResource( 24 )
+anims/death = SubResource( 25 )
+anims/idle_down = SubResource( 26 )
+anims/idle_left = SubResource( 27 )
+anims/idle_right = SubResource( 28 )
+anims/idle_up = SubResource( 14 )
+anims/walk_down = SubResource( 15 )
+anims/walk_left = SubResource( 16 )
+anims/walk_right = SubResource( 17 )
+anims/walk_up = SubResource( 18 )
 
 [node name="CollisionPolygon2D" parent="HitBox" index="0"]
 

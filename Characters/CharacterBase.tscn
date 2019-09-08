@@ -1,35 +1,85 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Characters/CharacterBase.gd" type="Script" id=1]
-[ext_resource path="res://assets/images/UI/life_unit.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/UI/life_bar.png" type="Texture" id=2]
 
-[sub_resource type="StyleBoxTexture" id=1]
+
+[sub_resource type="Shader" id=1]
+
+code = "shader_type canvas_item;
+
+uniform bool active = false;
+
+void fragment() {
+	vec4 self_color = texture(TEXTURE, UV);
+	if (active)
+		COLOR = vec4(1.0, 1.0, 1.0, self_color.a);
+	else
+		COLOR = self_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+
+resource_local_to_scene = true
+render_priority = 0
+shader = SubResource( 1 )
+shader_param/active = null
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="AtlasTexture" id=3]
+
+flags = 0
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 16, 8 )
+margin = Rect2( 0, 0, 0, 0 )
+filter_clip = false
+
+[sub_resource type="StyleBoxTexture" id=4]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
-texture = ExtResource( 2 )
-region_rect = Rect2( 0, 0, 12, 5 )
-margin_left = 0.0
-margin_right = 0.0
-margin_top = 0.0
-margin_bottom = 0.0
+texture = SubResource( 3 )
+region_rect = Rect2( 0, 0, 16, 7 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 4.0
+margin_bottom = 2.0
 expand_margin_left = 0.0
 expand_margin_right = 0.0
 expand_margin_top = 0.0
 expand_margin_bottom = 0.0
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
 modulate_color = Color( 1, 1, 1, 1 )
 draw_center = true
+_sections_unfolded = [ "Margin" ]
 
-[sub_resource type="StyleBoxEmpty" id=2]
+[sub_resource type="AtlasTexture" id=5]
+
+flags = 0
+atlas = ExtResource( 2 )
+region = Rect2( 0, 8, 16, 8 )
+margin = Rect2( 0, 0, 0, 0 )
+filter_clip = false
+
+[sub_resource type="StyleBoxTexture" id=6]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
+texture = SubResource( 5 )
+region_rect = Rect2( 0, 0, 16, 7 )
+margin_left = 2.0
+margin_right = 2.0
+margin_top = 2.0
+margin_bottom = 2.0
+expand_margin_left = 0.0
+expand_margin_right = 0.0
+expand_margin_top = 0.0
+expand_margin_bottom = 0.0
+modulate_color = Color( 1, 1, 1, 1 )
+draw_center = true
 
 [node name="CharacterBase" type="KinematicBody2D" groups=[
 "character",
@@ -42,6 +92,7 @@ collision_mask = 1
 collision/safe_margin = 0.08
 script = ExtResource( 1 )
 speed = 120
+weight = 1
 max_life = 3
 damage = 1
 defense = 0
@@ -75,6 +126,7 @@ invert_border = 100.0
 
 [node name="Sprite" type="Sprite" parent="." index="1"]
 
+material = SubResource( 2 )
 position = Vector2( 0, -19 )
 region_rect = Rect2( 0, 640, 576, 80 )
 
@@ -128,18 +180,18 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = -18.0
+margin_left = -20.0
 margin_top = -52.0
-margin_right = 18.0
-margin_bottom = -47.0
+margin_right = 20.0
+margin_bottom = -44.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 0
-custom_styles/fg = SubResource( 1 )
-custom_styles/bg = SubResource( 2 )
+custom_styles/fg = SubResource( 4 )
+custom_styles/bg = SubResource( 6 )
 min_value = 0.0
 max_value = 3.0
 step = 1.0
@@ -148,10 +200,18 @@ value = 3.0
 exp_edit = false
 rounded = true
 percent_visible = false
-_sections_unfolded = [ "Rect" ]
+
+[node name="DamageBlinkTimer" type="Timer" parent="." index="6"]
+
+process_mode = 1
+wait_time = 0.05
+one_shot = true
+autostart = false
 
 [connection signal="animation_finished" from="Sprite/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 
 [connection signal="area_entered" from="AttackArea" to="." method="_on_AttackArea_area_entered"]
+
+[connection signal="timeout" from="DamageBlinkTimer" to="." method="_on_DamageBlinkTimer_timeout"]
 
 

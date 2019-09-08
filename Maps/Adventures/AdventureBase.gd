@@ -149,7 +149,8 @@ func init(params):
 	for room in self.rooms_info:
 		room.time = 0.0
 		for monster in room.monsters:
-			monster.attributes.network_id = global.randi_range(0, NUM_PERSISTED_NN)
+			if monster != null:
+				monster.attributes.network_id = global.randi_range(0, NUM_PERSISTED_NN)
 	self._create_room(0, "left")
 	var player = global.find_entity("player")
 	self._save_attributes(player, self.player_attributes)
@@ -192,6 +193,8 @@ func _init_spawners(room_info):
 	var mapped_monsters = {}
 	var spawners = self.current_room_node.get_node("MonsterSpawners").get_children()
 	for i in range(len(spawners)):
+		if room_info.monsters[i] == null:
+			continue
 		var spawner = spawners[i]
 		mapped_monsters[spawner.name] = room_info.monsters[i]
 	room_info.monsters = mapped_monsters

@@ -124,6 +124,9 @@ func is_ai():
 func get_pretty_name():
 	return self.name + " (" + self.controller_name + ")"
 
+func get_max_life():
+	return self.max_life
+
 func get_damage():
 	return self.damage
 

@@ -26,8 +26,23 @@ func get_enemy(entity):
 		return self.find_entity("team1")
 	return null
 
+# Random integer in the interval [start, end] (including both ends)
 func randi_range(start, end):
 	return int(start + floor(randf() * (end - start + 1)))
+
+func sample_from_normal(mean, std):
+	var U = randf()
+	var V
+	for i in range(5):
+		V = randf()
+	var X = sqrt(-2 * log(U)) * cos(2 * PI * V)
+	return mean + std * X
+
+func sample_from_normal_limited(mean, std, limits=[-INF, INF]):
+	var X = self.sample_from_normal(mean, std)
+	while X <= limits[0] or X >= limits[1]:
+		X = self.sample_from_normal(mean, std)
+	return X
 
 func choose_one(array, include_null=false):
 	var size = len(array) - int(not include_null)
@@ -53,6 +68,15 @@ func choose(array, num):
 			used[rand_num] = true
 			ret.append(array[rand_num])
 	return ret
+
+func shuffle_array(array):
+	var n = len(array)
+	for i in range(n - 1):
+		var pos = self.randi_range(i, n - 1)
+		var tmp = array[pos]
+		array[pos] = array[i]
+		array[i] = tmp
+	return array
 
 func dict_get(dict, key, default):
 	if key == null:

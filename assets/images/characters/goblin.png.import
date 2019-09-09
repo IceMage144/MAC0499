@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/marker_tiles.png-16d0ae2c97f09076ba30be9108242b8b.stex"
+path="res://.import/goblin.png-f16b13eee3591c8924bd0cf8da6c14e8.stex"
 
 [deps]
 
-source_file="res://assets/images/marker_tiles.png"
-dest_files=[ "res://.import/marker_tiles.png-16d0ae2c97f09076ba30be9108242b8b.stex" ]
+source_file="res://assets/images/characters/goblin.png"
+dest_files=[ "res://.import/goblin.png-f16b13eee3591c8924bd0cf8da6c14e8.stex" ]
 
 [params]
 

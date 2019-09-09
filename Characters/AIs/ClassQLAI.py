@@ -7,8 +7,8 @@ from godot import exposed, export
 from godot.bindings import *
 from godot.globals import *
 
-from AIs.QLAI import QLAI
-from AIs.structs import Experience
+from Characters.AIs.QLAI import QLAI
+from Characters.AIs.structs import Experience
 import util
 
 

@@ -11,7 +11,7 @@ from godot.bindings import *
 from godot.globals import *
 
 import util
-import AIs.structs as structs
+import Characters.AIs.structs as structs
 
 @exposed
 class QLAI(Node):

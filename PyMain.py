@@ -17,8 +17,8 @@ import matplotlib
 import pickle
 
 import util
-import AIs.QLAI
-import AIs.structs
+import Characters.AIs.QLAI
+import Characters.AIs.structs
 
 @exposed
 class PyMain(Node):

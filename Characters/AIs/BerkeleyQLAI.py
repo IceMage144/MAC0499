@@ -7,7 +7,7 @@ from godot import exposed, export
 from godot.bindings import *
 from godot.globals import *
 
-from AIs.QLAI import QLAI
+from Characters.AIs.QLAI import QLAI
 import util
 
 @exposed

@@ -1,6 +1,6 @@
 extends Node
 
-const AINode = preload("res://AIs/AI.tscn")
+const AINode = preload("res://Characters/AIs/AI.tscn")
 const ActionClass = preload("res://Characters/ActionBase.gd")
 
 enum Feature { ENEMY_DIST, SELF_LIFE, ENEMY_LIFE, ENEMY_ATTACKING, ENEMY_DIR_X, ENEMY_DIR_Y, BIAS }
@@ -9,10 +9,10 @@ enum AiType { BERKELEY, TORCH, MEMO, CLASSIFIER }
 const FEATURES_SIZE = Feature.BIAS + 1
 
 const ai_path = {
-	AiType.BERKELEY: "res://AIs/BerkeleyQLAI.py",
-	AiType.TORCH: "res://AIs/TorchQLAI.py",
-	AiType.MEMO: "res://AIs/MemoQLAI.py",
-	AiType.CLASSIFIER: "res://AIs/ClassQLAI.py"
+	AiType.BERKELEY: "res://Characters/AIs/BerkeleyQLAI.py",
+	AiType.TORCH: "res://Characters/AIs/TorchQLAI.py",
+	AiType.MEMO: "res://Characters/AIs/MemoQLAI.py",
+	AiType.CLASSIFIER: "res://Characters/AIs/ClassQLAI.py"
 }
 
 const ai_color = {

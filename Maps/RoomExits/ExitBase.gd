@@ -1,6 +1,4 @@
-extends Node2D
-
-signal player_collided
+extends "res://Interactives/InteractiveBase.gd"
 
 func remove(pos):
 	pass

@@ -26,7 +26,7 @@ func _ready():
 		Vector2(left, top) - pos, Vector2(right, top) - pos,
 		Vector2(right, bottom) - pos, Vector2(left, bottom) - pos
 	])
-	$Area2D/CollisionPolygon2D.polygon = polygon
+	$CollisionPolygon2D.polygon = polygon
 
 func _find_cells():
 	var wall = global.find_entity("wall")
@@ -54,7 +54,3 @@ func remove():
 	for cell in self.cells:
 		wall.set_cellv(cell, self.fill_tile_id)
 		wall.update_bitmask_area(cell)
-
-func _on_Area2D_body_entered(body):
-	if body.is_in_group("player"):
-		self.emit_signal("player_collided")

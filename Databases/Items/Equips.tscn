@@ -3,7 +3,6 @@
 [ext_resource path="res://Databases/Items/EquipData.gd" type="Script" id=1]
 [ext_resource path="res://assets/images/items/item-sheet.png" type="Texture" id=2]
 
-
 [sub_resource type="AtlasTexture" id=1]
 
 flags = 0
@@ -27,8 +26,8 @@ filter_clip = false
 script = ExtResource( 1 )
 icon = SubResource( 1 )
 description = "A simple sword made of bronze. It deals a small damage to monsters."
-price = 1
-damage = 1
+price = 30
+damage = 3
 type = "sword"
 
 [node name="Iron Sword" type="Node" parent="." index="1"]
@@ -36,8 +35,8 @@ type = "sword"
 script = ExtResource( 1 )
 icon = SubResource( 2 )
 description = "A sword made of a strong metal called iron. It deals moderate damage to monsters."
-price = 1
-damage = 2
+price = 60
+damage = 6
 type = "sword"
 
 

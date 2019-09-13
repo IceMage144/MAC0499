@@ -11,8 +11,8 @@
 script = ExtResource( 1 )
 type = ExtResource( 2 )
 description = "An evil goblin"
-max_life = 3
-attack = 1
+max_life = 30
+attack = 10
 defense = 0
 ai_type = 1
 
@@ -21,8 +21,8 @@ ai_type = 1
 script = ExtResource( 1 )
 type = ExtResource( 3 )
 description = "A huge spider"
-max_life = 3
-attack = 1
+max_life = 30
+attack = 10
 defense = 0
 ai_type = 1
 

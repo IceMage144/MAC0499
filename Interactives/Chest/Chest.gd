@@ -1,11 +1,11 @@
 extends "res://Interactives/InteractiveBase.gd"
 
-const MONEY_INTERVAL = 100
+const MONEY_INTERVAL = 10
 
 var amount = 0
 
 func _ready():
-	self.init({"amount": 300})
+	self.init({"amount": 30})
 
 func init(params):
 	self.amount = params.amount

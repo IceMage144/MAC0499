@@ -14,11 +14,17 @@ const room_config = [
 		"resources": 1
 	},
 	{
-		"type": preload("res://Maps/Adventures/Cave/CaveRoom3.tscn"),
+		"type": preload("res://Maps/Adventures/Cave/CaveRoom4.tscn"),
 		"exits": ["right", "top", "left", "bottom"],
-		"monsters": 0,
-		"resources": 3
+		"monsters": 2,
+		"resources": 0
 	}
+#	{
+#		"type": preload("res://Maps/Adventures/Cave/CaveRoom3.tscn"),
+#		"exits": ["right", "top", "left", "bottom"],
+#		"monsters": 0,
+#		"resources": 3
+#	}
 ]
 
 const monster_config = [
@@ -32,8 +38,8 @@ const resource_config = [
 		"attributes": {
 			"amount": {
 				"type": TYPE_INT,
-				"minimum": 100,
-				"maximum": 300
+				"minimum": 10,
+				"maximum": 30
 			}
 		}
 	}

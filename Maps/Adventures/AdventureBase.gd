@@ -15,7 +15,7 @@ const room_config = []
 const monster_config = []
 const resource_config = []
 
-const NUM_PERSISTED_NN = 4
+const NUM_PERSISTED_NN = 3
 
 export(GeneratorAgorithm) var generator_class = GeneratorAgorithm.RANDOM
 export(int, 1, 50) var max_rooms = 1

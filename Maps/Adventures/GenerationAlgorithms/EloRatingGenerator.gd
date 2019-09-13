@@ -1,21 +1,21 @@
 extends "res://Maps/Adventures/GenerationAlgorithms/GeneratorBase.gd"
 
 # Limit time needed for score calculation
-const LIMIT_TIME = 50.0
+const LIMIT_TIME = 60.0
 # Player elo changing rate
-const PLAYER_K = 0.1
+const PLAYER_K = 0.4
 # Room elo changing rate
-const ROOM_K = 0.1
+const ROOM_K = 0.4
 # Win chance average
-const WC_MEAN = 0.75
+const WC_MEAN = 0.725
 # Win chance standard deviation
-const WC_STD = 0.1
+const WC_STD = 0.07
 # Minimum win chance
 const MIN_WC = 0.5
 # Maximum win chance
-const MAX_WC = 1.0
+const MAX_WC = 0.95
 # Initial player elo (decided according self._calculate_char_elo)
-const INITIAL_PLAYER_ELO = 2.0 / 9.0
+const INITIAL_PLAYER_ELO = 11.0 / 9.0
 
 var elos = {}
 
@@ -41,7 +41,7 @@ func _get_group_elo_id(monsters_info):
 	return group_elo_id
 
 func _calculate_char_elo(max_life, attack, defense):
-	return max_life / 9.0 + defense + attack - 1.0 / 9.0
+	return (max_life / 9.0 + defense + attack) / 10.0 - 1.0 / 9.0
 
 func _calculate_encounter_initial_elo(encounter):
 	var factor = 0.5 * (len(encounter) + 1)
@@ -105,7 +105,7 @@ func _process_attributes(config, win_chance):
 		elif attribute.type == TYPE_INT:
 			var mn = attribute.minimum
 			var mx = attribute.maximum
-			value = mn + (mx - mn) * (win_chance - MIN_WC) / (MAX_WC - MIN_WC)
+			value = mx - (mx - mn) * (win_chance - MIN_WC) / (MAX_WC - MIN_WC)
 		attributes[attribute_name] = value
 	return attributes
 
@@ -127,6 +127,12 @@ func _create_monsters(num, config, win_chance, available_encounters):
 		elif encounter_elo_diff == min_encounter_elo_diff:
 			closest_encounters.append(available_encounters[encounter_id])
 	var choosen_encounter = global.choose_one(closest_encounters)
+
+	if self.debug_mode:
+		var character_types = []
+		for monster_info in choosen_encounter:
+			character_types.append(monster_info.name)
+		print(expected_elo, " ", character_types)
 	
 	var monsters = []
 	for monster_config in choosen_encounter:

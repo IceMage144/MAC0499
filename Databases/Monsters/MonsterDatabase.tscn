@@ -5,7 +5,7 @@
 [ext_resource path="res://Databases/Monsters/Elites.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Databases/Monsters/Bosses.tscn" type="PackedScene" id=4]
 
-[node name="MonsterDatabase" type="Node"]
+[node name="MonsterDatabase" type="Node" index="0"]
 
 script = ExtResource( 1 )
 

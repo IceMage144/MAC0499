@@ -1,13 +1,33 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Characters/CharacterBase.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Characters/Goblin/Goblin.gd" type="Script" id=2]
 [ext_resource path="res://assets/images/characters/goblin.png" type="Texture" id=3]
 
+[sub_resource type="Shader" id=1]
 
-[sub_resource type="Animation" id=1]
+code = "shader_type canvas_item;
 
-resource_name = "attack_down"
+uniform bool active = false;
+
+void fragment() {
+	vec4 self_color = texture(TEXTURE, UV);
+	if (active)
+		COLOR = vec4(1.0, 1.0, 1.0, self_color.a);
+	else
+		COLOR = self_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+
+resource_local_to_scene = true
+render_priority = 0
+shader = SubResource( 1 )
+shader_param/active = null
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="Animation" id=3]
+
 length = 0.4
 loop = false
 step = 0.1
@@ -33,12 +53,11 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( -14, -2, -4, -2, -4, 4, -6, 12, -12, 12, -14, 2 ), PoolVector2Array( -14, -4, -4, -4, -4, 4, -6, 12, -12, 12, -14, 2 ), PoolVector2Array( -16, -12, -6, -12, -6, -8, -8, 2, -14, 2, -16, -8 ), PoolVector2Array( 0, 0 ) ]
+"values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( -14, -2, -4, -2, -4, 4, -6, 12, -12, 12, -14, 2 ), PoolVector2Array( -14, -4, -4, -4, -4, 4, -6, 12, -12, 12, -14, 2 ), PoolVector2Array( 0, 0 ), PoolVector2Array( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=4]
 
-resource_name = "attack_left"
 length = 0.4
 loop = false
 step = 0.1
@@ -64,12 +83,11 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( -20, -28, -26, -30, -40, -30, -40, -22, -28, -18, -20, -18 ), PoolVector2Array( -16, -24, -20, -26, -34, -26, -34, -20, -24, -16, -16, -16 ), PoolVector2Array( -10, -22, -16, -22, -26, -20, -26, -14, -18, -12, -10, -12 ), PoolVector2Array( 0, 0 ) ]
+"values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( -20, -28, -26, -30, -40, -30, -40, -22, -28, -18, -20, -18 ), PoolVector2Array( -16, -24, -20, -26, -34, -26, -34, -20, -24, -16, -16, -16 ), PoolVector2Array( 0, 0 ), PoolVector2Array( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=5]
 
-resource_name = "attack_right"
 length = 0.4
 loop = false
 step = 0.1
@@ -95,12 +113,11 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( 20, -28, 26, -30, 40, -30, 40, -22, 28, -18, 20, -18 ), PoolVector2Array( 16, -24, 20, -26, 34, -26, 34, -20, 24, -16, 16, -16 ), PoolVector2Array( 10, -22, 16, -22, 26, -20, 26, -14, 18, -12, 10, -12 ), PoolVector2Array( 0, 0 ) ]
+"values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( 20, -28, 26, -30, 40, -30, 40, -22, 28, -18, 20, -18 ), PoolVector2Array( 16, -24, 20, -26, 34, -26, 34, -20, 24, -16, 16, -16 ), PoolVector2Array( 0, 0 ), PoolVector2Array( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=6]
 
-resource_name = "attack_up"
 length = 0.4
 loop = false
 step = 0.1
@@ -126,12 +143,11 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( 6, -42, 16, -42, 16, -50, 14, -58, 8, -58, 6, -50 ), PoolVector2Array( 6, -40, 16, -40, 16, -48, 14, -56, 8, -56, 6, -48 ), PoolVector2Array( 4, -30, 12, -30, 12, -36, 10, -46, 6, -46, 4, -36 ), PoolVector2Array( 0, 0 ) ]
+"values": [ PoolVector2Array( 0, 0 ), PoolVector2Array( 6, -42, 16, -42, 16, -50, 14, -58, 8, -58, 6, -50 ), PoolVector2Array( 6, -40, 16, -40, 16, -48, 14, -56, 8, -56, 6, -48 ), PoolVector2Array( 0, 0 ), PoolVector2Array( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=7]
 
-resource_name = "death"
 length = 0.7
 loop = false
 step = 0.1
@@ -148,9 +164,8 @@ tracks/0/keys = {
 "values": [ 56, 57, 58, 59, 60 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=8]
 
-resource_name = "idle_down"
 length = 0.1
 loop = false
 step = 0.1
@@ -167,9 +182,8 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=9]
 
-resource_name = "idle_left"
 length = 0.1
 loop = false
 step = 0.1
@@ -186,9 +200,8 @@ tracks/0/keys = {
 "values": [ 21 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=10]
 
-resource_name = "idle_right"
 length = 0.1
 loop = false
 step = 0.1
@@ -205,9 +218,8 @@ tracks/0/keys = {
 "values": [ 7 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=11]
 
-resource_name = "idle_up"
 length = 0.1
 loop = false
 step = 0.1
@@ -224,9 +236,8 @@ tracks/0/keys = {
 "values": [ 14 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=12]
 
-resource_name = "walk_down"
 length = 0.7
 loop = true
 step = 0.1
@@ -243,9 +254,8 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4, 5, 6 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=13]
 
-resource_name = "walk_left"
 length = 0.7
 loop = true
 step = 0.1
@@ -262,9 +272,8 @@ tracks/0/keys = {
 "values": [ 21, 22, 23, 24, 25, 26, 27 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=14]
 
-resource_name = "walk_right"
 length = 0.7
 loop = true
 step = 0.1
@@ -281,9 +290,8 @@ tracks/0/keys = {
 "values": [ 7, 8, 9, 10, 11, 12, 13 ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=15]
 
-resource_name = "walk_up"
 length = 0.7
 loop = true
 step = 0.1
@@ -303,7 +311,8 @@ tracks/0/keys = {
 [node name="Goblin" instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )
-defense = 0
+max_life = 30
+damage = 10
 controller_type = 1
 ai_type = 1
 learning_rate = 0.0005
@@ -314,6 +323,7 @@ experience_replay = true
 
 [node name="Sprite" parent="." index="1"]
 
+material = SubResource( 2 )
 position = Vector2( 0, -20 )
 texture = ExtResource( 3 )
 vframes = 9
@@ -321,19 +331,19 @@ hframes = 7
 
 [node name="AnimationPlayer" parent="Sprite" index="0"]
 
-anims/attack_down = SubResource( 1 )
-anims/attack_left = SubResource( 2 )
-anims/attack_right = SubResource( 3 )
-anims/attack_up = SubResource( 4 )
-anims/death = SubResource( 5 )
-anims/idle_down = SubResource( 6 )
-anims/idle_left = SubResource( 7 )
-anims/idle_right = SubResource( 8 )
-anims/idle_up = SubResource( 9 )
-anims/walk_down = SubResource( 10 )
-anims/walk_left = SubResource( 11 )
-anims/walk_right = SubResource( 12 )
-anims/walk_up = SubResource( 13 )
+anims/attack_down = SubResource( 3 )
+anims/attack_left = SubResource( 4 )
+anims/attack_right = SubResource( 5 )
+anims/attack_up = SubResource( 6 )
+anims/death = SubResource( 7 )
+anims/idle_down = SubResource( 8 )
+anims/idle_left = SubResource( 9 )
+anims/idle_right = SubResource( 10 )
+anims/idle_up = SubResource( 11 )
+anims/walk_down = SubResource( 12 )
+anims/walk_left = SubResource( 13 )
+anims/walk_right = SubResource( 14 )
+anims/walk_up = SubResource( 15 )
 
 [node name="CollisionPolygon2D" parent="HitBox" index="0"]
 

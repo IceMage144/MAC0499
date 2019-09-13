@@ -36,7 +36,6 @@ export(float) var think_time = 0.1
 var already_hit = []
 var velocity = Vector2()
 var action = ActionClass.compose(ActionClass.IDLE, ActionClass.DOWN)
-var life = max_life
 var can_act = true
 var controller
 var controller_name
@@ -44,6 +43,7 @@ var network_id = null
 var knockback = Vector2()
 var invulnerable = false
 
+onready var life = self.max_life
 onready var character_type = self.get_script().get_path().get_file().get_basename()
 onready var anim_node = $Sprite/AnimationPlayer
 onready var Action = ActionClass.new()
@@ -83,6 +83,8 @@ func _get_ai_controller_script():
 func _ready():
 	self.anim_node.play(Action.to_string(self.action))
 	self.controller = ControllerNode.instance()
+	self.set_max_life(self.max_life)
+	$LifeBar.value = self.life
 	match self.controller_type:
 		Controller.PLAYER:
 			self.controller.set_script(PlayerController)
@@ -112,9 +114,9 @@ func init(params):
 		assert(params.ai_type < AIType.size() and params.ai_type >= 0)
 		self.ai_type = params.ai_type
 	if params.has("max_life"):
-		# Assert that character has life
+		# Assert that character will have life
 		assert(params.max_life > 0)
-		self.max_life = params.max_life
+		self.set_max_life(params.max_life)
 	if params.has("life") and params.life >= 0:
 		self.set_life(min(self.max_life, max(0, params.life)))
 	else:
@@ -139,6 +141,12 @@ func is_ai():
 
 func get_pretty_name():
 	return self.name + " (" + self.controller_name + ")"
+
+func set_max_life(new_max_life):
+	self.max_life = new_max_life
+	$LifeBar.max_value = new_max_life
+	# - [max life] * ([FG margin] + 2) / [rect width]
+	$LifeBar.min_value = -new_max_life * 8 / 40
 
 func get_max_life():
 	return self.max_life

@@ -4,7 +4,7 @@ func get_item(item_name):
 	return self.get_entry(item_name)
 
 func get_items_in_group(group_name):
-	return self.get_enties_in_group(group_name)
+	return self.get_entries_in_group(group_name)
 
 func get_equip(equip_name):
 	self._get_from_tab("Equips", equip_name)

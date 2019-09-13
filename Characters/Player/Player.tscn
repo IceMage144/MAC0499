@@ -27,12 +27,14 @@ shader = SubResource( 1 )
 shader_param/active = false
 _sections_unfolded = [ "shader_param" ]
 
-[node name="Player" index="0" groups=[
+[node name="Player" groups=[
 "team1",
 ] instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )
 speed = 160
+max_life = 30
+damage = 10
 controller_type = 0
 
 [node name="Camera" type="Camera2D" parent="." index="0" groups=[
@@ -68,6 +70,12 @@ material = SubResource( 2 )
 position = Vector2( 0, -27 )
 texture = ExtResource( 3 )
 _sections_unfolded = [ "Material", "Transform" ]
+
+[node name="LifeBar" parent="." index="6"]
+
+min_value = 0.0
+max_value = 3.0
+value = 3.0
 
 [node name="Model" type="Node" parent="." index="7" groups=[
 "persistence",

@@ -1,7 +1,0 @@
-Slates [32x32px orthogonal tileset by Ivan Voirol]
-
-CC-BY 4.0
-
-https://opengameart.org/content/slates-32x32px-orthogonal-tileset-by-ivan-voirol
-
-Credit Ivan Voirol https://opengameart.org/users/ivan-voirol

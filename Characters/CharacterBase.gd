@@ -162,11 +162,12 @@ func set_life(new_life):
 	$LifeBar.value = self.life
 	if self.life == 0:
 		self.set_action(Action.DEATH)
+		$CollisionPolygon2D.disabled = true
 
 func add_life(amount):
 	self.set_life(self.life + amount)
 
-func take_damage(damage):
+func take_damage(damage, knockback=false):
 	self.set_life(self.life - max(0.0, damage - self.get_defense()))
 	$Sprite.material.set_shader_param("active", true)
 	$DamageBlinkTimer.start()
@@ -185,9 +186,9 @@ func set_action(new_action, force=false):
 func attack():
 	self.set_movement(Action.ATTACK)
 
-func is_process_action(a):
-	return Action.get_movement(a) == Action.IDLE or \
-		   Action.get_movement(a) == Action.WALK
+func is_process_action(action):
+	return Action.get_movement(action) == Action.IDLE or \
+		   Action.get_movement(action) == Action.WALK
 
 func die():
 	self.end()
@@ -209,6 +210,7 @@ func before_reset(timeout):
 func reset(timeout):
 	self.set_life(self.max_life)
 	self.set_action(Action.compose(Action.IDLE, Action.DOWN), true)
+	$CollisionPolygon2D.disabled = false
 	self.controller.reset(timeout)
 	
 func after_reset(timeout):
@@ -223,6 +225,7 @@ func _on_AttackArea_area_entered(area):
 	var entity = area.get_parent()
 	if entity.is_in_group("damageble") and entity != self and not entity.invulnerable and \
 	   not (entity in self.already_hit) and Action.get_movement(self.action) == Action.ATTACK and \
+	   Action.get_movement(entity.action) != Action.DEATH and \
 	   (entity.position - self.position).dot(Action.to_vec(self.action)) >= 0:
 		entity.take_damage(self.get_damage())
 		entity.get_knocked_back(self)

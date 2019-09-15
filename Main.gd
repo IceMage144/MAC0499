@@ -3,15 +3,16 @@ extends Node
 const PauseMenu = preload("res://UI/Menus/PauseMenu.tscn")
 const InventoryPopup = preload("res://UI/Popups/InventoryPopup.tscn")
 
-enum Scene { MAIN_MENU, ROBOT_ROBOT, PLAYER_ROBOT }
+enum Scene { MAIN_MENU, ROBOT_ROBOT, PLAYER_ROBOT, PERSISTENCE }
 
 const scene_path = {
 	Scene.MAIN_MENU: "res://UI/Menus/MainMenu.tscn",
 	Scene.ROBOT_ROBOT: "res://Maps/Tests/RobotRobotArena.tscn",
-	Scene.PLAYER_ROBOT: "res://Maps/Tests/PlayerRobotArena.tscn"
+	Scene.PLAYER_ROBOT: "res://Maps/Tests/PlayerRobotArena.tscn",
+	Scene.PERSISTENCE: "res://Maps/Tests/PersistenceArena.tscn"
 }
 
-export(int, "Main menu", "Robot vs Robot test", "Player vs Robot test") var first_scene = Scene.MAIN_MENU
+export(int, "Main menu", "Robot vs Robot test", "Player vs Robot test", "Persistence test") var first_scene = Scene.MAIN_MENU
 export(bool) var character_debug = false
 export(bool) var environment_debug = false
 export(bool) var popup_debug = false

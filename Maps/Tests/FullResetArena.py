@@ -7,16 +7,17 @@ from godot.bindings import *
 from godot.globals import *
 
 @exposed
-class Arena(Node2D):
+class FullResetArena(Node2D):
 	def _ready(self):
 		self.debug_mode = False
-		self.initial_positions = {}
 		self.tile_size = 32
 		self.arena_width = 27 * self.tile_size
 		self.arena_height = 13 * self.tile_size
 		for character in self.get_tree().get_nodes_in_group("character"):
-			self.initial_positions[character.name] = character.position
 			character.connect("character_death", self, "_on_character_death")
+			off = 2 * self.tile_size
+			character.position = Vector2(off + self.arena_width*random(), off + self.arena_height*random())
+			character.init(Dictionary({"network_id": 1}))
 
 	def init(self, params):
 		pass
@@ -47,21 +48,21 @@ class Arena(Node2D):
 		plt.show()
 
 	def reset(self, timeout):
-		if self.debug_mode:
-			self.print_info()
-		# self.get_parent().reset_game()
 		characters = self.get_tree().get_nodes_in_group("character")
 		for character in characters:
 			character.before_reset(timeout)
 		for character in characters:
-			off = 2 * self.tile_size
-			character.position = Vector2(off + self.arena_width*random(), off + self.arena_height*random())
 			character.reset(timeout)
 		for character in characters:
 			character.after_reset(timeout)
+		for character in characters:
+			character.end()
+
+		glob = self.get_node("/root/global")
+		main = glob.find_entity("main")
+		main.change_map(ResourceLoader.load(self.filename, "", False))
 
 	def _on_character_death(self):
-		self.get_node("TimeoutTimer").start()
 		self.reset(False)
 
 	def _on_TimeoutTimer_timeout(self):

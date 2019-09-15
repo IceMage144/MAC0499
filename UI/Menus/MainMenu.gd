@@ -4,12 +4,14 @@ const CityScene = preload("res://Maps/City/City.tscn")
 const CreditsScene = preload("res://UI/Menus/Credits.tscn")
 
 export(NodePath) var LoadGamePath
+export(NodePath) var ButtonContainerPath
 
 var name_to_id = {}
 var focused_button_id = 0
 
 onready var LoadGame = self.get_node(LoadGamePath)
-onready var buttons = $MarginContainer/VBoxContainer.get_children()
+onready var ButtonContainer = get_node(ButtonContainerPath)
+onready var buttons = ButtonContainer.get_children()
 
 func _ready():
 	for i in range(len(self.buttons)):

@@ -1,6 +1,7 @@
 extends "res://Characters/BaseRobotController.gd"
 
-const ATTACK_RANGE = 35
+const MAX_ATTACK_RANGE = 40
+const MIN_ATTACK_RANGE = 30
 
 func get_legal_actions(state):
 	var legal_actions = [Action.IDLE, Action.ATTACK]
@@ -10,28 +11,6 @@ func get_legal_actions(state):
 			legal_actions.append(Action.compose(Action.WALK, dir))
 
 	return legal_actions
-
-func get_reward(last_state, new_state, timeout):
-	if Action.get_movement(last_state["self_act"]) == Action.DEATH or \
-	   Action.get_movement(last_state["enemy_act"]) == Action.DEATH:
-		return 0.0
-
-	if new_state["enemy_life"] == 0:
-		return min(0.5 / (1.0 * self.parent.min_exploration_rate), 5.0)
-
-	if new_state["self_life"] == 0 or timeout:
-		return - min(0.5 / (1.0 * self.parent.min_exploration_rate), 5.0)
-
-	# var walked_vec = new_state["self_pos"] - last_state["self_pos"]
-	# var enemy_dist = last_state["enemy_pos"] - new_state["self_pos"]
-	# var dot_dist = 1.0 if walked_vec.dot(enemy_dist) > 0.0 else -1.0
-
-	# CAUTION: Needs normalization if damage per think is too high
-	var self_life_dif = last_state["self_life"] - new_state["self_life"]
-	var enemy_life_dif = last_state["enemy_life"] - new_state["enemy_life"]
-
-	# Range: [-0.75, 0.25]
-	return 0.5 * (enemy_life_dif - self_life_dif) - 0.25
 
 func get_features_after_action(state, action):
 	var self_mov = Action.get_movement(action)
@@ -57,17 +36,15 @@ func get_features_after_action(state, action):
 		if not self.parent.test_move(transform, dir_vec):
 			out[ENEMY_DIST] = state["enemy_pos"].distance_to(state["self_pos"] + dir_vec)
 	elif self_mov == Action.ATTACK:
-		if self._is_aligned(state["self_act"], state["enemy_pos"] - state["self_pos"]) \
-		   and out[ENEMY_DIST] < ATTACK_RANGE:
-			out[ENEMY_LIFE] -= (ATTACK_RANGE - out[ENEMY_DIST]) / ATTACK_RANGE
+		if self._is_aligned(state["self_act"], state["enemy_pos"] - state["self_pos"]):
+			out[ENEMY_LIFE] -= min(1.0, max(0.0, (MAX_ATTACK_RANGE - out[ENEMY_DIST]) / (MAX_ATTACK_RANGE - MIN_ATTACK_RANGE)))
 			# out[ENEMY_LIFE] = -1.0
 	
 	# CAUTION: DO NOT REMOVE THIS ATTACK_RANGE VERIFICATION, OTHERWISE IT WILL ALWAYS PREFFER
 	# ATTACK THAN OTHER ACTIONS
 	if enemy_mov == Action.ATTACK \
-	   and self._is_aligned(state["enemy_act"], state["self_pos"] - state["enemy_pos"]) \
-	   and out[ENEMY_DIST] < ATTACK_RANGE:
-		out[SELF_LIFE] -= (ATTACK_RANGE - out[ENEMY_DIST]) / ATTACK_RANGE
+	   and self._is_aligned(state["enemy_act"], state["self_pos"] - state["enemy_pos"]):
+		out[SELF_LIFE] -= min(1.0, max(0.0, (MAX_ATTACK_RANGE - out[ENEMY_DIST]) / (MAX_ATTACK_RANGE - MIN_ATTACK_RANGE)))
 		# out[SELF_LIFE] = -1.0
 
 	out[ENEMY_DIST] /= self.get_viewport().size.length()

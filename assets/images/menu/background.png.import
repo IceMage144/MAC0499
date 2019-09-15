@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/arrow.png-ccf0f6e5333696a58b23fb67fef55866.stex"
+path="res://.import/background.png-2be9ccb502e81b1d492fefc6f811bf89.stex"
 
 [deps]
 
-source_file="res://assets/images/arrow.png"
-dest_files=[ "res://.import/arrow.png-ccf0f6e5333696a58b23fb67fef55866.stex" ]
+source_file="res://assets/images/menu/background.png"
+dest_files=[ "res://.import/background.png-2be9ccb502e81b1d492fefc6f811bf89.stex" ]
 
 [params]
 

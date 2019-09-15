@@ -27,6 +27,7 @@ func _ready():
 		Vector2(right, bottom) - pos, Vector2(left, bottom) - pos
 	])
 	$CollisionPolygon2D.polygon = polygon
+	$StaticBody2D/CollisionPolygon2D.polygon = polygon
 
 func _find_cells():
 	var wall = global.find_entity("wall")

@@ -25,6 +25,7 @@ class QLAI(Node):
 		self.time = 0.0
 
 	def init(self, params):
+		self.learning_activated = params["learning_activated"]
 		self.discount = params["discount"]
 		self.epsilon = params["max_exploration_rate"]
 		self.max_epsilon = params["max_exploration_rate"]
@@ -114,12 +115,13 @@ class QLAI(Node):
 
 	def update_state(self, last=False, timeout=False):
 		ts = time.time()
-		self.time += self.think_time
 
 		state = self.parent.get_state()
-		reward = self.parent.get_reward(self.last_state, state, timeout)
 
-		self.update_weights(self.last_state, self.last_action, state, reward, last)
+		if self.learning_activated:
+			self.time += self.think_time
+			reward = self.parent.get_reward(self.last_state, state, timeout)
+			self.update_weights(self.last_state, self.last_action, state, reward, last)
 
 		self.last_action = self.compute_action_from_q_values(state)
 		self.last_state = state

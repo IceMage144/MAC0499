@@ -22,6 +22,7 @@ export(int) var damage = 1
 export(int) var defense = 0
 export(Controller) var controller_type = Controller.PLAYER
 export(AIType) var ai_type = AIType.BERKELEY
+export(bool) var learning_activated = true
 export(float, 0.0, 1.0, 0.0001) var learning_rate = 0.0
 export(float, 0.0, 1.0, 0.001) var discount = 0.0
 export(float, 0.0, 1.0, 0.001) var max_exploration_rate = 1.0
@@ -55,6 +56,7 @@ func _init_ai_controller(params):
 	self.add_child(self.controller)
 	var init_params = {
 		"ai_type": self.ai_type,
+		"learning_activated": self.learning_activated,
 		"learning_rate": self.learning_rate,
 		"discount": self.discount,
 		"max_exploration_rate": self.max_exploration_rate,
@@ -224,7 +226,8 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 func _on_AttackArea_area_entered(area):
 	var entity = area.get_parent()
 	if entity.is_in_group("damageble") and entity != self and not entity.invulnerable and \
-	   not (entity in self.already_hit) and Action.get_movement(self.action) == Action.ATTACK and \
+	   not entity.is_in_group(global.get_team(self)) and not (entity in self.already_hit) and \
+	   Action.get_movement(self.action) == Action.ATTACK and \
 	   Action.get_movement(entity.action) != Action.DEATH and \
 	   (entity.position - self.position).dot(Action.to_vec(self.action)) >= 0:
 		entity.take_damage(self.get_damage())

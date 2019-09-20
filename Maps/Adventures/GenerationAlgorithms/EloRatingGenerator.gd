@@ -212,7 +212,10 @@ func _generate_dungeon(room_config, monster_config, resource_config):
 					else:
 						# Needs a neighbor and max rooms not reached yet
 						var neighbor_config = room_config[global.choose_one(entrance_map[exit])]
-						var neighbor = self.create_room(neighbor_config)
+						var min_exits = 1
+						if len(queue) == 0 and len(rooms_info) + 1 < self.min_rooms:
+							min_exits = 2
+						var neighbor = self.create_room(neighbor_config, min_exits)
 						neighbor_id = len(rooms_info)
 						map[pos[0] + diff[0]][pos[1] + diff[1]] = neighbor_id
 						rooms_info.append(neighbor)

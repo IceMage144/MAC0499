@@ -4,11 +4,6 @@
 [ext_resource path="res://UI/Menus/PauseMenu.gd" type="Script" id=2]
 [ext_resource path="res://UI/Elements/BigBorderlessButton.tscn" type="PackedScene" id=3]
 
-
-
-
-
-
 [node name="PauseMenu" instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )

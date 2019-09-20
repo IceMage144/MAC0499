@@ -99,7 +99,7 @@ class TorchQLAI(QLAI):
 
 	def reset(self, timeout):
 		super(TorchQLAI, self).reset(timeout)
-		if self.use_experience_replay:
+		if self.use_experience_replay and self.learning_activated:
 			exp_sample = self.ep.sample()
 			if not (exp_sample is None):
 				loss = self._update_weights_experience(exp_sample)

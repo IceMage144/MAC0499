@@ -15,10 +15,11 @@ const room_config = []
 const monster_config = []
 const resource_config = []
 
-const NUM_PERSISTED_NN = 3
+const NUM_PERSISTED_NN = 4
 
 export(GeneratorAgorithm) var generator_class = GeneratorAgorithm.RANDOM
 export(int, 1, 50) var max_rooms = 1
+export(int, 1, 50) var min_rooms = 1
 
 var debug_mode = false
 var generator = null
@@ -143,14 +144,15 @@ func init(params):
 	self.add_child(generator)
 	generator.init({
 		"debug_mode": self.debug_mode,
-		"max_rooms": self.max_rooms
+		"max_rooms": self.max_rooms,
+		"min_rooms": self.min_rooms
 	})
 	self.rooms_info = generator.generate_dungeon(room_config, monster_config, resource_config)
 	for room in self.rooms_info:
 		room.time = 0.0
 		for monster in room.monsters:
 			if monster != null:
-				monster.attributes.network_id = global.randi_range(0, NUM_PERSISTED_NN)
+				monster.attributes.network_id = global.randi_range(0, NUM_PERSISTED_NN - 1)
 	self._create_room(0, "left")
 	var player = global.find_entity("player")
 	self._save_attributes(player, self.player_attributes)
@@ -270,7 +272,6 @@ func _on_monster_death(monster, spawner):
 	var current_room = self.rooms_info[self.current_room_id]
 	var monster_info = current_room.monsters[spawner.name]
 	self._save_attributes(monster_info.instance, monster_info.attributes)
-	monster_info.instance.end()
 	monster.queue_free()
 	monster_info.erase("instance")
 	current_room.alive_monsters -= 1

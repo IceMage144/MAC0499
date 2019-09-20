@@ -11,19 +11,71 @@
 script = ExtResource( 1 )
 type = ExtResource( 2 )
 description = "An evil goblin"
-max_life = 30
-attack = 10
+max_life = 15
+attack = 5
 defense = 0
 ai_type = 1
+learning_rate = 0.0
+discount = 0.0
+max_exploration_rate = 1.0
+min_exploration_rate = 0.3
+exploration_rate_decay_time = 0.0
+experience_replay = false
+experience_pool_size = 40
+think_time = 0.2
 
-[node name="Spider" type="Node" parent="." index="1"]
+[node name="GoblinP" type="Node" parent="." index="1"]
+
+script = ExtResource( 1 )
+type = ExtResource( 2 )
+description = "An evil goblin"
+max_life = 15
+attack = 5
+defense = 0
+ai_type = 0
+learning_rate = 0.0
+discount = 0.0
+max_exploration_rate = 1.0
+min_exploration_rate = 0.3
+exploration_rate_decay_time = 0.0
+experience_replay = false
+experience_pool_size = 40
+think_time = 0.2
+
+[node name="Spider" type="Node" parent="." index="2"]
 
 script = ExtResource( 1 )
 type = ExtResource( 3 )
 description = "A huge spider"
-max_life = 30
-attack = 10
+max_life = 15
+attack = 5
 defense = 0
 ai_type = 1
+learning_rate = 0.0
+discount = 0.0
+max_exploration_rate = 1.0
+min_exploration_rate = 0.3
+exploration_rate_decay_time = 0.0
+experience_replay = false
+experience_pool_size = 40
+think_time = 0.2
+
+[node name="SpiderP" type="Node" parent="." index="3"]
+
+script = ExtResource( 1 )
+type = ExtResource( 3 )
+description = "A huge spider"
+max_life = 15
+attack = 5
+defense = 0
+ai_type = 0
+learning_rate = 0.0
+discount = 0.0
+max_exploration_rate = 1.0
+min_exploration_rate = 0.3
+exploration_rate_decay_time = 0.0
+experience_replay = false
+experience_pool_size = 40
+think_time = 0.2
 
 

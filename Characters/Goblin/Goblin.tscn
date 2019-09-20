@@ -315,6 +315,7 @@ max_life = 30
 damage = 10
 controller_type = 1
 ai_type = 1
+learning_activated = true
 learning_rate = 0.0005
 discount = 0.999
 min_exploration_rate = 0.1

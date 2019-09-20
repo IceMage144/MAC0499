@@ -15,13 +15,15 @@ const str_to_matrix_index = {
 
 var debug_mode = false
 var max_rooms = 1
+var min_rooms = 1
 
 func init(params):
+	self.min_rooms = params.min_rooms
 	self.max_rooms = params.max_rooms
 	self.debug_mode = params.debug_mode
 
-func create_room(room_config):
-	var num_exits = global.randi_range(1, len(room_config.exits) - 1)
+func create_room(room_config, min_exits=1):
+	var num_exits = global.randi_range(min_exits, len(room_config.exits) - 1)
 	var exit_ids = global.choose(room_config.exits, num_exits)
 	var exits = {}
 	for exit in exit_ids:

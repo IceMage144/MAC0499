@@ -25,6 +25,7 @@ const ai_color = {
 var ai
 var enemy
 var tm
+var learning_activated = false
 var color = Color(1.0, 1.0, 1.0, 1.0)
 var parent
 var debug_mode = false
@@ -53,11 +54,13 @@ func init(params):
 	if params.has("debug_mode"):
 		self.debug_mode = params["debug_mode"]
 	self.color = ai_color[params["ai_type"]]
+	self.learning_activated = params["learning_activated"]
 
 	self.ai = AINode.instance()
 	self.ai.set_script(load(ai_path[params["ai_type"]]))
 	self.add_child(self.ai)
 	self.ai.init({
+		"learning_activated": params["learning_activated"],
 		"learning_rate": params["learning_rate"],
 		"discount": params["discount"],
 		"max_exploration_rate": params["max_exploration_rate"],

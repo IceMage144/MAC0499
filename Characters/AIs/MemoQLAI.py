@@ -121,7 +121,7 @@ class MemoQLAI(QLAI):
 		super(MemoQLAI, self).reset(timeout)
 		self.learning_model.reset_state()
 		self.seq_exp = Experience([], [], [])
-		if self.use_experience_replay:
+		if self.use_experience_replay and self.learning_activated:
 			exp_sample = self.ep.sample()
 			if not (exp_sample is None):
 				loss = self._update_weights_experience(exp_sample)

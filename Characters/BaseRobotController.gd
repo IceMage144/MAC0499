@@ -118,7 +118,11 @@ func get_reward(last_state, new_state, timeout):
 	var self_life_dif = last_state["self_life"] - new_state["self_life"]
 	var enemy_life_dif = last_state["enemy_life"] - new_state["enemy_life"]
 
-	# Range: [-0.75, 0.25]
+	# Range: [-1.0, 0.0]
+	# return - float(self_life_dif) / last_state["self_life"]
+	# Range: [-1.0, 1.0]
+	# return float(enemy_life_dif) / last_state["enemy_life"] - float(self_life_dif) / last_state["self_life"]
+	# Range: [-7.5, 2.5]
 	return 0.5 * (enemy_life_dif - self_life_dif) - 0.25
 
 # Abstract

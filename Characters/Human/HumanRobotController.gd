@@ -20,7 +20,6 @@ func get_features_after_action(state, action):
 	for i in range(FEATURES_SIZE):
 		out.append(0.0)
 
-	# TODO: Use A* instead of euclidian distance
 	out[ENEMY_DIST] = state["self_pos"].distance_to(state["enemy_pos"])
 	out[SELF_LIFE] = 0.0
 	out[ENEMY_LIFE] = 0.0

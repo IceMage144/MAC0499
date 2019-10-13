@@ -102,6 +102,9 @@ func get_state():
 	}
 
 func get_reward(last_state, new_state, timeout):
+	# "As a general rule, it is better to design performance measures according
+	# to what one actually wants in the environment, rather than according to
+	# how one thinks the agent should behave"
 	if Action.get_movement(last_state["enemy_act"]) == Action.DEATH or \
 	   new_state["enemy_life"] == 0:
 		return min(0.5 / (1.0 * self.parent.min_exploration_rate), 5.0)
@@ -109,10 +112,6 @@ func get_reward(last_state, new_state, timeout):
 	if Action.get_movement(last_state["self_act"]) == Action.DEATH or \
 	   new_state["self_life"] == 0 or timeout:
 		return - min(0.5 / (1.0 * self.parent.min_exploration_rate), 5.0)
-
-	# var walked_vec = new_state["self_pos"] - last_state["self_pos"]
-	# var enemy_dist = last_state["enemy_pos"] - new_state["self_pos"]
-	# var dot_dist = 1.0 if walked_vec.dot(enemy_dist) > 0.0 else -1.0
 
 	# CAUTION: Needs normalization if damage per think is too high
 	var self_life_dif = last_state["self_life"] - new_state["self_life"]
@@ -132,6 +131,9 @@ func get_legal_actions(state):
 # Abstract
 func get_features_after_action(state, action):
 	pass
+
+func get_features(state):
+	return self.get_features_after_action(state, Action.IDLE)
 
 func can_think():
 	# TODO: Is this the right way to do it?

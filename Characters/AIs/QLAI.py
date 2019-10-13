@@ -79,6 +79,10 @@ class QLAI(Node):
 		par_out = self.parent.get_features_after_action(state, action)
 		return torch.tensor(par_out)
 
+	def get_features(self, state):
+		par_out = self.parent.get_features(state)
+		return torch.tensor(par_out)
+
 	def compute_value_from_q_values(self, state):
 		legal_actions = self.parent.get_legal_actions(state)
 		return max([self.get_q_value(state, action) for action in legal_actions])

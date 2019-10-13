@@ -14,7 +14,7 @@ const WC_STD = 0.07
 const MIN_WC = 0.5
 # Maximum win chance
 const MAX_WC = 0.95
-# Initial player elo (decided according self._calculate_char_elo)
+# Initial player elo (decided according to self._calculate_char_elo)
 const INITIAL_PLAYER_ELO = 11.0 / 9.0
 
 var elos = {}

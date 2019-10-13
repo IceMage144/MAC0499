@@ -93,7 +93,7 @@ class ClassQLAI(QLAI):
 		return self.learning_model.back(actual_val_vec, lable_vec)
 
 	def update_weights(self, state, action, next_state, reward, last):
-		features = self.get_features_after_action(state, Action.IDLE)
+		features = self.get_features(next_state)
 		action_id = Action._get_action_id(action)
 		experience = Experience(features, reward, None if last else next_state, action_id)
 		self.ep.add(experience)

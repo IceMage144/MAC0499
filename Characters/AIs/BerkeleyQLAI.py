@@ -64,7 +64,7 @@ class BerkeleyQLAI(QLAI):
 			target += self.discount * next_state_action_value
 		prediction = self.get_q_value(state, action)
 		correction = target - prediction
-		features = self.get_features_after_action(state, action)
+		features = self.get_features(next_state)
 
 		self.learning_weights += self.alpha * correction * features
 		self.learning_weights /= self.learning_weights.norm()

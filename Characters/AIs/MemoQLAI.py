@@ -156,7 +156,7 @@ class MemoQLAI(QLAI):
 		return self.learning_model.back(actual_val_vec, lable_vec)
 	
 	def update_weights(self, state, action, next_state, reward, last):
-		features = self.get_features_after_action(state, action)
+		features = self.get_features(next_state)
 		self.seq_exp.append([features, reward, None if last else next_state])
 
 		# FIXME: Wasting time just to update internal state

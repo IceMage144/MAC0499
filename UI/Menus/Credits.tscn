@@ -98,7 +98,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 128.0
 margin_right = 924.0
-margin_bottom = 424.0
+margin_bottom = 434.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -113,9 +113,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 170.0
-margin_right = 753.0
-margin_bottom = 296.0
+margin_left = 164.0
+margin_right = 759.0
+margin_bottom = 306.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -132,8 +132,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 142.0
-margin_bottom = 296.0
+margin_right = 154.0
+margin_bottom = 306.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -145,17 +145,17 @@ alignment = 0
 
 [node name="ProgrammersTitle" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer/VBoxContainer" index="0" instance=ExtResource( 4 )]
 
-margin_right = 142.0
+margin_right = 154.0
 margin_bottom = 32.0
-text = "Programmer"
+text = "Programmers"
 align = 1
 
 [node name="Programmers" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer/VBoxContainer" index="1" instance=ExtResource( 5 )]
 
 margin_top = 62.0
-margin_right = 142.0
+margin_right = 154.0
 margin_bottom = 78.0
-text = "João Gabriel Basi"
+text = "João Basi"
 align = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" index="1"]
@@ -164,9 +164,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 192.0
-margin_right = 583.0
-margin_bottom = 296.0
+margin_left = 204.0
+margin_right = 595.0
+margin_bottom = 306.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1

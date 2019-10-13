@@ -126,7 +126,7 @@ class TorchQLAI(QLAI):
 		return self.learning_model.back(actual_val_vec, lable_vec)
 
 	def update_weights(self, state, action, next_state, reward, last):
-		features = self.get_features_after_action(state, action)
+		features = self.get_features(next_state)
 		experience = Experience(features, reward, None if last else next_state)
 		self.ep.add(experience)
 		exp_sample = self.ep.simple_sample()

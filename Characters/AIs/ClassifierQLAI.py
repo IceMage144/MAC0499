@@ -20,7 +20,7 @@ class CDN(nn.Module):
 		for i in range(self.layers):
 			modules.append(nn.Linear(arch[i], arch[i+1], bias=False))
 		self.model = nn.ModuleList(modules)
-		self.tanh = nn.Tanh()
+		self.activ = nn.Tanh()
 		self.criterion = nn.MSELoss()
 		self.optimizer = torch.optim.Adam(self.parameters(), lr=learning_rate,
 										  weight_decay=weight_decay)
@@ -28,7 +28,7 @@ class CDN(nn.Module):
 	def forward(self, features):
 		output = features
 		for i in range(self.layers-1):
-			output = self.tanh(self.model[i](output))
+			output = self.activ(self.model[i](output))
 		output = self.model[self.layers-1](output)
 		return output
 
@@ -41,16 +41,16 @@ class CDN(nn.Module):
 		return loss
 
 @exposed
-class ClassQLAI(QLAI):
+class ClassifierQLAI(QLAI):
 	"""
 	Q-Learning AI implemented using PyTorch.
 
-	This implementation uses a classifier neural network to aproximate the policy
-	function of all states at once, and uses an adaptative gradient descent to
+	This implementation uses a classifier neural network to approximate the policy
+	function of all states at once, and uses an adaptive gradient descent to
 	update its weights.
 	"""
 	def _ready(self):
-		super(ClassQLAI, self)._ready()
+		super(ClassifierQLAI, self)._ready()
 		self.learning_model = CDN([self.features_size, 12, 12, Action._get_size()], self.alpha, 0.01)
 	
 	def get_info(self):
@@ -67,7 +67,7 @@ class ClassQLAI(QLAI):
 		return self._torch_get_q_value(state, action_id).item()
 	
 	def reset(self, timeout):
-		super(ClassQLAI, self).reset(timeout)
+		super(ClassifierQLAI, self).reset(timeout)
 		if self.use_experience_replay:
 			exp_sample = self.ep.sample()
 			if not (exp_sample is None):
@@ -89,8 +89,8 @@ class ClassQLAI(QLAI):
 		actual_val_vec = torch.stack(actual_val_vec)
 		next_val_vec = torch.stack(next_val_vec)
 		reward_vec = torch.tensor(reward_vec)
-		lable_vec = reward_vec + self.discount * next_val_vec
-		return self.learning_model.back(actual_val_vec, lable_vec)
+		label_vec = reward_vec + self.discount * next_val_vec
+		return self.learning_model.back(actual_val_vec, label_vec)
 
 	def update_weights(self, state, action, next_state, reward, last):
 		features = self.get_features(next_state)
@@ -118,8 +118,8 @@ class ClassQLAI(QLAI):
 
 	# Print some variables for debug here
 	def _on_DebugTimer_timeout(self):
-		super(ClassQLAI, self)._on_DebugTimer_timeout()
-		print("------ ClassQLAI ------")
+		super(ClassifierQLAI, self)._on_DebugTimer_timeout()
+		print("------ ClassifierQLAI ------")
 		stats = ["max", "min", "avg"]
 		# self.logger.print_stats("update_state", stats)
 		# self.logger.print_stats("max_q_val", stats)

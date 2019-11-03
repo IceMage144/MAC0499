@@ -38,6 +38,7 @@ speed = 160
 max_life = 30
 damage = 10
 controller_type = 0
+learning_activated = true
 
 [node name="Camera" type="Camera2D" parent="." index="0" groups=[
 "camera",

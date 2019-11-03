@@ -26,7 +26,7 @@ class DQSN(nn.Module):
 			self.model.load_state_dict(model_params["model"])
 			self.memo.load_state_dict(model_params["memo"])
 			self.last_layer.load_state_dict(model_params["last_layer"])
-		self.relu = nn.Tanh()
+		self.activ = nn.Tanh()
 		self.criterion = nn.MSELoss()
 		self.optimizer = torch.optim.Adam(self.parameters(), lr=learning_rate,
 										  weight_decay=weight_decay)
@@ -35,7 +35,7 @@ class DQSN(nn.Module):
 	def forward(self, features, set_internal_state=True):
 		output = features
 		for i in range(self.layers-1):
-			output = self.relu(self.model[i](output))
+			output = self.activ(self.model[i](output))
 		output = torch.stack([self.model[self.layers-1](output)])
 		if output.dim() == 2:
 			output = torch.stack([output])
@@ -69,31 +69,25 @@ class DQSN(nn.Module):
 		self.state = new_state
 
 @exposed
-class MemoQLAI(QLAI):
+class MemoryQLAI(QLAI):
 	"""
 	Q-Learning AI implemented using PyTorch.
 
-	This implementation uses a neural network with a LSTM to aproximate the policy
-	function, and uses adaptative gradient descent to update its weights.
+	This implementation uses a neural network with a LSTM to approximate the policy
+	function, and uses adaptive gradient descent to update its weights.
 	The weights are updated every X calls to update_state.
-
-	This implementation has 4 hyperparams:
-		- Discount: Discounts past states' values
-		- Exploring rate: Chance that the agent executes a random action
-		- Learning rate: The rate that the agent learns
-		- Exploring rate decay: Decays the exploring rate each cycle
 	"""
 	def _ready(self):
-		super(MemoQLAI, self)._ready()
+		super(MemoryQLAI, self)._ready()
 		self.seq_size = 4
 		self.seq_exp = Experience([], [], [])
 	
 	def init(self, params):
-		super(MemoQLAI, self).init(params)
+		super(MemoryQLAI, self).init(params)
 		if not (params["network_id"] is None):
 			character_type = params["character_type"]
 			network_id = params["network_id"]
-			self.network_key = f"{character_type}_MemoQLAI_{network_id}"
+			self.network_key = f"{character_type}_MemoryQLAI_{network_id}"
 		persisted_params = self.load_params()
 		model_params = None
 		if not (persisted_params is None):
@@ -118,7 +112,7 @@ class MemoQLAI(QLAI):
 		return util.py2gdArray([param.tolist() for param in self.learning_model.parameters()])
 	
 	def reset(self, timeout):
-		super(MemoQLAI, self).reset(timeout)
+		super(MemoryQLAI, self).reset(timeout)
 		self.learning_model.reset_state()
 		self.seq_exp = Experience([], [], [])
 		if self.use_experience_replay and self.learning_activated:
@@ -187,8 +181,8 @@ class MemoQLAI(QLAI):
 
 	# Print some variables for debug here
 	def _on_DebugTimer_timeout(self):
-		super(MemoQLAI, self)._on_DebugTimer_timeout()
-		print("------ MemoQLAI ------")
+		super(MemoryQLAI, self)._on_DebugTimer_timeout()
+		print("------ MemoryQLAI ------")
 		stats = ["max", "min", "avg"]
 		self.logger.print_stats("update_state", stats)
 		# self.logger.print_stats("max_q_val", stats)

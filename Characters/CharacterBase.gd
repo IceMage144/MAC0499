@@ -7,13 +7,13 @@ const ActionClass = preload("res://Characters/ActionBase.gd")
 signal character_death
 
 enum Controller { PLAYER, AI }
-enum AIType {BERKELEY, TORCH, MEMO, CLASSIFIER}
+enum AIType { PERCEPTRON, FEEDFORWARD, MEMORY, CLASSIFIER }
 
 const KNOCKBACK_INITIAL_SPEED = 800
 const KNOCKBACK_DECAY_RATE = 0.6
 const KNOCKBACK_MIN = Vector2(20, 20)
 
-const ai_name = ["Berkeley", "Torch", "Memo", "Class"]
+const ai_name = ["Perceptron", "Feedforward", "Memory", "Classifier"]
 
 export(int) var speed = 120
 export(float) var weight = 1
@@ -21,15 +21,13 @@ export(int) var max_life = 3
 export(int) var damage = 1
 export(int) var defense = 0
 export(Controller) var controller_type = Controller.PLAYER
-export(AIType) var ai_type = AIType.BERKELEY
+export(AIType) var ai_type = AIType.PERCEPTRON
 export(bool) var learning_activated = true
 export(float, 0.0, 1.0, 0.0001) var learning_rate = 0.0
 export(float, 0.0, 1.0, 0.001) var discount = 0.0
 export(float, 0.0, 1.0, 0.001) var max_exploration_rate = 1.0
 export(float, 0.0, 1.0, 0.001) var min_exploration_rate = 0.0
 export(float) var exploration_rate_decay_time = 0.0
-export(float, 0.0, 1.0, 0.001) var momentum = 0.0
-export(float, 0.0, 1.0, 0.01) var reuse_last_action_chance = 0.0
 export(bool) var experience_replay = false
 export(int) var experience_pool_size = 40
 export(float) var think_time = 0.1
@@ -62,8 +60,6 @@ func _init_ai_controller(params):
 		"max_exploration_rate": self.max_exploration_rate,
 		"min_exploration_rate": self.min_exploration_rate,
 		"exploration_rate_decay_time": self.exploration_rate_decay_time,
-		"momentum": self.momentum,
-		"reuse_last_action_chance": self.reuse_last_action_chance,
 		"experience_replay": self.experience_replay,
 		"experience_pool_size": self.experience_pool_size,
 		"think_time": self.think_time,

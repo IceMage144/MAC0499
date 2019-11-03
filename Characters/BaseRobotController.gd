@@ -4,21 +4,21 @@ const AINode = preload("res://Characters/AIs/AI.tscn")
 const ActionClass = preload("res://Characters/ActionBase.gd")
 
 enum Feature { ENEMY_DIST, SELF_LIFE, ENEMY_LIFE, ENEMY_ATTACKING, ENEMY_DIR_X, ENEMY_DIR_Y, BIAS }
-enum AiType { BERKELEY, TORCH, MEMO, CLASSIFIER }
+enum AiType { PERCEPTRON, FEEDFORWARD, MEMORY, CLASSIFIER }
 
 const FEATURES_SIZE = Feature.BIAS + 1
 
 const ai_path = {
-	AiType.BERKELEY: "res://Characters/AIs/BerkeleyQLAI.py",
-	AiType.TORCH: "res://Characters/AIs/TorchQLAI.py",
-	AiType.MEMO: "res://Characters/AIs/MemoQLAI.py",
-	AiType.CLASSIFIER: "res://Characters/AIs/ClassQLAI.py"
+	AiType.PERCEPTRON: "res://Characters/AIs/PerceptronQLAI.py",
+	AiType.FEEDFORWARD: "res://Characters/AIs/FeedforwardQLAI.py",
+	AiType.MEMORY: "res://Characters/AIs/MemoryQLAI.py",
+	AiType.CLASSIFIER: "res://Characters/AIs/ClassifierQLAI.py"
 }
 
 const ai_color = {
-	AiType.BERKELEY: Color(0.2, 1.0, 0.2, 1.0),
-	AiType.TORCH: Color(1.0, 0.2, 0.2, 1.0),
-	AiType.MEMO: Color(0.2, 0.2, 1.0, 1.0),
+	AiType.PERCEPTRON: Color(0.2, 1.0, 0.2, 1.0),
+	AiType.FEEDFORWARD: Color(1.0, 0.2, 0.2, 1.0),
+	AiType.MEMORY: Color(0.2, 0.2, 1.0, 1.0),
 	AiType.CLASSIFIER: Color(1.0, 0.2, 1.0, 1.0)
 }
 
@@ -66,8 +66,6 @@ func init(params):
 		"max_exploration_rate": params["max_exploration_rate"],
 		"min_exploration_rate": params["min_exploration_rate"],
 		"exploration_rate_decay_time": params["exploration_rate_decay_time"],
-		"momentum": params["momentum"],
-		"reuse_last_action_chance": params["reuse_last_action_chance"],
 		"experience_replay": params["experience_replay"],
 		"experience_pool_size": params["experience_pool_size"],
 		"think_time": params["think_time"],

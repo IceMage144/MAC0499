@@ -6,7 +6,7 @@
 [ext_resource path="res://Characters/Player/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Characters/Spider/Spider.tscn" type="PackedScene" id=5]
 
-[node name="PlayerRobotArena" index="0" instance=ExtResource( 1 )]
+[node name="PlayerRobotArena" instance=ExtResource( 1 )]
 
 script = ExtResource( 2 )
 

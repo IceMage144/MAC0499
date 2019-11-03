@@ -1,8 +1,8 @@
 extends "res://Databases/Monsters/MonsterDataBase.gd"
 
-enum AIType {BERKELEY, TORCH, MEMO, CLASSIFIER}
+enum AIType { PERCEPTRON, FEEDFORWARD, MEMORY, CLASSIFIER}
 
-export(AIType) var ai_type = AIType.BERKELEY
+export(AIType) var ai_type = AIType.PERCEPTRON
 export(float, 1.0, 0.0, 0.001) var learning_rate = 0.0
 export(float, 0.0, 1.0, 0.001) var discount = 0.0
 export(float, 0.0, 1.0, 0.001) var max_exploration_rate = 1.0

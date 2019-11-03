@@ -22,22 +22,24 @@ class DQN(nn.Module):
 		self.model = nn.ModuleList(modules)
 		if not (model_params is None):
 			self.model.load_state_dict(model_params)
-		self.relu = nn.Tanh()
+		self.activ = nn.Tanh()
 		self.criterion = nn.MSELoss()
+		self.is_learning = (learning_rate != 0)
 		self.optimizer = torch.optim.Adam(self.parameters(), lr=learning_rate,
 										  weight_decay=weight_decay)
     
 	def forward(self, features):
 		output = features
 		for i in range(self.layers-1):
-			output = self.relu(self.model[i](output))
+			output = self.activ(self.model[i](output))
 		output = self.model[self.layers-1](output)
 		return output
  
 	def back(self, predicted, label):
+		if not self.is_learning:
+			return 0
 		self.optimizer.zero_grad()
 		loss = self.criterion(predicted, label)
-		# normalized_loss = torch.tanh(loss)
 		loss.backward()
 		self.optimizer.step()
 		return loss
@@ -46,31 +48,22 @@ class DQN(nn.Module):
 		return torch.argmax(self.forward(features)).item()
 
 @exposed
-class TorchQLAI(QLAI):
+class FeedforwardQLAI(QLAI):
 	"""
 	Q-Learning AI implemented using PyTorch.
 
-	This implementation uses a neural network to aproximate the policy
+	This implementation uses a neural network to approximate the policy
 	function, and uses gradient descent to update its weights.
-
-	This implementation has 4 hyperparams:
-		- Discount: Discounts past states' values
-		- Exploring rate: Chance that the agent executes a random action
-		- Learning rate: The rate that the agent learns
-		- Exploring rate decay: Decays the exploring rate each cycle
-
-	Some good presets:
-	* Ideal: [[[0.273222,0.218746,-0.238173,0.097687,-0.002475,0.158756,-0.206196,0.012181,0.136202]],[-0.216642]]
 	"""
 	def _ready(self):
-		super(TorchQLAI, self)._ready()
+		super(FeedforwardQLAI, self)._ready()
 	
 	def init(self, params):
-		super(TorchQLAI, self).init(params)
+		super(FeedforwardQLAI, self).init(params)
 		if not (params["network_id"] is None):
 			character_type = params["character_type"]
 			network_id = params["network_id"]
-			self.network_key = f"{character_type}_TorchQLAI_{network_id}"
+			self.network_key = f"{character_type}_FeedforwardQLAI_{network_id}"
 		persisted_params = self.load_params()
 		model_params = None
 		if not (persisted_params is None):
@@ -98,7 +91,7 @@ class TorchQLAI(QLAI):
 		return self._torch_get_q_value(state, action).item()
 
 	def reset(self, timeout):
-		super(TorchQLAI, self).reset(timeout)
+		super(FeedforwardQLAI, self).reset(timeout)
 		if self.use_experience_replay and self.learning_activated:
 			exp_sample = self.ep.sample()
 			if not (exp_sample is None):
@@ -121,9 +114,9 @@ class TorchQLAI(QLAI):
 		actual_val_vec = torch.stack(actual_val_vec)
 		next_val_vec = torch.stack(next_val_vec)
 		reward_vec = torch.tensor(reward_vec)
-		lable_vec = reward_vec + self.discount * next_val_vec
+		label_vec = reward_vec + self.discount * next_val_vec
 
-		return self.learning_model.back(actual_val_vec, lable_vec)
+		return self.learning_model.back(actual_val_vec, label_vec)
 
 	def update_weights(self, state, action, next_state, reward, last):
 		features = self.get_features(next_state)
@@ -151,8 +144,8 @@ class TorchQLAI(QLAI):
 
 	# Print some variables for debug here
 	def _on_DebugTimer_timeout(self):
-		super(TorchQLAI, self)._on_DebugTimer_timeout()
-		print("------ TorchQLAI ------")
+		super(FeedforwardQLAI, self)._on_DebugTimer_timeout()
+		print("------ FeedforwardQLAI ------")
 		stats = ["max", "min", "avg"]
 		self.logger.print_stats("update_state", stats)
 		# self.logger.print_stats("max_q_val", stats)

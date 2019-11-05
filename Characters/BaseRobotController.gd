@@ -48,35 +48,35 @@ func _ready():
 	self.parent = self.get_parent()
 	self.enemy = global.get_enemy(self.parent)
 	self.tm = global.find_entity("floor")
-	$ThinkTimer.wait_time = self.parent.think_time
 
 func init(params):
 	if params.has("debug_mode"):
-		self.debug_mode = params["debug_mode"]
-	self.color = ai_color[params["ai_type"]]
-	self.learning_activated = params["learning_activated"]
+		self.debug_mode = params.debug_mode
+	self.color = ai_color[params.ai_type]
+	self.learning_activated = params.learning_activated
 
 	self.ai = AINode.instance()
-	self.ai.set_script(load(ai_path[params["ai_type"]]))
+	self.ai.set_script(load(ai_path[params.ai_type]))
 	self.add_child(self.ai)
 	self.ai.init({
-		"learning_activated": params["learning_activated"],
-		"learning_rate": params["learning_rate"],
-		"discount": params["discount"],
-		"max_exploration_rate": params["max_exploration_rate"],
-		"min_exploration_rate": params["min_exploration_rate"],
-		"exploration_rate_decay_time": params["exploration_rate_decay_time"],
-		"experience_replay": params["experience_replay"],
-		"experience_pool_size": params["experience_pool_size"],
-		"think_time": params["think_time"],
+		"learning_activated": params.learning_activated,
+		"learning_rate": params.learning_rate,
+		"discount": params.discount,
+		"max_exploration_rate": params.max_exploration_rate,
+		"min_exploration_rate": params.min_exploration_rate,
+		"exploration_rate_decay_time": params.exploration_rate_decay_time,
+		"experience_replay": params.experience_replay,
+		"experience_pool_size": params.experience_pool_size,
+		"think_time": params.think_time,
 		"features_size": FEATURES_SIZE,
 		"initial_state": self.get_state(),
 		"initial_action": Action.IDLE,
-		"character_type": params["character_type"],
-		"network_id": params["network_id"],
+		"character_type": params.character_type,
+		"network_id": params.network_id,
 		"debug_mode": self.debug_mode
 	})
 	$DebugTimer.connect("timeout", self.ai, "_on_DebugTimer_timeout")
+	$ThinkTimer.wait_time = params.think_time
 	$ThinkTimer.start()
 
 func end():
@@ -103,24 +103,24 @@ func get_reward(last_state, new_state, timeout):
 	# "As a general rule, it is better to design performance measures according
 	# to what one actually wants in the environment, rather than according to
 	# how one thinks the agent should behave"
-	if Action.get_movement(last_state["enemy_act"]) == Action.DEATH or \
-	   new_state["enemy_life"] == 0:
+	if Action.get_movement(last_state.enemy_act) == Action.DEATH or \
+	   new_state.enemy_life == 0:
 		return min(0.5 / (1.0 * self.parent.min_exploration_rate), 5.0)
 
-	if Action.get_movement(last_state["self_act"]) == Action.DEATH or \
-	   new_state["self_life"] == 0 or timeout:
+	if Action.get_movement(last_state.self_act) == Action.DEATH or \
+	   new_state.self_life == 0 or timeout:
 		return - min(0.5 / (1.0 * self.parent.min_exploration_rate), 5.0)
 
 	# CAUTION: Needs normalization if damage per think is too high
-	var self_life_dif = last_state["self_life"] - new_state["self_life"]
-	var enemy_life_dif = last_state["enemy_life"] - new_state["enemy_life"]
+	var self_life_dif = last_state.self_life - new_state.self_life
+	var enemy_life_dif = last_state.enemy_life - new_state.enemy_life
 
 	# Range: [-1.0, 0.0]
-	# return - float(self_life_dif) / last_state["self_life"]
+	# return - float(self_life_dif) / last_state.self_life
 	# Range: [-1.0, 1.0]
-	# return float(enemy_life_dif) / last_state["enemy_life"] - float(self_life_dif) / last_state["self_life"]
+	return float(enemy_life_dif) / last_state.enemy_life - float(self_life_dif) / last_state.self_life
 	# Range: [-7.5, 2.5]
-	return 0.5 * (enemy_life_dif - self_life_dif) - 0.25
+	# return 0.5 * (enemy_life_dif - self_life_dif) - 0.25
 
 # Abstract
 func get_legal_actions(state):

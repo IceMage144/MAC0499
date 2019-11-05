@@ -4,7 +4,7 @@
 [ext_resource path="res://Characters/Goblin/Goblin.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Characters/Spider/Spider.tscn" type="PackedScene" id=3]
 
-[node name="Minions" type="Node"]
+[node name="Minions" type="Node" index="0"]
 
 [node name="Goblin" type="Node" parent="." index="0"]
 
@@ -12,9 +12,10 @@ script = ExtResource( 1 )
 type = ExtResource( 2 )
 description = "An evil goblin"
 max_life = 15
-attack = 5
+damage = 5
 defense = 0
 ai_type = 1
+learning_activated = false
 learning_rate = 0.0
 discount = 0.0
 max_exploration_rate = 1.0
@@ -30,9 +31,10 @@ script = ExtResource( 1 )
 type = ExtResource( 2 )
 description = "An evil goblin"
 max_life = 15
-attack = 5
+damage = 5
 defense = 0
 ai_type = 0
+learning_activated = false
 learning_rate = 0.0
 discount = 0.0
 max_exploration_rate = 1.0
@@ -48,9 +50,10 @@ script = ExtResource( 1 )
 type = ExtResource( 3 )
 description = "A huge spider"
 max_life = 15
-attack = 5
+damage = 5
 defense = 0
 ai_type = 1
+learning_activated = false
 learning_rate = 0.0
 discount = 0.0
 max_exploration_rate = 1.0
@@ -66,9 +69,10 @@ script = ExtResource( 1 )
 type = ExtResource( 3 )
 description = "A huge spider"
 max_life = 15
-attack = 5
+damage = 5
 defense = 0
 ai_type = 0
+learning_activated = false
 learning_rate = 0.0
 discount = 0.0
 max_exploration_rate = 1.0

@@ -15,8 +15,6 @@ const room_config = []
 const monster_config = []
 const resource_config = []
 
-const NUM_PERSISTED_NN = 4
-
 export(GeneratorAgorithm) var generator_class = GeneratorAgorithm.RANDOM
 export(int, 1, 50) var max_rooms = 1
 export(int, 1, 50) var min_rooms = 1
@@ -148,11 +146,6 @@ func init(params):
 		"min_rooms": self.min_rooms
 	})
 	self.rooms_info = generator.generate_dungeon(room_config, monster_config, resource_config)
-	for room in self.rooms_info:
-		room.time = 0.0
-		for monster in room.monsters:
-			if monster != null:
-				monster.attributes.network_id = global.randi_range(0, NUM_PERSISTED_NN - 1)
 	self._create_room(0, "left")
 	var player = global.find_entity("player")
 	self._save_attributes(player, self.player_attributes)
@@ -195,20 +188,18 @@ func _init_spawners(room_info):
 	var mapped_monsters = {}
 	var spawners = self.current_room_node.get_node("MonsterSpawners").get_children()
 	for i in range(len(spawners)):
-		if room_info.monsters[i] == null:
-			continue
-		var spawner = spawners[i]
-		mapped_monsters[spawner.name] = room_info.monsters[i]
+		if room_info.monsters[i] != null:
+			var spawner = spawners[i]
+			mapped_monsters[spawner.name] = room_info.monsters[i]
 	room_info.monsters = mapped_monsters
 	room_info.alive_monsters = room_info.monsters.size()
 
 	var mapped_resources = {}
 	spawners = self.current_room_node.get_node("ResourceSpawners").get_children()
 	for i in range(len(spawners)):
-		if room_info.resources[i] == null:
-			continue
-		var spawner = spawners[i]
-		mapped_resources[spawner.name] = room_info.resources[i]
+		if room_info.resources[i] != null:
+			var spawner = spawners[i]
+			mapped_resources[spawner.name] = room_info.resources[i]
 	room_info.resources = mapped_resources
 
 func _save_room():

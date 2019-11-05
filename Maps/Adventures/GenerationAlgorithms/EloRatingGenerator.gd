@@ -47,7 +47,7 @@ func _calculate_encounter_initial_elo(encounter):
 	var factor = 0.5 * (len(encounter) + 1)
 	var sum = 0
 	for character in encounter:
-		var char_elo = self._calculate_char_elo(character.max_life, character.attack,
+		var char_elo = self._calculate_char_elo(character.max_life, character.damage,
 												character.defense)
 		sum += char_elo
 	return factor * sum
@@ -136,16 +136,18 @@ func _create_monsters(num, config, win_chance, available_encounters):
 	
 	var monsters = []
 	for monster_config in choosen_encounter:
-		monsters.append({
+		var new_monster = {
 			"type": monster_config.type,
 			"attributes": {
 				"character_type": monster_config.name,
-				"damage": monster_config.attack,
+				"damage": monster_config.damage,
 				"defense": monster_config.defense,
-				"max_life": monster_config.max_life,
-				"ai_type": monster_config.ai_type
+				"max_life": monster_config.max_life
 			}
-		})
+		}
+		for attribute in monster_config.ATTRIBUTES:
+			new_monster.attributes[attribute] = monster_config[attribute]
+		monsters.append(new_monster)
 
 	for i in range(num - len(monsters)):
 		monsters.append(null)

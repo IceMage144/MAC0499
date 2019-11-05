@@ -16,22 +16,19 @@ import Characters.AIs.structs as structs
 @exposed
 class QLAI(Node):
 	def _ready(self):
-		glob = self.get_node("/root/global")
 		self.add_to_group("has_arch")
-
 		self.parent = self.get_parent()
-
 		self.logger = util.Logger()
 		self.time = 0.0
 
 	def init(self, params):
 		self.learning_activated = params["learning_activated"]
+		self.alpha = params["learning_rate"]
 		self.discount = params["discount"]
 		self.epsilon = params["max_exploration_rate"]
 		self.max_epsilon = params["max_exploration_rate"]
 		self.min_epsilon = params["min_exploration_rate"]
 		self.epsilon_decay_time = params["exploration_rate_decay_time"]
-		self.alpha = params["learning_rate"]
 		self.use_experience_replay = params["experience_replay"]
 		self.ep = structs.ExperiencePool(params["experience_pool_size"])
 		self.think_time = params["think_time"]

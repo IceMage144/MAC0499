@@ -24,7 +24,6 @@ class DQN(nn.Module):
 			self.model.load_state_dict(model_params)
 		self.activ = nn.Tanh()
 		self.criterion = nn.MSELoss()
-		self.is_learning = (learning_rate != 0)
 		self.optimizer = torch.optim.Adam(self.parameters(), lr=learning_rate,
 										  weight_decay=weight_decay)
     
@@ -36,8 +35,6 @@ class DQN(nn.Module):
 		return output
  
 	def back(self, predicted, label):
-		if not self.is_learning:
-			return 0
 		self.optimizer.zero_grad()
 		loss = self.criterion(predicted, label)
 		loss.backward()

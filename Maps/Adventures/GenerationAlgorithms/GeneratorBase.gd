@@ -13,6 +13,8 @@ const str_to_matrix_index = {
 	"bottom": [1, 0]
 }
 
+const NUM_PERSISTED_AI = 4
+
 var debug_mode = false
 var max_rooms = 1
 var min_rooms = 1
@@ -74,7 +76,13 @@ func generate_dungeon(room_config, monster_name_list, resource_config):
 	var monster_config = []
 	for monster_name in monster_name_list:
 		monster_config.append(MonsterDB.get_monster(monster_name))
-	return self._generate_dungeon(room_config, monster_config, resource_config)
+	var dungeon = self._generate_dungeon(room_config, monster_config, resource_config)
+	for room in dungeon:
+		room.time = 0.0
+		for monster in room.monsters:
+			if monster != null:
+				monster.attributes.network_id = global.randi_range(0, NUM_PERSISTED_AI - 1)
+	return dungeon
 
 # Abstract
 func _generate_dungeon(room_config, monster_config, resource_config):

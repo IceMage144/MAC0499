@@ -20,7 +20,7 @@ func _create_monsters(num, config):
 			"type": monster_config.type,
 			"attributes": {
 				"character_type": monster_config.name,
-				"damage": monster_config.attack,
+				"damage": monster_config.damage,
 				"defense": monster_config.defense,
 				"max_life": monster_config.max_life,
 				"ai_type": monster_config.ai_type

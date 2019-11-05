@@ -2,7 +2,13 @@ extends "res://Databases/Monsters/MonsterDataBase.gd"
 
 enum AIType { PERCEPTRON, FEEDFORWARD, MEMORY, CLASSIFIER}
 
+const ATTRIBUTES = ["ai_type", "learning_activated", "learning_rate",
+                    "discount", "max_exploration_rate", "min_exploration_rate",
+                    "exploration_rate_decay_time", "experience_replay",
+                    "experience_pool_size", "think_time"]
+
 export(AIType) var ai_type = AIType.PERCEPTRON
+export(bool) var learning_activated = true
 export(float, 1.0, 0.0, 0.001) var learning_rate = 0.0
 export(float, 0.0, 1.0, 0.001) var discount = 0.0
 export(float, 0.0, 1.0, 0.001) var max_exploration_rate = 1.0

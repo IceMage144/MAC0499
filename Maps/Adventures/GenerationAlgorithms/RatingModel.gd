@@ -1,10 +1,10 @@
 extends "res://Persistence/ModelBase.gd"
 
-const ELOS = "elos"
+const RATINGS = "ratings"
 
-const tag = "elo_rating_generator"
+const tag = "rating_generator"
 const model = {
-	ELOS: {
+	RATINGS: {
 		"type": TYPE_DICTIONARY,
 		"default": {}
 	}

@@ -3,11 +3,11 @@ extends Node2D
 signal room_cleared(room_info)
 signal room_dropped(room_info)
 
-enum GeneratorAgorithm { RANDOM, ELO_RATING }
+enum GeneratorAgorithm { RANDOM, RATING }
 
 const GENERATOR_PATH = {
 	GeneratorAgorithm.RANDOM: "res://Maps/Adventures/GenerationAlgorithms/RandomGenerator.tscn",
-	GeneratorAgorithm.ELO_RATING: "res://Maps/Adventures/GenerationAlgorithms/EloRatingGenerator.tscn"
+	GeneratorAgorithm.RATING: "res://Maps/Adventures/GenerationAlgorithms/RatingGenerator.tscn"
 }
 
 # Abstract
@@ -33,7 +33,7 @@ var rooms_info = {}
 #		"alive_monsters": 2,
 #		"monsters": {
 #			"Position2D": {
-#				 "type": preload("res://.../Goblin.tscn"),
+#				"type": preload("res://.../Goblin.tscn"),
 #				"attributes": {
 #					"character_type": "Goblin",
 #					"network_id": 2,

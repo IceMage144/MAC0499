@@ -2,9 +2,9 @@ extends "res://Maps/Adventures/GenerationAlgorithms/GeneratorBase.gd"
 
 # Limit time needed for score calculation
 const LIMIT_TIME = 60.0
-# Player elo changing rate
+# Player rating changing rate
 const PLAYER_K = 0.4
-# Room elo changing rate
+# Room rating changing rate
 const ROOM_K = 0.4
 # Win chance average
 const WC_MEAN = 0.725
@@ -14,20 +14,20 @@ const WC_STD = 0.07
 const MIN_WC = 0.5
 # Maximum win chance
 const MAX_WC = 0.95
-# Initial player elo (decided according to self._calculate_char_elo)
-const INITIAL_PLAYER_ELO = 11.0 / 9.0
+# Initial player rating (decided according to self._calculate_char_initial_rating)
+const INITIAL_PLAYER_RATING = 11.0 / 9.0
 
-var elos = {}
+var ratings = {}
 
 func _ready():
-	self.get_parent().connect("room_cleared", self, "_update_elos", [1])
-	self.get_parent().connect("room_dropped", self, "_update_elos", [0])
-	self.elos = $Model.get_data($Model.ELOS)
-	if not self.elos.has("Player"):
-		self.elos.Player = INITIAL_PLAYER_ELO
-		$Model.set_data($Model.ELOS, self.elos)
+	self.get_parent().connect("room_cleared", self, "_update_ratings", [1])
+	self.get_parent().connect("room_dropped", self, "_update_ratings", [0])
+	self.ratings = $Model.get_data($Model.RATINGS)
+	if not self.ratings.has("Player"):
+		self.ratings.Player = INITIAL_PLAYER_RATING
+		$Model.set_data($Model.RATINGS, self.ratings)
 
-func _get_group_elo_id(monsters_info):
+func _get_group_id(monsters_info):
 	var monster_types = []
 	for monster in monsters_info:
 		if typeof(monster) == TYPE_DICTIONARY:
@@ -35,26 +35,26 @@ func _get_group_elo_id(monsters_info):
 		else:
 			monster_types.append(monster.name)
 	monster_types.sort()
-	var group_elo_id = ":"
+	var group_id = ":"
 	for type in monster_types:
-		group_elo_id += type + ":"
-	return group_elo_id
+		group_id += type + ":"
+	return group_id
 
-func _calculate_char_elo(max_life, attack, defense):
+func _calculate_char_initial_rating(max_life, attack, defense):
 	return (max_life / 9.0 + defense + attack) / 10.0 - 1.0 / 9.0
 
-func _calculate_encounter_initial_elo(encounter):
+func _calculate_encounter_initial_rating(encounter):
 	var factor = 0.5 * (len(encounter) + 1)
 	var sum = 0
 	for character in encounter:
-		var char_elo = self._calculate_char_elo(character.max_life, character.damage,
-												character.defense)
-		sum += char_elo
+		var char_rating = self._calculate_char_initial_rating(character.max_life, character.damage,
+															  character.defense)
+		sum += char_rating
 	return factor * sum
 
 func _get_available_encountersR(monster_config, idx, depth, available_encounters, stack=[]):
 	if len(stack) > 0:
-		var encounter_id = self._get_group_elo_id(stack)
+		var encounter_id = self._get_group_id(stack)
 		available_encounters[encounter_id] = stack.duplicate()
 
 	if depth > 0:
@@ -74,26 +74,26 @@ func _get_available_encounters(room_config, monster_config):
 									max_monsters, available_encounters)
 	return available_encounters
 
-func _calculate_dungeon_elos(available_encounters):
+func _calculate_dungeon_ratings(available_encounters):
 	for encounter_id in available_encounters.keys():
-		if not self.elos.has(encounter_id):
+		if not self.ratings.has(encounter_id):
 			var encounter = available_encounters[encounter_id]
-			self.elos[encounter_id] = self._calculate_encounter_initial_elo(encounter)
-	$Model.set_data($Model.ELOS, self.elos)
+			self.ratings[encounter_id] = self._calculate_encounter_initial_rating(encounter)
+	$Model.set_data($Model.RATINGS, self.ratings)
 
-func _update_elos(room_info, was_cleared):
-	var player_elo = self.elos.Player
-	var room_elo_id = self._get_group_elo_id(room_info.monsters.values())
-	var room_elo = self.elos[room_elo_id]
+func _update_ratings(room_info, was_cleared):
+	var player_rating = self.ratings.Player
+	var room_id = self._get_group_id(room_info.monsters.values())
+	var room_rating = self.ratings[room_id]
 	var time = room_info.time
 	var score = (2 * was_cleared - 1) * (1 - min(time, LIMIT_TIME) / LIMIT_TIME)
-	var elo_diff = player_elo - room_elo
+	var rating_diff = player_rating - room_rating
 	var expected_score = 0
-	if elo_diff != 0:
-		expected_score = (exp(2 * elo_diff) + 1) / (exp(2 * elo_diff) - 1) - 1 / elo_diff
-	self.elos.Player = player_elo + PLAYER_K * (score - expected_score)
-	self.elos[room_elo_id] = room_elo + ROOM_K * (expected_score - score)
-	$Model.set_data($Model.ELOS, self.elos)
+	if rating_diff != 0:
+		expected_score = (exp(2 * rating_diff) + 1) / (exp(2 * rating_diff) - 1) - 1 / rating_diff
+	self.ratings.Player = player_rating + PLAYER_K * (score - expected_score)
+	self.ratings[room_id] = room_rating + ROOM_K * (expected_score - score)
+	$Model.set_data($Model.RATINGS, self.ratings)
 
 func _process_attributes(config, win_chance):
 	var attributes = {}
@@ -112,19 +112,19 @@ func _process_attributes(config, win_chance):
 func _create_monsters(num, config, win_chance, available_encounters):
 	if num == 0:
 		return []
-	var player_elo = self.elos.Player
-	var expected_elo = player_elo + log((1.0 - win_chance) / win_chance)
+	var player_rating = self.ratings.Player
+	var expected_rating = player_rating + log((1.0 - win_chance) / win_chance)
 	var closest_encounters = []
-	var min_encounter_elo_diff = INF
+	var min_encounter_rating_diff = INF
 	for encounter_id in available_encounters.keys():
 		if len(available_encounters[encounter_id]) > num:
 			continue
-		var encounter_elo = self.elos[encounter_id]
-		var encounter_elo_diff = abs(encounter_elo - expected_elo)
-		if encounter_elo_diff < min_encounter_elo_diff:
-			min_encounter_elo_diff = encounter_elo_diff
+		var encounter_rating = self.ratings[encounter_id]
+		var encounter_rating_diff = abs(encounter_rating - expected_rating)
+		if encounter_rating_diff < min_encounter_rating_diff:
+			min_encounter_rating_diff = encounter_rating_diff
 			closest_encounters = [available_encounters[encounter_id]]
-		elif encounter_elo_diff == min_encounter_elo_diff:
+		elif encounter_rating_diff == min_encounter_rating_diff:
 			closest_encounters.append(available_encounters[encounter_id])
 	var choosen_encounter = global.choose_one(closest_encounters)
 
@@ -132,7 +132,7 @@ func _create_monsters(num, config, win_chance, available_encounters):
 		var character_types = []
 		for monster_info in choosen_encounter:
 			character_types.append(monster_info.name)
-		print(expected_elo, " ", character_types)
+		print(expected_rating, " ", character_types)
 	
 	var monsters = []
 	for monster_config in choosen_encounter:
@@ -170,7 +170,7 @@ func _create_resources(num, config, win_chance):
 
 func _generate_dungeon(room_config, monster_config, resource_config):
 	var available_encounters = self._get_available_encounters(room_config, monster_config)
-	self._calculate_dungeon_elos(available_encounters)
+	self._calculate_dungeon_ratings(available_encounters)
 	var entrance_map = {}
 	for i in range(len(room_config)):
 		var room = room_config[i]

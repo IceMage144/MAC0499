@@ -99,16 +99,8 @@ var rooms_info = {}
 #]
 
 #monster_config = [
-# 	{
-# 		"type": preload("res://Characters/Goblin/Goblin.tscn"),
-# 		"attributes": {
-# 			"character_type": "Goblin",
-# 			"max_life": 3,
-# 			"damage": 1,
-# 			"defense": 0,
-# 			"ai_type": 1 # TorchQLAI
-# 		}
-# 	},
+# 	"Goblin",
+# 	"Spider",
 # 	...
 # ]
 

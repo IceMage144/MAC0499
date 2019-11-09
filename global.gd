@@ -99,6 +99,10 @@ func create_matrix(height, width, fill=null):
 			matrix[i].append(fill)
 	return matrix
 
+func remove_null(array):
+	while array.find(null) != -1:
+		array.erase(null)
+
 func save_info(nodes):
 	var saveFile = File.new()
 	var saveInfo = []

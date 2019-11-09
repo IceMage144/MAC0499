@@ -24,25 +24,6 @@ func init(params):
 	self.max_rooms = params.max_rooms
 	self.debug_mode = params.debug_mode
 
-func create_room(room_config, min_exits=1):
-	var num_exits = global.randi_range(min_exits, len(room_config.exits) - 1)
-	var exit_ids = global.choose(room_config.exits, num_exits)
-	var exits = {}
-	for exit in exit_ids:
-		exits[exit] = null
-	return {
-		"type": room_config.type,
-		"monsters": room_config.monsters,
-		"resources": room_config.resources,
-		"exits": exits
-	}
-
-func create_exit(room, exit):
-	return {
-		"room": room,
-		"entrance": global.dict_get(self.exit_entrance_map, exit, exit)
-	}
-
 func print_graph(room_info):
 	if not self.debug_mode:
 		return

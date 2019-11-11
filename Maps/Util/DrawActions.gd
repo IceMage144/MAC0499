@@ -38,7 +38,7 @@ func _draw():
 		for j in range(16, get_viewport().size.y, 64):
 			var pos = Vector2(i, j)
 			state["self_pos"] = pos
-			var action = botAI.compute_action_from_q_values(state)
+			var action = botAI._compute_action_from_q_values(state)
 			if "walk" in action:
 				draw_rect(Rect2(pos - Vector2(2, 2), Vector2(4, 4)), Color(1, 0, 0))
 				draw_line(pos, pos + 16*dir_to_vec[action[1]], Color(1, 0, 0))

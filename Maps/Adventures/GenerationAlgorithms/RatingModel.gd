@@ -2,10 +2,10 @@ extends "res://Persistence/ModelBase.gd"
 
 const RATINGS = "ratings"
 
-func get_tag():
+func _get_tag():
 	return "rating_generator"
 
-func get_model():
+func _get_model():
 	return {
 		RATINGS: {
 			"type": TYPE_DICTIONARY,

@@ -2,10 +2,10 @@ extends "res://Persistence/ModelBase.gd"
 
 const PARAMS = "params"
 
-func get_tag():
+func _get_tag():
 	return "ia"
 
-func get_model():
+func _get_model():
 	return {
 		PARAMS: {
 			"type": TYPE_DICTIONARY,

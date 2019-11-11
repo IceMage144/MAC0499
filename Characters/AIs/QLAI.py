@@ -60,9 +60,6 @@ class QLAI(Node):
 		bytes_data = pickle.dumps(params)
 		ascii_data = base64.encodebytes(bytes_data).decode()
 		NNParamsManager.set_params(self.network_key, ascii_data)
-
-	def get_action(self):
-		return self.last_action
 	
 	def get_loss(self):
 		return util.py2gdArray(self.logger.get_stored("loss"))
@@ -70,47 +67,8 @@ class QLAI(Node):
 	def get_name(self):
 		return self.parent.name
 
-	def get_features_after_action(self, state, action):
-		par_out = self.parent.get_features_after_action(state, action)
-		return torch.tensor(par_out)
-
-	def get_features(self, state):
-		par_out = self.parent.get_features(state)
-		return torch.tensor(par_out)
-
-	def compute_value_from_q_values(self, state):
-		legal_actions = self.parent.get_legal_actions(state)
-		return max([self.get_q_value(state, action) for action in legal_actions])
-
-	def compute_action_from_q_values(self, state):
-		legal_actions = self.parent.get_legal_actions(state)
-		if random() < self.epsilon:
-			return choice(legal_actions)
-		max_val = -math.inf
-		max_action_set = []
-		for a in legal_actions:
-			val = self.get_q_value(state, a)
-			if val == max_val:
-				max_action_set.append(a)
-			elif val > max_val:
-				max_action_set = [a]
-				max_val = val
-		return choice(max_action_set)
-	
-	def update_epsilon(self):
-		if not self.epsilon_decay_time:
-			self.epsilon = self.min_epsilon
-		else:
-			factor = min(self.time, self.epsilon_decay_time) / self.epsilon_decay_time
-			self.epsilon = factor * self.min_epsilon + (1.0 - factor) * self.max_epsilon
-
-	# Abstract
-	def update_weights(self, actual_state, action, next_state, reward, last):
-		pass
-
-	# Abstract
-	def get_q_value(self, state, action):
-		pass
+	def get_action(self):
+		return self.last_action
 
 	def update_state(self, last=False, timeout=False):
 		ts = time.time()
@@ -120,15 +78,46 @@ class QLAI(Node):
 		if self.learning_activated:
 			self.time += self.think_time
 			reward = self.parent.get_reward(self.last_state, state, timeout)
-			self.update_weights(self.last_state, self.last_action, state, reward, last)
+			self._update_weights(self.last_state, self.last_action, state, reward, last)
 
-		self.last_action = self.compute_action_from_q_values(state)
+		self.last_action = self._compute_action_from_q_values(state)
 		self.last_state = state
 		
-		self.update_epsilon()
+		self._update_epsilon()
 
 		te = time.time()
 		self.logger.push("update_state", (te - ts) * 1000)
+
+	# Abstract
+	def _get_q_value(self, state, action):
+		pass
+
+	# Abstract
+	def _compute_value_from_q_values(self, state):
+		pass
+
+	# Abstract
+	def _compute_action_from_q_values(self, state):
+		pass
+
+	# Abstract
+	def _update_weights(self, actual_state, action, next_state, reward, last):
+		pass
+
+	def _get_features_after_action(self, state, action):
+		par_out = self.parent.get_features_after_action(state, action)
+		return torch.tensor(par_out)
+
+	def _get_features(self, state):
+		par_out = self.parent.get_features(state)
+		return torch.tensor(par_out)
+	
+	def _update_epsilon(self):
+		if not self.epsilon_decay_time:
+			self.epsilon = self.min_epsilon
+		else:
+			factor = min(self.time, self.epsilon_decay_time) / self.epsilon_decay_time
+			self.epsilon = factor * self.min_epsilon + (1.0 - factor) * self.max_epsilon
 
 	# Print some variables for debug here
 	def _on_DebugTimer_timeout(self):

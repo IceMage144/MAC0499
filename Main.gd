@@ -55,7 +55,7 @@ func _process(_delta):
 func _check_persistence_tags():
 	var tag_memo = {}
 	for node in get_tree().get_nodes_in_group("persistence"):
-		var tag = node.get_tag()
+		var tag = node._get_tag()
 		# Assert that no two persistence tags are the same
 		assert(not tag_memo.has(tag))
 		tag_memo[tag] = true

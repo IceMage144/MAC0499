@@ -44,18 +44,37 @@ class PerceptronQLAI(QLAI):
 	def get_info(self):
 		return util.py2gdArray(self.learning_weights.tolist())
 
-	def get_q_value(self, state, action):
-		features = self.get_features_after_action(state, action)
+	def _get_q_value(self, state, action):
+		features = self._get_features_after_action(state, action)
 		return features @ self.learning_weights
 
-	def update_weights(self, state, action, next_state, reward, last):
-		next_state_action_value = self.compute_value_from_q_values(next_state)
+	def _compute_value_from_q_values(self, state):
+		legal_actions = self.parent.get_legal_actions(state)
+		return max([self._get_q_value(state, action) for action in legal_actions])
+
+	def _compute_action_from_q_values(self, state):
+		legal_actions = self.parent.get_legal_actions(state)
+		if random() < self.epsilon:
+			return choice(legal_actions)
+		max_val = -math.inf
+		max_action_set = []
+		for a in legal_actions:
+			val = self._get_q_value(state, a)
+			if val == max_val:
+				max_action_set.append(a)
+			elif val > max_val:
+				max_action_set = [a]
+				max_val = val
+		return choice(max_action_set)
+
+	def _update_weights(self, state, action, next_state, reward, last):
+		next_state_action_value = self._compute_value_from_q_values(next_state)
 		target = reward
 		if not last:
 			target += self.discount * next_state_action_value
-		prediction = self.get_q_value(state, action)
+		prediction = self._get_q_value(state, action)
 		correction = target - prediction
-		features = self.get_features(next_state)
+		features = self._get_features(next_state)
 
 		self.learning_weights += self.alpha * correction * features
 		self.learning_weights /= self.learning_weights.norm()

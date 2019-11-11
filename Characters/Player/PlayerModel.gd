@@ -5,10 +5,10 @@ const BAG = "bag"
 const QUICK = "quick"
 const SWORD = "sword"
 
-func get_tag():
+func _get_tag():
 	return "player"
 
-func get_model():
+func _get_model():
 	return {
 		MONEY: {
 			"type": TYPE_INT,

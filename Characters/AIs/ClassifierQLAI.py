@@ -56,15 +56,6 @@ class ClassifierQLAI(QLAI):
 	def get_info(self):
 		# TODO: Use state_dict method
 		return util.py2gdArray([param.tolist() for param in self.learning_model.parameters()])
-
-	def _torch_get_q_value(self, state, action_id):
-		features = self.get_features_after_action(state, Action.IDLE)
-		q_values = self.learning_model.forward(features)
-		return q_values[action_id]
-
-	def get_q_value(self, state, action):
-		action_id = Action._get_action_id(action)
-		return self._torch_get_q_value(state, action_id).item()
 	
 	def reset(self, timeout):
 		super(ClassifierQLAI, self).reset(timeout)
@@ -73,7 +64,37 @@ class ClassifierQLAI(QLAI):
 			if not (exp_sample is None):
 				loss = self._update_weights_experience(exp_sample)
 				self.logger.push("loss", loss.item())
-	
+
+	def _get_q_value(self, state, action):
+		action_id = Action._get_action_id(action)
+		features = self._get_features_after_action(state, Action.IDLE)
+		q_values = self.learning_model.forward(features)
+		return q_values[action_id]
+
+	def _compute_value_from_q_values(self, state):
+		if state is None:
+			return torch.tensor(0.0)
+		legal_actions_ids = [Action._get_action_id(a) for a in self.parent.get_legal_actions(state)]
+		return torch.max(self._get_q_value(state, legal_actions_ids))
+
+	def _compute_action_from_q_values(self, state):
+		legal_actions = self.parent.get_legal_actions(state)
+		if random() < self.epsilon:
+			return choice(legal_actions)
+		legal_actions_ids = [Action._get_action_id(a) for a in legal_actions]
+		prediction = self._get_q_value(state, legal_actions_ids)
+		best_action_id = legal_actions_ids[torch.argmax(prediction)]
+		return Action._get_action_from_id(best_action_id)
+
+	def _update_weights(self, state, action, next_state, reward, last):
+		features = self._get_features(next_state)
+		action_id = Action._get_action_id(action)
+		experience = Experience(features, reward, None if last else next_state, action_id)
+		self.ep.add(experience)
+		exp_sample = self.ep.simple_sample()
+		self._update_weights_experience(exp_sample)
+		self.logger.push("reward", reward)
+
 	def _update_weights_experience(self, exp_sample):
 		actual_val_vec = []
 		next_val_vec = []
@@ -82,7 +103,7 @@ class ClassifierQLAI(QLAI):
 			q_values = self.learning_model.forward(exp.features)
 			actual_val_vec.append(q_values[exp.action])
 
-			next_val = self.compute_value_from_q_values(exp.next_state)
+			next_val = self._compute_value_from_q_values(exp.next_state)
 			next_val_vec.append(next_val)
 
 			reward_vec.append(exp.reward)
@@ -91,30 +112,6 @@ class ClassifierQLAI(QLAI):
 		reward_vec = torch.tensor(reward_vec)
 		label_vec = reward_vec + self.discount * next_val_vec
 		return self.learning_model.back(actual_val_vec, label_vec)
-
-	def update_weights(self, state, action, next_state, reward, last):
-		features = self.get_features(next_state)
-		action_id = Action._get_action_id(action)
-		experience = Experience(features, reward, None if last else next_state, action_id)
-		self.ep.add(experience)
-		exp_sample = self.ep.simple_sample()
-		self._update_weights_experience(exp_sample)
-		self.logger.push("reward", reward)
-
-	def compute_value_from_q_values(self, state):
-		if state is None:
-			return torch.tensor(0.0)
-		legal_actions_ids = [Action._get_action_id(a) for a in self.parent.get_legal_actions(state)]
-		return torch.max(self._torch_get_q_value(state, legal_actions_ids))
-
-	def compute_action_from_q_values(self, state):
-		legal_actions = self.parent.get_legal_actions(state)
-		if random() < self.epsilon:
-			return choice(legal_actions)
-		legal_actions_ids = [Action._get_action_id(a) for a in legal_actions]
-		prediction = self._torch_get_q_value(state, legal_actions_ids)
-		best_action_id = legal_actions_ids[torch.argmax(prediction)]
-		return Action._get_action_from_id(best_action_id)
 
 	# Print some variables for debug here
 	def _on_DebugTimer_timeout(self):

@@ -4,7 +4,7 @@
 [ext_resource path="res://Characters/Goblin/Goblin.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Characters/Spider/Spider.tscn" type="PackedScene" id=3]
 
-[node name="Minions" type="Node" index="0"]
+[node name="Minions" type="Node"]
 
 [node name="Goblin" type="Node" parent="." index="0"]
 

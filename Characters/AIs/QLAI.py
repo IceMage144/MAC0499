@@ -89,14 +89,6 @@ class QLAI(Node):
 		self.logger.push("update_state", (te - ts) * 1000)
 
 	# Abstract
-	def _get_q_value(self, state, action):
-		pass
-
-	# Abstract
-	def _compute_value_from_q_values(self, state):
-		pass
-
-	# Abstract
 	def _compute_action_from_q_values(self, state):
 		pass
 

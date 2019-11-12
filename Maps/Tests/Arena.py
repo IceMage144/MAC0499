@@ -16,8 +16,9 @@ class Arena(Node2D):
 		self.arena_height = 13 * self.tile_size
 		for character in self.get_tree().get_nodes_in_group("character"):
 			self.initial_positions[character.name] = character.position
-			character.connect("character_death", self, "_on_character_death")
+			character.connect("character_death", self, "_on_character_death", Array([character]))
 			character.init(Dictionary())
+			# character.init(Dictionary({"network_id": character.name}))
 
 	def init(self, params):
 		pass
@@ -56,14 +57,20 @@ class Arena(Node2D):
 			character.before_reset(timeout)
 		for character in characters:
 			off = 2 * self.tile_size
-			character.position = Vector2(off + self.arena_width*random(), off + self.arena_height*random())
+			xPos = off + self.arena_width * random()
+			yPos = off + self.arena_height * random()
+			character.position = Vector2(xPos, yPos)
 			character.reset(timeout)
 		for character in characters:
 			character.after_reset(timeout)
+		for character in characters:
+			character.end()
 
-	def _on_character_death(self):
+	def _on_character_death(self, character):
 		self.get_node("TimeoutTimer").start()
+		print(f"{character.name} lost!")
 		self.reset(False)
 
 	def _on_TimeoutTimer_timeout(self):
 		self.reset(True)
+		print("Timeout!")

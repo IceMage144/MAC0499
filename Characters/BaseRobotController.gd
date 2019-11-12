@@ -87,13 +87,15 @@ func get_state():
 	return {
 		"self_pos": self.parent.position,
 		"self_life": self.parent.life,
-		"self_maxlife": self.parent.max_life,
-		"self_damage": self.parent.damage,
+		"self_maxlife": self.parent.get_max_life(),
+		"self_damage": self.parent.get_damage(),
+		"self_defense": self.parent.get_defense(),
 		"self_act": self.parent.action,
 		"enemy_pos": self.enemy.position,
 		"enemy_life": self.enemy.life,
-		"enemy_maxlife": self.enemy.max_life,
-		"enemy_damage": self.enemy.damage,
+		"enemy_maxlife": self.enemy.get_max_life(),
+		"enemy_damage": self.enemy.get_damage(),
+		"enemy_defense": self.enemy.get_defense(),
 		"enemy_act": self.enemy.action
 	}
 

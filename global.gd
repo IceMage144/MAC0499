@@ -20,11 +20,20 @@ func get_team(entity):
 	return ""
 
 func get_enemy(entity):
+	var enemy_team = "team1"
 	if entity.is_in_group("team1"):
-		return self.find_entity("team2")
-	elif entity.is_in_group("team2"):
-		return self.find_entity("team1")
-	return null
+		enemy_team = "team2"
+	var enemies = get_tree().get_nodes_in_group(enemy_team)
+	if len(enemies) == 0:
+		return null
+	var closest_enemy = null
+	var min_dist = INF
+	for enemy in enemies:
+		var dist = enemy.position.distance_to(entity.position)
+		if dist < min_dist:
+			closest_enemy = enemy
+			min_dist = dist
+	return closest_enemy
 
 # Random integer in the interval [start, end] (including both ends)
 func randi_range(start, end):

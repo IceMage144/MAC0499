@@ -43,8 +43,8 @@ func _process(_delta):
 			var pause_menu = PauseMenu.instance()
 			self.add_child(pause_menu)
 			pause_menu.debug_mode = self.popup_debug
-	if Input.is_action_just_pressed("rewind"):
-		self.reset_game()
+	# if Input.is_action_just_pressed("rewind"):
+	# 	self.reset_game()
 	if Input.is_action_just_pressed("bag"):
 		if global.has_entity("player"):
 			self.show_popup(InventoryPopup)

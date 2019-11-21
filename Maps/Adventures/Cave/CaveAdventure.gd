@@ -29,7 +29,7 @@ const room_config = [
 
 const monster_config = [
 	"Goblin",
-	"Spider"
+	"Slime"
 ]
 
 const resource_config = [

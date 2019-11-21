@@ -73,9 +73,9 @@ class MemoryQLAI(QLAI):
 	"""
 	Q-Learning AI implemented using PyTorch.
 
-	This implementation uses a neural network with a LSTM to approximate the policy
-	function, and uses adaptive gradient descent to update its weights.
-	The weights are updated every X calls to update_state.
+	This implementation uses a neural network with a LSTM to approximate
+	the Q-values of a sequence of actions, and uses adaptive gradient descent
+	to update its weights. The weights are updated every X calls to update_state.
 	"""
 	def _ready(self):
 		super(MemoryQLAI, self)._ready()

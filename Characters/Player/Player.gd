@@ -41,9 +41,15 @@ func _save_quick_items():
 
 func get_damage():
 	var damage = .get_damage()
-	if self.equipments["sword"] != null:
+	if self.equipments.has("sword") and self.equipments["sword"] != null:
 		damage += self.equipments.sword.damage
 	return damage
+
+func get_defense():
+	var defense = .get_defense()
+	if self.equipments.has("armor") and self.equipments["armor"] != null:
+		defense += self.equipments.armor.defense
+	return defense
 
 func get_bag():
 	return self.bag

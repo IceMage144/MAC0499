@@ -7,13 +7,13 @@ const ActionClass = preload("res://Characters/ActionBase.gd")
 signal character_death
 
 enum Controller { PLAYER, AI }
-enum AIType { PERCEPTRON, FEEDFORWARD, MEMORY, CLASSIFIER }
+enum AIType { PERCEPTRON, SINGLE, MEMORY, MULTI }
 
 const KNOCKBACK_INITIAL_SPEED = 800
 const KNOCKBACK_DECAY_RATE = 0.6
 const KNOCKBACK_MIN = Vector2(20, 20)
 
-const ai_name = ["Perceptron", "Feedforward", "Memory", "Classifier"]
+const ai_name = ["Perceptron", "Single", "Memory", "Multi"]
 
 export(int) var speed = 120
 export(float) var weight = 1
@@ -124,6 +124,9 @@ func init(params):
 
 func end():
 	self.controller.end()
+
+func _process(delta):
+	self._process_action(self.action)
 
 func _physics_process(delta):
 	if self.knockback:

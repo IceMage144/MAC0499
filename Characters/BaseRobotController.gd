@@ -4,22 +4,22 @@ const AINode = preload("res://Characters/AIs/AI.tscn")
 const ActionClass = preload("res://Characters/ActionBase.gd")
 
 enum Feature { ENEMY_DIST, SELF_LIFE, ENEMY_LIFE, ENEMY_ATTACKING, ENEMY_DIR_X, ENEMY_DIR_Y, BIAS }
-enum AiType { PERCEPTRON, FEEDFORWARD, MEMORY, CLASSIFIER }
+enum AiType { PERCEPTRON, SINGLE, MEMORY, MULTI }
 
 const FEATURES_SIZE = Feature.BIAS + 1
 
 const ai_path = {
 	AiType.PERCEPTRON: "res://Characters/AIs/PerceptronQLAI.py",
-	AiType.FEEDFORWARD: "res://Characters/AIs/FeedforwardQLAI.py",
+	AiType.SINGLE: "res://Characters/AIs/SingleQLAI.py",
 	AiType.MEMORY: "res://Characters/AIs/MemoryQLAI.py",
-	AiType.CLASSIFIER: "res://Characters/AIs/ClassifierQLAI.py"
+	AiType.MULTI: "res://Characters/AIs/MultiQLAI.py"
 }
 
 const ai_color = {
 	AiType.PERCEPTRON: Color(0.2, 1.0, 0.2, 1.0),
-	AiType.FEEDFORWARD: Color(1.0, 0.2, 0.2, 1.0),
+	AiType.SINGLE: Color(1.0, 0.2, 0.2, 1.0),
 	AiType.MEMORY: Color(0.2, 0.2, 1.0, 1.0),
-	AiType.CLASSIFIER: Color(1.0, 0.2, 1.0, 1.0)
+	AiType.MULTI: Color(1.0, 0.2, 1.0, 1.0)
 }
 
 var ai

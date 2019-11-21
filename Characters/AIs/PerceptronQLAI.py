@@ -17,7 +17,7 @@ class PerceptronQLAI(QLAI):
 	(http://ai.berkeley.edu/home.html).
 
 	The material uses an one-dimensional matrix of weights to approximate
-	the policy function, and uses Belman's equation to update them.
+	the Q-value of a single action, and uses Belman's equation to update them.
 	"""
 	def _ready(self):
 		super(PerceptronQLAI, self)._ready()

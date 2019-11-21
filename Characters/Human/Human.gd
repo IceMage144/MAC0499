@@ -1,7 +1,7 @@
 extends "res://Characters/CharacterBase.gd"
 
-func _process(delta):
-	var mov = Action.get_movement(self.action)
+func _process_action(action):
+	var mov = Action.get_movement(action)
 	if mov == Action.ATTACK or mov == Action.DEATH:
 		self.velocity = Vector2()
 	else:

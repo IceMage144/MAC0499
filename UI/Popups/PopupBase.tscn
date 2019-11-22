@@ -2,9 +2,6 @@
 
 [ext_resource path="res://UI/Popups/PopupBase.gd" type="Script" id=1]
 
-
-
-
 [node name="PopupBase" type="CanvasLayer"]
 
 pause_mode = 2

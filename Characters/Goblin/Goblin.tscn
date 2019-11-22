@@ -44,7 +44,7 @@ tracks/0/keys = {
 "values": [ 28, 29, 30, 31, 0 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -74,7 +74,7 @@ tracks/0/keys = {
 "values": [ 49, 50, 51, 52, 21 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -104,7 +104,7 @@ tracks/0/keys = {
 "values": [ 35, 36, 37, 38, 7 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -134,7 +134,7 @@ tracks/0/keys = {
 "values": [ 42, 43, 44, 45, 14 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -315,7 +315,6 @@ max_life = 30
 damage = 10
 controller_type = 1
 ai_type = 1
-learning_activated = true
 learning_rate = 0.0005
 discount = 0.999
 min_exploration_rate = 0.1
@@ -332,6 +331,7 @@ hframes = 7
 
 [node name="AnimationPlayer" parent="Sprite" index="0"]
 
+autoplay = "idle_down"
 anims/attack_down = SubResource( 3 )
 anims/attack_left = SubResource( 4 )
 anims/attack_right = SubResource( 5 )
@@ -346,7 +346,7 @@ anims/walk_left = SubResource( 13 )
 anims/walk_right = SubResource( 14 )
 anims/walk_up = SubResource( 15 )
 
-[node name="CollisionPolygon2D" parent="HitBox" index="0"]
+[node name="HitBoxPolygon" parent="HitBox" index="0"]
 
 polygon = PoolVector2Array( -16, -38, 16, -38, 16, -2, -16, -2 )
 

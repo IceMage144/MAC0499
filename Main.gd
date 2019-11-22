@@ -47,7 +47,10 @@ func _process(_delta):
 	# 	self.reset_game()
 	if Input.is_action_just_pressed("bag"):
 		if global.has_entity("player"):
-			self.show_popup(InventoryPopup)
+			if self.current_popup != null and self.current_popup.is_in_group("inventory"):
+				self.close_popup()
+			else:
+				self.show_popup(InventoryPopup)
 	if Input.is_action_just_pressed("test"):
 		var shop = load("res://UI/Popups/ShopPopup.tscn")
 		self.show_popup(shop, "equip")

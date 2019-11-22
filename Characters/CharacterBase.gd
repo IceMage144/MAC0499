@@ -217,6 +217,11 @@ func reset(timeout):
 func after_reset(timeout):
 	self.controller.after_reset(timeout)
 
+func _is_entity_attackable(entity):
+	return entity.is_in_group("damageble") and not entity.invulnerable and \
+		   not entity.is_in_group(global.get_team(self)) and not (entity in self.already_hit) and \
+		   Action.get_movement(entity.action) != Action.DEATH
+
 func _on_AnimationPlayer_animation_finished(anim_name):
 	var death = Action.to_string(Action.DEATH)
 	if anim_name.begins_with(death):
@@ -224,10 +229,8 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 
 func _on_AttackArea_area_entered(area):
 	var entity = area.get_parent()
-	if entity.is_in_group("damageble") and entity != self and not entity.invulnerable and \
-	   not entity.is_in_group(global.get_team(self)) and not (entity in self.already_hit) and \
-	   Action.get_movement(self.action) == Action.ATTACK and \
-	   Action.get_movement(entity.action) != Action.DEATH and \
+	if self._is_entity_attackable(entity) and \
+	   $AttackArea/AttackAreaPolygon.polygon.size() > 1 and \
 	   (entity.position - self.position).dot(Action.to_vec(self.action)) >= 0:
 		entity.take_damage(self.get_damage())
 		entity.get_knocked_back(self)

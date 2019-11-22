@@ -45,7 +45,7 @@ tracks/0/keys = {
 "values": [ 36, 37, 38, 39, 40, 41, 0 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -76,7 +76,7 @@ tracks/0/keys = {
 "values": [ 63, 64, 65, 66, 67, 68, 27 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -107,7 +107,7 @@ tracks/0/keys = {
 "values": [ 45, 46, 47, 48, 49, 50, 9 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -137,7 +137,7 @@ tracks/0/keys = {
 "values": [ 54, 55, 56, 57, 58, 59, 18 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -327,6 +327,7 @@ _sections_unfolded = [ "Material" ]
 
 [node name="AnimationPlayer" parent="Sprite" index="0"]
 
+autoplay = "idle_down"
 anims/attack_down = SubResource( 3 )
 anims/attack_left = SubResource( 4 )
 anims/attack_right = SubResource( 5 )
@@ -341,9 +342,9 @@ anims/walk_left = SubResource( 13 )
 anims/walk_right = SubResource( 14 )
 anims/walk_up = SubResource( 15 )
 
-[node name="CollisionPolygon2D" parent="HitBox" index="0"]
+[node name="HitBoxPolygon" parent="HitBox" index="0"]
 
-polygon = PoolVector2Array( -12, -29, 12, -29, 12, -5, -12, -5 )
+polygon = PoolVector2Array( -12, -30, 12, -30, 12, -4, -12, -4 )
 
 [node name="LifeBar" parent="." index="5"]
 

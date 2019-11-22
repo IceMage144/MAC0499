@@ -44,7 +44,7 @@ tracks/0/keys = {
 "values": [ 28, 29, 30, 0 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -74,7 +74,7 @@ tracks/0/keys = {
 "values": [ 49, 50, 51, 21 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -104,7 +104,7 @@ tracks/0/keys = {
 "values": [ 35, 36, 37, 7 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -134,7 +134,7 @@ tracks/0/keys = {
 "values": [ 42, 43, 44, 14 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("../AttackArea/CollisionPolygon2D:polygon")
+tracks/1/path = NodePath("../AttackArea/AttackAreaPolygon:polygon")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -336,6 +336,7 @@ hframes = 7
 
 [node name="AnimationPlayer" parent="Sprite" index="0"]
 
+autoplay = "idle_down"
 anims/attack_down = SubResource( 3 )
 anims/attack_left = SubResource( 4 )
 anims/attack_right = SubResource( 5 )
@@ -354,12 +355,8 @@ anims/walk_up = SubResource( 15 )
 
 polygon = PoolVector2Array( -22, 0, -21, -4, -17, -8, -11, -10, -4, -11, 4, -11, 11, -10, 17, -8, 21, -4, 22, 0, 21, 4, 17, 8, 11, 10, 4, 11, -4, 11, -11, 10, -17, 8, -21, 4 )
 
-[node name="CollisionPolygon2D" parent="AttackArea" index="0"]
+[node name="HitBoxPolygon" parent="HitBox" index="0"]
 
-polygon = PoolVector2Array(  )
-
-[node name="CollisionPolygon2D" parent="HitBox" index="0"]
-
-polygon = PoolVector2Array( -20, -20, 20, -20, 20, 7, -20, 7 )
+polygon = PoolVector2Array( -20, -20, 20, -20, 20, 8, -20, 8 )
 
 

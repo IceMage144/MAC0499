@@ -98,13 +98,12 @@ damage = 1
 defense = 0
 controller_type = null
 ai_type = 0
+learning_activated = true
 learning_rate = 0.0
 discount = 0.0
 max_exploration_rate = 1.0
 min_exploration_rate = 0.0
 exploration_rate_decay_time = 0.0
-momentum = 0.0
-reuse_last_action_chance = 0.0
 experience_replay = false
 experience_pool_size = 40
 think_time = 0.1
@@ -154,7 +153,7 @@ angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AttackArea" index="0"]
+[node name="AttackAreaPolygon" type="CollisionPolygon2D" parent="AttackArea" index="0"]
 
 build_mode = 0
 polygon = PoolVector2Array( 0, 0 )
@@ -169,7 +168,7 @@ angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HitBox" index="0"]
+[node name="HitBoxPolygon" type="CollisionPolygon2D" parent="HitBox" index="0"]
 
 build_mode = 0
 polygon = PoolVector2Array( 0, 0 )

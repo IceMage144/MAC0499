@@ -10,11 +10,11 @@ func _ready():
 	# Assert that the inherited class sets a model
 	assert(model != null)
 	self._cached_data = SaveManager.load_data(tag)
-	print(tag + " loaded " + self._print_debug(self._cached_data))
+	# print(tag + " loaded " + self._print_debug(self._cached_data))
 	for key in model:
 		var data_schema = model[key]
 		if data_schema.has("default") and not self._cached_data.has(key):
-			print("Overwrited data: " + str(key) + " with " + str(data_schema["default"]))
+			# print("Overwrited data: " + str(key) + " with " + str(data_schema["default"]))
 			self._cached_data[key] = data_schema["default"]
 
 func _print_debug(value):
@@ -53,7 +53,7 @@ func set_data(key, value):
 	assert(model[key].type == typeof(value))
 	self._cached_data[key] = value
 	SaveManager.save_data(tag, self._cached_data)
-	print(tag + " saved " + self._print_debug(self._cached_data))
+	# print(tag + " saved " + self._print_debug(self._cached_data))
 
 # Abstract
 func _get_tag():

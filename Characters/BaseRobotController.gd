@@ -19,7 +19,7 @@ const ai_color = {
 	AiType.PERCEPTRON: Color(0.2, 1.0, 0.2, 1.0),
 	AiType.SINGLE: Color(1.0, 0.2, 0.2, 1.0),
 	AiType.MEMORY: Color(0.2, 0.2, 1.0, 1.0),
-	AiType.MULTI: Color(1.0, 0.2, 1.0, 1.0)
+	AiType.MULTI: Color(0.2, 1.0, 1.0, 1.0)
 }
 
 var ai
@@ -105,11 +105,11 @@ func get_reward(last_state, new_state, timeout):
 	# how one thinks the agent should behave"
 	if Action.get_movement(last_state.enemy_act) == Action.DEATH or \
 	   new_state.enemy_life == 0:
-		return min(0.5 / (1.0 * self.parent.min_exploration_rate), 5.0)
+		return 1.0
 
 	if Action.get_movement(last_state.self_act) == Action.DEATH or \
 	   new_state.self_life == 0 or timeout:
-		return - min(0.5 / (1.0 * self.parent.min_exploration_rate), 5.0)
+		return -1.0
 
 	# CAUTION: Needs normalization if damage per think is too high
 	var self_life_dif = last_state.self_life - new_state.self_life

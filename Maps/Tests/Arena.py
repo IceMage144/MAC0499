@@ -6,6 +6,8 @@ from godot import exposed, export
 from godot.bindings import *
 from godot.globals import *
 
+GRAPH_FREQUENCY = 10
+
 @exposed
 class Arena(Node2D):
 	def _ready(self):
@@ -14,6 +16,7 @@ class Arena(Node2D):
 		self.tile_size = 32
 		self.arena_width = 27 * self.tile_size
 		self.arena_height = 13 * self.tile_size
+		self.rounds = 0
 		for character in self.get_tree().get_nodes_in_group("character"):
 			self.initial_positions[character.name] = character.position
 			character.connect("character_death", self, "_on_character_death", Array([character]))
@@ -28,27 +31,21 @@ class Arena(Node2D):
 		loss_info = {}
 		print("------------")
 		for character in self.get_tree().get_nodes_in_group("robot"):
-			team = glob.get_team(character)
-			print(character.get_pretty_name() + ": " + str(character.life) + " (" + team + ")")
-			if loss_info.get(team) is None:
-				loss_info[team] = {}
-			loss_info[team][character.name] = character.controller.get_loss()
+			pretty_name = character.get_pretty_name()
+			print(pretty_name + ": " + str(character.life))
+			loss_info[pretty_name] = character.controller.get_loss()
 		
-		fig, ax = plt.subplots(len(loss_info), 1)
-		for i, (team, val) in enumerate(loss_info.items()):
-			for j, (name, loss) in enumerate(val.items()):
-				if len(loss_info) == 1:
-					ax.set_title(name)
-					ax.plot(loss)
-				elif len(val) == 1:
-					ax[i].set_title(name)
-					ax[i].plot(loss)
-				else:
-					ax[i][j].set_title(name)
-					ax[i][j].plot(loss)
-		plt.show()
+		if self.rounds % GRAPH_FREQUENCY == 0:
+			fig, ax = plt.subplots(1, 1, figsize=(7, 3))
+			for i, (name, loss) in enumerate(loss_info.items()):
+				# ax.set_title(name)
+				ax.plot(loss, label=name)
+			ax.legend()
+			plt.tight_layout()
+			plt.show()
 
 	def reset(self, timeout):
+		self.rounds += 1
 		if self.debug_mode:
 			self.print_info()
 		# self.get_parent().reset_game()

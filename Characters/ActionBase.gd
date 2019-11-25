@@ -1,3 +1,5 @@
+extends Object
+
 const MOVEMENT_FILTER = 0x00ffffff
 const DIRECTION_FILTER = 0xff000000
 const DIAGONAL_FILTER = 0xaa000000
@@ -56,6 +58,23 @@ func to_string(action):
 	if direction:
 		return "{0}_{1}".format([self._id_to_str[movement], self._id_to_str[direction]])
 	return self._id_to_str[movement]
+
+func from_string(string):
+	var first_string_size = string.find("_")
+	var mov_name = string.to_upper()
+	if first_string_size != -1:
+		mov_name = mov_name.substr(0, first_string_size)
+
+	# Movement does not exists
+	assert(Movement.has(mov_name))
+	if first_string_size == -1:
+		return Movement[mov_name]
+	
+	var dir_name = string.substr(first_string_size + 1, string.length()).to_upper()
+	# Direction does not exists
+	assert(Direction.has(dir_name))
+
+	return self.compose(Movement[mov_name], Direction[dir_name])
 
 # Get an action direction as vector
 func to_vec(action):

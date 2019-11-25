@@ -11,7 +11,6 @@ from Characters.AIs.QLAI import QLAI
 from Characters.AIs.structs import Experience
 import util
 
-
 class CDN(nn.Module):
 	def __init__(self, arch, learning_rate, weight_decay):
 		super(CDN, self).__init__()
@@ -49,10 +48,31 @@ class MultiQLAI(QLAI):
 	of all actions at once, and uses an adaptive gradient descent to
 	update its weights.
 	"""
+
 	def _ready(self):
 		super(MultiQLAI, self)._ready()
-		self.learning_model = CDN([self.features_size, 12, 12, Action._get_size()], self.alpha, 0.01)
+		ActionClass = ResourceLoader.load("res://Characters/ActionBase.gd", "", False)
+		Action = ActionClass.new()
+		AVAILABLE_ACTIONS = [
+			Action.from_string("idle"),
+			Action.from_string("attack"),
+			Action.from_string("walk_right"),
+			Action.from_string("walk_up_right"),
+			Action.from_string("walk_up"),
+			Action.from_string("walk_up_left"),
+			Action.from_string("walk_left"),
+			Action.from_string("walk_down_left"),
+			Action.from_string("walk_down"),
+			Action.from_string("walk_down_right")
+		]
+		self.action_to_id = {action: i for i, action in enumerate(AVAILABLE_ACTIONS)}
+		self.id_to_action = {i: action for i, action in enumerate(AVAILABLE_ACTIONS)}
 	
+	def init(self, params):
+		super(MultiQLAI, self).init(params)
+		num_actions = len(self.action_to_id)
+		self.learning_model = CDN([self.features_size, 32, num_actions], self.alpha, 0.01)
+
 	def get_info(self):
 		# TODO: Use state_dict method
 		return util.py2gdArray([param.tolist() for param in self.learning_model.parameters()])
@@ -65,30 +85,29 @@ class MultiQLAI(QLAI):
 				loss = self._update_weights_experience(exp_sample)
 				self.logger.push("loss", loss.item())
 
-	def _get_q_value(self, state, action):
-		action_id = Action._get_action_id(action)
-		features = self._get_features_after_action(state, Action.IDLE)
-		q_values = self.learning_model.forward(features)
-		return q_values[action_id]
+	def _get_q_values(self, state, action_list):
+		features = self._get_features(state)
+		output = self.learning_model.forward(features)
+		q_values = [output[self.action_to_id[action]] for action in action_list]
+		return torch.tensor(q_values)
 
 	def _compute_value_from_q_values(self, state):
 		if state is None:
 			return torch.tensor(0.0)
-		legal_actions_ids = [Action._get_action_id(a) for a in self.parent.get_legal_actions(state)]
-		return torch.max(self._get_q_value(state, legal_actions_ids))
+		legal_actions = self.parent.get_legal_actions(state)
+		return torch.max(self._get_q_values(state, legal_actions))
 
 	def _compute_action_from_q_values(self, state):
 		legal_actions = self.parent.get_legal_actions(state)
 		if random() < self.epsilon:
 			return choice(legal_actions)
-		legal_actions_ids = [Action._get_action_id(a) for a in legal_actions]
-		prediction = self._get_q_value(state, legal_actions_ids)
-		best_action_id = legal_actions_ids[torch.argmax(prediction)]
-		return Action._get_action_from_id(best_action_id)
+		prediction = self._get_q_values(state, legal_actions)
+		best_action = legal_actions[torch.argmax(prediction)]
+		return best_action
 
 	def _update_weights(self, state, action, next_state, reward, last):
 		features = self._get_features(next_state)
-		action_id = Action._get_action_id(action)
+		action_id = self.action_to_id[action]
 		experience = Experience(features, reward, None if last else next_state, action_id)
 		self.ep.add(experience)
 		exp_sample = self.ep.simple_sample()

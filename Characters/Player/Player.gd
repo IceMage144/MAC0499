@@ -126,7 +126,7 @@ func buy_item(item):
 func sell_item(item):
 	if not self.bag_has_item(item):
 		return
-	$Model.set_data($Model.MONEY, self.get_money() + item.sell_price)
+	$Model.set_data($Model.MONEY, int(self.get_money() + item.sell_price))
 	self.bag.erase(item)
 	self._save_bag()
 	print("Sold: " + item.name)

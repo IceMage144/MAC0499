@@ -3,9 +3,9 @@ extends "res://Maps/Adventures/GenerationAlgorithms/GeneratorBase.gd"
 # Limit time needed for score calculation
 const LIMIT_TIME = 60.0
 # Player rating changing rate
-const PLAYER_K = 0.4
+const PLAYER_K = 0.2
 # Room rating changing rate
-const ROOM_K = 0.4
+const ROOM_K = 0.2
 # Win chance average
 const WC_MEAN = 0.725
 # Win chance standard deviation
